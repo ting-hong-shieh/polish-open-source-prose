@@ -11,7 +11,7 @@
   <path d="M44 48h1192M44 592h1192" fill="none" stroke="#111111" stroke-opacity=".17"/>
   <path d="M64 28v584M1216 28v584" fill="none" stroke="#111111" stroke-opacity=".17"/>
 
-  <text x="362" y="126" fill="#565656" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">CODEX SKILL · OPEN SOURCE</text>
+  <text x="362" y="126" fill="#565656" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">AGENT SKILL · OPEN SOURCE</text>
   <g transform="translate(83 112) scale(4.45)">
     <path fill="#111111" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
     <path d="M48 23h9v8h-9Z" fill="#f7f4ec"/>
