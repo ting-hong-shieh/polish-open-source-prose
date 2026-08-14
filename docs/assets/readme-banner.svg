@@ -1,35 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
   <title id="title">Polish Open-Source Prose</title>
-  <desc id="desc">The standalone open editorial P appears beside the project name and tagline.</desc>
+  <desc id="desc">An open editorial paragraph mark begins the project wordmark.</desc>
   <defs>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0H0V40" fill="none" stroke="#111111" stroke-opacity=".055"/>
     </pattern>
   </defs>
-
   <rect width="1200" height="360" rx="28" fill="#f7f4ec"/>
   <rect width="1200" height="360" rx="28" fill="url(#grid)"/>
   <path d="M40 42h1120M40 318h1120" fill="none" stroke="#111111" stroke-opacity=".16"/>
   <path d="M52 28v304M1148 28v304" fill="none" stroke="#111111" stroke-opacity=".16"/>
 
-  <rect x="54" y="58" width="244" height="244" rx="52" fill="#111111"/>
-  <g transform="translate(51 64) scale(3.6)">
-    <path fill="#f7f4ec" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
-    <path d="M48 23h9v8h-9Z" fill="#111111"/>
+  <g transform="translate(68 79) scale(2.42)">
+    <path fill="#111111" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
+    <path d="M48 23h9v8h-9Z" fill="#f7f4ec"/>
     <path d="M50 27h10" fill="none" stroke="#21a7a1" stroke-width="3.5"/>
-    <path d="M17 44v13h7" fill="none" stroke="#111111" stroke-width="3"/>
+    <path d="M17 44v13h7" fill="none" stroke="#f7f4ec" stroke-width="3"/>
   </g>
+  <text x="205" y="220" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="750" letter-spacing="-4">olish</text>
+  <text x="453" y="220" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="400" letter-spacing="-2"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
+  <text x="207" y="265" fill="#3f3f3f" font-family="Arial, Helvetica, sans-serif" font-size="24">Keep the facts. Keep the voice.</text>
 
-  <g transform="translate(350 0)">
-    <text x="0" y="88" fill="#565656" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="2.8">AGENT SKILL · OPEN SOURCE</text>
-    <text x="0" y="174" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="750" letter-spacing="-4">Polish</text>
-    <text x="0" y="236" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="400" letter-spacing="-1.2"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
-    <text x="0" y="278" fill="#356f70" font-family="Arial, Helvetica, sans-serif" font-size="23">Keep the facts. Keep the voice.</text>
-
-    <g transform="translate(0 315)" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing=".35">
-      <circle cx="5" cy="-5" r="4.5" fill="#21a7a1"/><text x="17" y="0" fill="#333333">SEMANTIC SAFEGUARDS</text>
-      <circle cx="214" cy="-5" r="4.5" fill="#21a7a1"/><text x="226" y="0" fill="#333333">ZH-HANT-TW</text>
-      <circle cx="351" cy="-5" r="4.5" fill="#21a7a1"/><text x="363" y="0" fill="#333333">43 FORWARD CASES</text>
-    </g>
+  <g transform="translate(207 296)" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing=".3">
+    <circle cx="6" cy="-5" r="5" fill="#21a7a1"/><text x="19" y="0" fill="#333333">SEMANTIC SAFEGUARDS</text>
+    <circle cx="230" cy="-5" r="5" fill="#21a7a1"/><text x="243" y="0" fill="#333333">ZH-HANT-TW</text>
+    <circle cx="373" cy="-5" r="5" fill="#21a7a1"/><text x="386" y="0" fill="#333333">43 FORWARD CASES</text>
   </g>
 </svg>
