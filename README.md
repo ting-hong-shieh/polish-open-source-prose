@@ -16,13 +16,13 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-28-0f766e?style=flat-square" alt="28 forward cases">
+  <img src="https://img.shields.io/badge/forward_cases-43-0f766e?style=flat-square" alt="43 forward cases">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
-> A Codex skill for editing README files, documentation, release notes, contribution
+> An agent skill for editing README files, documentation, release notes, contribution
 > guides, PRs, issues, UI copy, error messages, and prompts—without treating a
-> blacklist or detector score as a style guide.
+> blacklist or detector score as a style guide. Runs on Claude Code and Codex.
 
 <table>
   <tr>
@@ -46,6 +46,28 @@
 
 ## Quick start
 
+The skill directory follows the [Agent Skills](https://agentskills.io) format, so the
+same files work in Claude Code and Codex.
+
+### Install with Claude Code
+
+Add this repository as a plugin marketplace, then install the plugin:
+
+```text
+/plugin marketplace add ting-hong-shieh/polish-open-source-prose
+/plugin install polish-open-source-prose
+```
+
+To install the skill without the plugin system, copy the directory instead:
+
+```bash
+git clone https://github.com/ting-hong-shieh/polish-open-source-prose.git
+cp -r polish-open-source-prose/skills/polish-open-source-prose ~/.claude/skills/
+```
+
+Use `.claude/skills/` in a project instead of `~/.claude/skills/` to scope the skill to
+that repository.
+
 ### Install with Codex
 
 Invoke `$skill-installer` and ask:
@@ -61,6 +83,15 @@ skills/polish-open-source-prose
 ```
 
 ### Invoke the skill
+
+Claude Code loads the skill automatically when a request matches its description. To
+invoke it directly:
+
+```text
+/polish-open-source-prose
+```
+
+In Codex:
 
 ```text
 $polish-open-source-prose
@@ -145,8 +176,8 @@ Run the skill checks directly:
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-The current corpus contains 28 forward specifications: 11 cases that should remain
-unchanged and 17 that should be revised or answered with provenance guidance.
+The current corpus contains 43 forward specifications: 17 cases that should remain
+unchanged and 26 that should be revised or answered with provenance guidance.
 Structural checks catch protected-token drift and corpus errors; native review is
 still required to judge real project prose.
 
@@ -155,6 +186,9 @@ still required to judge real project prose.
 
 ```text
 .
+├── .claude-plugin/
+│   ├── plugin.json
+│   └── marketplace.json
 ├── .codex-plugin/plugin.json
 ├── docs/assets/
 ├── scripts/validate_repo.py
@@ -166,6 +200,9 @@ still required to judge real project prose.
         ├── scripts/
         └── tests/
 ```
+
+Each host reads its own manifest directory and the shared `skills/` tree, so adding an
+agent platform does not fork the editorial content.
 
 Repository documentation stays outside the skill directory so it is not loaded as
 agent instructions.

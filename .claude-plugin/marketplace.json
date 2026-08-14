@@ -1,0 +1,22 @@
+{
+  "name": "polish-open-source-prose",
+  "owner": {
+    "name": "Polish Open-Source Prose contributors"
+  },
+  "plugins": [
+    {
+      "name": "polish-open-source-prose",
+      "source": "./",
+      "description": "Edit public open-source prose for clarity, fidelity, voice, and locale fit.",
+      "version": "0.1.0",
+      "keywords": [
+        "open-source",
+        "documentation",
+        "editing",
+        "zh-hant-tw",
+        "localization",
+        "provenance"
+      ]
+    }
+  ]
+}

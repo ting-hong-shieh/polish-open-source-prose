@@ -16,12 +16,13 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="驗證狀態"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-28-0f766e?style=flat-square" alt="28 個前向案例">
+  <img src="https://img.shields.io/badge/forward_cases-43-0f766e?style=flat-square" alt="43 個前向案例">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 授權">
 </p>
 
 > 一套用來編輯 README、文件、release note、貢獻指南、PR、issue、UI 文案、
-> 錯誤訊息與 prompt 的 Codex skill；它不把禁詞表或偵測器分數當成文風準則。
+> 錯誤訊息與 prompt 的 agent skill；它不把禁詞表或偵測器分數當成文風準則。
+> 可在 Claude Code 與 Codex 上執行。
 
 <table>
   <tr>
@@ -43,6 +44,27 @@
 
 ## 快速開始
 
+skill 目錄採用 [Agent Skills](https://agentskills.io) 格式，同一份檔案可以在
+Claude Code 與 Codex 上使用。
+
+### 使用 Claude Code 安裝
+
+將這個 repository 加為 plugin marketplace，然後安裝 plugin：
+
+```text
+/plugin marketplace add ting-hong-shieh/polish-open-source-prose
+/plugin install polish-open-source-prose
+```
+
+若不使用 plugin 系統，也可以直接複製 skill 目錄：
+
+```bash
+git clone https://github.com/ting-hong-shieh/polish-open-source-prose.git
+cp -r polish-open-source-prose/skills/polish-open-source-prose ~/.claude/skills/
+```
+
+要讓 skill 只在單一專案生效，請改放到該專案的 `.claude/skills/`。
+
 ### 使用 Codex 安裝
 
 呼叫 `$skill-installer`，並提出以下要求：
@@ -58,6 +80,14 @@ skills/polish-open-source-prose
 ```
 
 ### 呼叫 skill
+
+當要求符合 skill 的 description 時，Claude Code 會自動載入。也可以直接呼叫：
+
+```text
+/polish-open-source-prose
+```
+
+在 Codex：
 
 ```text
 $polish-open-source-prose
@@ -138,7 +168,7 @@ python3 scripts/validate_repo.py
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-目前有 28 個前向規格：11 個案例應保持不變，17 個案例應修改或提供來源證明建議。
+目前有 43 個前向規格：17 個案例應保持不變，26 個案例應修改或提供來源證明建議。
 結構檢查可以找出受保護內容漂移與案例格式錯誤，但真實專案文字仍需母語使用者
 審查。
 
@@ -147,6 +177,9 @@ python3 skills/polish-open-source-prose/scripts/validate_skill.py
 
 ```text
 .
+├── .claude-plugin/
+│   ├── plugin.json
+│   └── marketplace.json
 ├── .codex-plugin/plugin.json
 ├── docs/assets/
 ├── scripts/validate_repo.py
@@ -158,6 +191,9 @@ python3 skills/polish-open-source-prose/scripts/validate_skill.py
         ├── scripts/
         └── tests/
 ```
+
+每個平台各自讀取自己的 manifest 目錄與共用的 `skills/`，因此新增平台不會讓
+編輯內容產生分支。
 
 給使用者看的 repository 文件放在 skill 目錄外，避免它們被當成 agent 指令載入。
 
