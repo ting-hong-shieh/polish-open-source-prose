@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Polish Open-Source Prose dark lockup</title>
+  <desc id="desc">The standalone open editorial P appears beside the project name on a dark background.</desc>
+  <rect width="1200" height="300" rx="28" fill="#17171d"/>
+
+  <rect x="42" y="42" width="216" height="216" rx="48" fill="#111111" stroke="#303038" stroke-width="2"/>
+  <g transform="translate(44 45) scale(3.2)">
+    <path fill="#f7f4ec" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
+    <path d="M48 23h9v8h-9Z" fill="#111111"/>
+    <path d="M50 27h10" fill="none" stroke="#21a7a1" stroke-width="3.5"/>
+    <path d="M17 44v13h7" fill="none" stroke="#111111" stroke-width="3"/>
+  </g>
+
+  <text x="316" y="142" fill="#f7f4ec" font-family="Arial, Helvetica, sans-serif" font-size="90" font-weight="750" letter-spacing="-4">Polish</text>
+  <text x="318" y="216" fill="#f7f4ec" font-family="Arial, Helvetica, sans-serif" font-size="55" font-weight="400" letter-spacing="-1"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
+</svg>
