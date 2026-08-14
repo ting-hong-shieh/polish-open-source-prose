@@ -1,0 +1,67 @@
+name: Locale pack proposal
+description: Propose support for a specific language-and-region locale.
+title: "[Locale]: "
+body:
+  - type: input
+    id: locale
+    attributes:
+      label: BCP 47 locale
+      placeholder: ja-JP
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Target readers and exclusions
+      description: Explain the target region, script, technical audience, and nearby locales this pack will not cover.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Regional evidence
+      description: Link official translations, public style guidance, and stable technical-community usage.
+    validations:
+      required: true
+
+  - type: textarea
+    id: ambiguity
+    attributes:
+      label: Context-dependent terminology
+      description: Give at least three terms that cannot be handled by mechanical replacement.
+    validations:
+      required: true
+
+  - type: textarea
+    id: false_positives
+    attributes:
+      label: Likely false positives
+      description: Describe native structures or registers a generic editor might wrongly flatten.
+    validations:
+      required: true
+
+  - type: input
+    id: reviewer
+    attributes:
+      label: Native reviewer
+      description: Name or describe the native technical reviewer available for this proposal.
+    validations:
+      required: true
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Known limitations
+      description: List dialect, domain, corpus, or reviewer limitations.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contract
+    attributes:
+      label: Locale pack contract
+      options:
+        - label: I have read the locale pack contract and will add balanced change/keep cases.
+          required: true

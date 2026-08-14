@@ -1,0 +1,35 @@
+{
+  "name": "polish-open-source-prose",
+  "version": "0.1.0",
+  "description": "Edit public open-source prose for clarity, fidelity, voice, and locale fit.",
+  "author": {
+    "name": "Polish Open-Source Prose contributors"
+  },
+  "homepage": "https://github.com/ting-hong-shieh/polish-open-source-prose#readme",
+  "repository": "https://github.com/ting-hong-shieh/polish-open-source-prose",
+  "license": "Apache-2.0",
+  "keywords": [
+    "open-source",
+    "documentation",
+    "editing",
+    "zh-hant-tw",
+    "localization",
+    "provenance"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Polish Open Source Prose",
+    "shortDescription": "Edit open-source prose without losing facts or voice.",
+    "longDescription": "Audit, draft, and revise public project prose with semantic safeguards, surface-specific guidance, and a dedicated Traditional Chinese (Taiwan) locale pack.",
+    "developerName": "Polish Open-Source Prose contributors",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Audit this README and propose only evidence-backed edits.",
+      "Localize this project prose for zh-Hant-TW without changing facts.",
+      "Recommend a provenance method for this technical article."
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+name: Editorial problem
+description: Report a missed edit, false positive, semantic drift, or locale mismatch.
+title: "[Editorial]: "
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Problem type
+      options:
+        - False positive
+        - Missed edit
+        - Semantic drift
+        - Locale mismatch
+        - Surface or register mismatch
+        - Provenance guidance
+    validations:
+      required: true
+
+  - type: input
+    id: locale
+    attributes:
+      label: Locale
+      description: Use a BCP 47 tag when possible.
+      placeholder: zh-Hant-TW
+    validations:
+      required: true
+
+  - type: input
+    id: surface
+    attributes:
+      label: Document surface
+      placeholder: README, pull request, error message, release note
+    validations:
+      required: true
+
+  - type: textarea
+    id: original
+    attributes:
+      label: Original passage
+      description: Remove secrets, personal data, and text you cannot redistribute.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current result
+      description: Include the current suggestion or response, if one exists.
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Explain what should change or why the passage should stay untouched.
+    validations:
+      required: true
+
+  - type: textarea
+    id: protected
+    attributes:
+      label: Protected content
+      description: List facts, conditions, commands, identifiers, quotations, or markup that must survive.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: redistribution
+    attributes:
+      label: Redistribution
+      options:
+        - label: I have the right to share this example in a public issue.
+          required: true
