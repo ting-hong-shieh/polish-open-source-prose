@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="驗證狀態"></a>
-  <img src="https://img.shields.io/badge/Codex-skill-111827?style=flat-square" alt="Codex skill">
+  <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
   <img src="https://img.shields.io/badge/forward_cases-28-0f766e?style=flat-square" alt="28 個前向案例">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 授權">

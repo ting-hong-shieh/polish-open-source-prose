@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="title desc">
+  <title id="title">Polish Open-Source Prose monochrome logo</title>
+  <desc id="desc">Three editorial threads flow into a document.</desc>
+  <path d="M1 4.5h2.1c2.5 0 2.9 2.4 5.3 2.4h2v2.4h-2c-3.4 0-3.8-2.4-5.3-2.4H1Zm0 6.3h9.4v2.4H1Zm0 6.3h2.1c1.5 0 1.9-2.4 5.3-2.4h2v2.4h-2c-2.4 0-2.8 2.4-5.3 2.4H1Z"/>
+  <path fill-rule="evenodd" d="M9.5 1h8l5.5 5.5V23H9.5Zm2.5 2.5v17h8.5V8h-5V3.5Zm6 1.1L19.4 6H18Z"/>
+</svg>
