@@ -1,30 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
   <title id="title">Polish Open-Source Prose</title>
-  <desc id="desc">The project wordmark uses an open editorial paragraph mark as its first letter.</desc>
+  <desc id="desc">The open editorial P appears as a standalone logo beside the project name and tagline.</desc>
   <defs>
     <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
       <path d="M64 0H0V64" fill="none" stroke="#111111" stroke-opacity=".05"/>
     </pattern>
   </defs>
+
   <rect width="1280" height="640" fill="#f7f4ec"/>
   <rect width="1280" height="640" fill="url(#grid)"/>
   <path d="M44 48h1192M44 592h1192" fill="none" stroke="#111111" stroke-opacity=".17"/>
   <path d="M64 28v584M1216 28v584" fill="none" stroke="#111111" stroke-opacity=".17"/>
 
-  <text x="362" y="126" fill="#565656" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">AGENT SKILL · OPEN SOURCE</text>
-  <g transform="translate(83 112) scale(4.45)">
-    <path fill="#111111" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
-    <path d="M48 23h9v8h-9Z" fill="#f7f4ec"/>
+  <!-- Standalone mark: the same open P used in the README wordmark. -->
+  <rect x="72" y="128" width="384" height="384" rx="80" fill="#111111"/>
+  <g transform="translate(69 131) scale(5.6)">
+    <path fill="#f7f4ec" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
+    <path d="M48 23h9v8h-9Z" fill="#111111"/>
     <path d="M50 27h10" fill="none" stroke="#21a7a1" stroke-width="3.5"/>
-    <path d="M17 44v13h7" fill="none" stroke="#f7f4ec" stroke-width="3"/>
+    <path d="M17 44v13h7" fill="none" stroke="#111111" stroke-width="3"/>
   </g>
-  <text x="356" y="351" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="750" letter-spacing="-7">olish</text>
-  <text x="364" y="444" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="400" letter-spacing="-2"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
-  <text x="366" y="505" fill="#414141" font-family="Arial, Helvetica, sans-serif" font-size="31">Keep the facts. Keep the voice.</text>
 
-  <g transform="translate(366 553)" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing=".5">
-    <circle cx="7" cy="-7" r="6" fill="#21a7a1"/><text x="24" y="0" fill="#333333">FACTS</text>
-    <text x="96" y="0" fill="#8b8b8b">·</text><circle cx="126" cy="-7" r="6" fill="#21a7a1"/><text x="143" y="0" fill="#333333">VOICE</text>
-    <text x="220" y="0" fill="#8b8b8b">·</text><circle cx="250" cy="-7" r="6" fill="#21a7a1"/><text x="267" y="0" fill="#333333">LOCALE</text>
+  <g transform="translate(536 0)">
+    <text x="0" y="151" fill="#565656" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing="3">AGENT SKILL · OPEN SOURCE</text>
+    <text x="0" y="277" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="750" letter-spacing="-5">Polish</text>
+    <text x="0" y="361" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="400" letter-spacing="-1.5"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
+    <path d="M0 405h96" fill="none" stroke="#21a7a1" stroke-width="8"/>
+    <text x="0" y="466" fill="#356f70" font-family="Arial, Helvetica, sans-serif" font-size="29">Keep the facts. Keep the voice.</text>
+
+    <g transform="translate(0 527)" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing=".8">
+      <circle cx="6" cy="-6" r="5" fill="#21a7a1"/><text x="20" y="0" fill="#333333">CLAUDE CODE</text>
+      <text x="158" y="0" fill="#8b8b8b">·</text><circle cx="184" cy="-6" r="5" fill="#21a7a1"/><text x="198" y="0" fill="#333333">CODEX</text>
+      <text x="273" y="0" fill="#8b8b8b">·</text><circle cx="299" cy="-6" r="5" fill="#21a7a1"/><text x="313" y="0" fill="#333333">ZH-HANT-TW</text>
+    </g>
   </g>
 </svg>
