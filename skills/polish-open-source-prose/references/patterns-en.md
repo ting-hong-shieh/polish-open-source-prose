@@ -86,3 +86,69 @@ repeat mechanically, obscure syntax, or produce a stack of slogans.
 - Qualify security, privacy, performance, and compatibility claims.
 - Prefer current behavior over origin stories and aspirations in the first screenful.
 - Remove praise that the project gives itself; let evidence, examples, and users judge.
+
+## Evidence presentation in reviewer follow-ups
+
+When a reviewer asks for verification — a trace, a benchmark, a before/after
+comparison — the response is a technical artifact, not a conversation.
+
+### Anchor to commits
+
+Cite the exact commit hash for every state referenced. "Before (commit `abc1234`)"
+and "After (commit `def5678`)" let the reviewer reproduce the comparison.
+
+### Show, don't summarize
+
+Prefer concrete output over adjectives:
+
+- a before/after JSON trace or log excerpt over "the output looks correct"
+- a numerical comparison table with computed error over "values match"
+- an exact diagnostic message over "a warning is emitted"
+
+### Bound the scope
+
+State what was compared, what range or configurations were covered, and what was
+excluded. Include:
+
+- the reference implementation and its pinned version or commit
+- the quantities or behaviors checked
+- tolerance or error metric
+- platform, language version, and dependency versions
+- features or configurations intentionally not compared
+
+### Separate observation from conclusion
+
+"Four geometries produced matching CNa values" is an observation.
+"The implementation is fully verified" is a conclusion the observation does not
+support unless every geometry and condition was tested.
+
+## PR and issue writing conventions
+
+### Distinguish observation from judgment
+
+An issue should describe what was observed (error message, failing input, platform)
+before proposing a cause. Mark unverified causes as hypotheses:
+
+- Observed: "`rules.json` fails to load on macOS 15 with error `E42`"
+- Hypothesis: "This may be caused by the new sandboxing policy"
+
+Do not write "the parser is clearly broken" when only the symptom is known.
+
+### Qualify verification claims
+
+Do not write "exhaustively validated" or "completely fixed" unless the test matrix
+is stated. When CI has not finished, say so:
+
+- "Windows CI is still running; result pending"
+- not "This fix resolves the Windows issue"
+
+### Cite artifacts by identity
+
+Reference commits by hash, issues by number, and files by path. Avoid "the recent
+change" or "the fix" when a concrete identifier exists.
+
+### Drop social filler in evidence
+
+"Thanks for looking into this!", "Let me know if you need anything else!", and
+"Great catch!" are fine in conversation but should not pad an evidence response.
+Lead with the data; close when the data is complete.
