@@ -1,0 +1,20 @@
+{
+  "name": "polish-open-source-prose",
+  "displayName": "Polish Open Source Prose",
+  "version": "0.1.0",
+  "description": "Edit public open-source prose for clarity, fidelity, voice, and locale fit.",
+  "author": {
+    "name": "Polish Open-Source Prose contributors"
+  },
+  "homepage": "https://github.com/ting-hong-shieh/polish-open-source-prose#readme",
+  "repository": "https://github.com/ting-hong-shieh/polish-open-source-prose",
+  "license": "Apache-2.0",
+  "keywords": [
+    "open-source",
+    "documentation",
+    "editing",
+    "zh-hant-tw",
+    "localization",
+    "provenance"
+  ]
+}
