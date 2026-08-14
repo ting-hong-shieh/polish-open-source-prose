@@ -42,6 +42,31 @@ page and fail in an error message.
 - Avoid narrating routine effort or praising the patch.
 - Preserve uncertainty when the cause or outcome is not verified.
 
+### Reviewer follow-up responses
+
+When a reviewer asks for evidence — a trace, a benchmark, a before/after
+comparison — the response is a technical artifact, not a conversation.
+
+- Lead with the commit hash or version that produced the result.
+- Provide the raw data first (trace, table, log excerpt), then the interpretation.
+- State the test environment: platform, language version, dependency versions.
+- Name what was tested and what was not. A scope statement ("transonic CP was not
+  compared") prevents the reviewer from assuming full coverage.
+- Do not pad with social openers, closers, or assurances ("everything works great").
+  The evidence speaks; let it.
+
+### Commit messages
+
+- Name the component or area, the incorrect behavior or gap, and the correction.
+- "Fix bug" and "update code" tell the reader nothing the diff does not already show.
+- Follow the project's commit convention (conventional commits, imperative mood, etc.).
+
+### Review comments
+
+- Cite the function, variable, or line that motivates the comment.
+- State the structural or behavioral reason, not just "this is better."
+- A specific review comment lets the author act without guessing intent.
+
 ## UI copy and error messages
 
 - Tell users what happened, what it affects, and what they can do next.
