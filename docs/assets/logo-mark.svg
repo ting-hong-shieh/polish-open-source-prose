@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Polish Open-Source Prose logo</title>
+  <desc id="desc">An open editorial paragraph mark with a teal correction dash.</desc>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="#111111" stroke="#292929" stroke-width="2"/>
+  <path fill="#f7f4ec" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
+  <path d="M48 23h9v8h-9Z" fill="#111111"/>
+  <path d="M50 27h10" fill="none" stroke="#21a7a1" stroke-width="3.5"/>
+  <path d="M17 44v13h7" fill="none" stroke="#111111" stroke-width="3"/>
+</svg>

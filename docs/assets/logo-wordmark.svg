@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="180" viewBox="0 0 1200 180" role="img" aria-labelledby="title desc">
+  <title id="title">Polish Open-Source Prose wordmark</title>
+  <desc id="desc">The project name begins with an open editorial paragraph mark.</desc>
+  <g transform="translate(20 20) scale(2.15)">
+    <path fill="#111111" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
+    <path d="M48 23h9v8h-9Z" fill="#f7f4ec"/>
+    <path d="M50 27h10" fill="none" stroke="#21a7a1" stroke-width="3.5"/>
+    <path d="M17 44v13h7" fill="none" stroke="#f7f4ec" stroke-width="3"/>
+  </g>
+  <text x="145" y="127" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="750" letter-spacing="-4">olish</text>
+  <text x="392" y="127" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="400" letter-spacing="-2"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
+</svg>
