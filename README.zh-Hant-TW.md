@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/readme-banner.svg" alt="Polish Open-Source Prose——保留事實與作者聲音的開源專案文字編輯 skill" width="100%">
+  <img src="docs/assets/readme-banner.svg" alt="Polish Open-Source Prose 字標——保留事實與作者聲音的開源專案文字編輯 skill" width="100%">
 </p>
 
 <p align="center">

@@ -1,63 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
   <title id="title">Polish Open-Source Prose</title>
-  <desc id="desc">Facts, voice, and locale flow into a clear document.</desc>
+  <desc id="desc">The project wordmark uses an open editorial paragraph mark as its first letter.</desc>
   <defs>
-    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#061326"/>
-      <stop offset="0.62" stop-color="#0a1830"/>
-      <stop offset="1" stop-color="#10213b"/>
-    </linearGradient>
-    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="0">
-      <stop stop-color="#26b8bb"/>
-      <stop offset="1" stop-color="#5eead4"/>
-    </linearGradient>
-    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="0">
-      <stop stop-color="#7565e8"/>
-      <stop offset="1" stop-color="#a5b4fc"/>
-    </linearGradient>
-    <linearGradient id="pink" x1="0" y1="0" x2="1" y2="0">
-      <stop stop-color="#e8678d"/>
-      <stop offset="1" stop-color="#f0abfc"/>
-    </linearGradient>
-    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-      <path d="M80 0H0V80" fill="none" stroke="#7dd3fc" stroke-opacity=".07"/>
-      <circle cx="0" cy="0" r="3" fill="#7dd3fc" fill-opacity=".1"/>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#111111" stroke-opacity=".05"/>
     </pattern>
-    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000000" flood-opacity=".3"/>
-    </filter>
   </defs>
-
-  <rect width="1280" height="640" fill="url(#background)"/>
+  <rect width="1280" height="640" fill="#f7f4ec"/>
   <rect width="1280" height="640" fill="url(#grid)"/>
-  <circle cx="1170" cy="40" r="260" fill="#0f766e" opacity=".08"/>
-  <circle cx="760" cy="680" r="320" fill="#4338ca" opacity=".08"/>
+  <path d="M44 48h1192M44 592h1192" fill="none" stroke="#111111" stroke-opacity=".17"/>
+  <path d="M64 28v584M1216 28v584" fill="none" stroke="#111111" stroke-opacity=".17"/>
 
-  <g filter="url(#shadow)">
-    <path d="M-70 140h95c110 0 125 80 236 80h210" fill="none" stroke="url(#teal)" stroke-width="64" stroke-linecap="round"/>
-    <path d="M-70 320h541" fill="none" stroke="#8b7cf6" stroke-width="64" stroke-linecap="round"/>
-    <path d="M-70 500h95c110 0 125-80 236-80h210" fill="none" stroke="url(#pink)" stroke-width="64" stroke-linecap="round"/>
-
-    <path d="M450 120h122l82 82v318H450Z" fill="#081426" stroke="#fffaf0" stroke-width="17" stroke-linejoin="round"/>
-    <path d="M572 120v82h82" fill="none" stroke="#fffaf0" stroke-width="17" stroke-linejoin="round"/>
+  <text x="362" y="126" fill="#565656" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">CODEX SKILL · OPEN SOURCE</text>
+  <g transform="translate(83 112) scale(4.45)">
+    <path fill="#111111" fill-rule="evenodd" d="M10 58V7h22c14 0 23 8 23 20s-9 20-23 20H22v11Zm12-41v20h10c7 0 12-4 12-10s-5-10-12-10Z"/>
+    <path d="M48 23h9v8h-9Z" fill="#f7f4ec"/>
+    <path d="M50 27h10" fill="none" stroke="#21a7a1" stroke-width="3.5"/>
+    <path d="M17 44v13h7" fill="none" stroke="#f7f4ec" stroke-width="3"/>
   </g>
+  <text x="356" y="351" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="750" letter-spacing="-7">olish</text>
+  <text x="364" y="444" fill="#111111" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="400" letter-spacing="-2"><tspan>Open</tspan><tspan fill="#21a7a1">-</tspan><tspan>Source Prose</tspan></text>
+  <text x="366" y="505" fill="#414141" font-family="Arial, Helvetica, sans-serif" font-size="31">Keep the facts. Keep the voice.</text>
 
-  <g transform="translate(740 116)">
-    <text x="0" y="0" fill="#9fb2c9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="20" font-weight="700" letter-spacing="3">CODEX SKILL · OPEN SOURCE</text>
-    <text x="0" y="94" fill="#fffaf0" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">Polish</text>
-    <text x="0" y="174" fill="#fffaf0" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700">Open-Source</text>
-    <text x="0" y="252" fill="#fffaf0" font-family="Georgia, 'Times New Roman', serif" font-size="68" font-weight="700">Prose</text>
-    <text x="2" y="315" fill="#d8e2ec" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="27">Keep the facts. Keep the voice.</text>
-
-    <g transform="translate(2 374)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="23" font-weight="650">
-      <circle cx="7" cy="-7" r="6" fill="#5eead4"/>
-      <text x="24" y="0" fill="#5eead4">Facts</text>
-      <text x="92" y="0" fill="#64748b">·</text>
-      <circle cx="120" cy="-7" r="6" fill="#a5b4fc"/>
-      <text x="137" y="0" fill="#a5b4fc">Voice</text>
-      <text x="207" y="0" fill="#64748b">·</text>
-      <circle cx="235" cy="-7" r="6" fill="#f0abfc"/>
-      <text x="252" y="0" fill="#f0abfc">Locale</text>
-    </g>
+  <g transform="translate(366 553)" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" letter-spacing=".5">
+    <circle cx="7" cy="-7" r="6" fill="#21a7a1"/><text x="24" y="0" fill="#333333">FACTS</text>
+    <text x="96" y="0" fill="#8b8b8b">·</text><circle cx="126" cy="-7" r="6" fill="#21a7a1"/><text x="143" y="0" fill="#333333">VOICE</text>
+    <text x="220" y="0" fill="#8b8b8b">·</text><circle cx="250" cy="-7" r="6" fill="#21a7a1"/><text x="267" y="0" fill="#333333">LOCALE</text>
   </g>
 </svg>

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/readme-banner.svg" alt="Polish Open-Source Prose — edit public project prose without losing facts or voice" width="100%">
+  <img src="docs/assets/readme-banner.svg" alt="Polish Open-Source Prose wordmark — edit public project prose without losing facts or voice" width="100%">
 </p>
 
 <p align="center">
