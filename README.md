@@ -16,7 +16,7 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-46-0f766e?style=flat-square" alt="46 forward cases">
+  <img src="https://img.shields.io/badge/forward_cases-49-0f766e?style=flat-square" alt="49 forward cases">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
@@ -59,6 +59,19 @@ to produce an evidence response with:
 
 The skill does not invent test output or prove a patch correct. It helps turn the
 evidence available in the repository into a response a reviewer can reproduce.
+
+## For text that lands in another repository
+
+Before drafting a pull request body, issue report, commit message, or changelog entry
+for a target project, the skill reads that project's own rules: `CONTRIBUTING.md`, the
+pull request and issue templates, the commit convention, any DCO or CLA requirement,
+and the changelog format. Required sections, checklist items, sign-off trailers, and
+commit prefixes are protected the same way Markdown structure is protected, and a
+missing field is answered in the project's wording instead of being deleted.
+
+The skill does not check a contributor agreement box, add a sign-off for an identity it
+cannot verify, or mark a verification item as done. When a requested edit conflicts with
+the project's required format, it reports the conflict instead of normalizing the text.
 
 ## Quick start
 
@@ -286,6 +299,7 @@ defects.
 | Technical text | Commands, flags, APIs, identifiers, paths, URLs, error strings |
 | Quoted and governed text | Quotations, citations, licenses, policies, security steps |
 | Structure | Headings, anchors, tables, lists, code fences, placeholders, frontmatter |
+| Contribution format | Template sections, checklist items, sign-off trailers, commit prefixes, changelog entries |
 | Voice | Deliberate humor, community terms, register, and first-person stance |
 
 ## Locale support
@@ -331,8 +345,8 @@ Run the skill checks directly:
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-The current corpus contains 43 forward specifications: 17 cases that should remain
-unchanged and 26 that should be revised or answered with provenance guidance.
+The current corpus contains 49 forward specifications: 18 cases that should remain
+unchanged and 31 that should be revised or answered with provenance guidance.
 Structural checks catch protected-token drift and corpus errors; native review is
 still required to judge real project prose.
 

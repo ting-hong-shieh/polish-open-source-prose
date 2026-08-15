@@ -16,7 +16,7 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="驗證狀態"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-43-0f766e?style=flat-square" alt="43 個前向案例">
+  <img src="https://img.shields.io/badge/forward_cases-49-0f766e?style=flat-square" alt="49 個前向案例">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 授權">
 </p>
 
@@ -125,6 +125,7 @@ $polish-open-source-prose
 | 技術文字 | 命令、參數、API、識別碼、路徑、URL、錯誤字串 |
 | 引文與規範 | 引文、引用、授權、政策、安全步驟 |
 | 結構 | 標題、錨點、表格、清單、程式碼區塊、預留位置、frontmatter |
+| 貢獻格式 | 目標專案的範本章節、檢查項、sign-off 標記、commit 前綴、changelog 格式 |
 | 聲音 | 刻意的幽默、社群詞彙、語域與第一人稱立場 |
 
 ## 語系支援
@@ -168,7 +169,7 @@ python3 scripts/validate_repo.py
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-目前有 43 個前向規格：17 個案例應保持不變，26 個案例應修改或提供來源證明建議。
+目前有 49 個前向規格：18 個案例應保持不變，31 個案例應修改或提供來源證明建議。
 結構檢查可以找出受保護內容漂移與案例格式錯誤，但真實專案文字仍需母語使用者
 審查。
 

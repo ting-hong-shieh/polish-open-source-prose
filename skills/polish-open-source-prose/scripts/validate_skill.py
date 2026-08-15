@@ -41,6 +41,7 @@ REQUIRED_FOCUS = {
     "snapshot",
     "experiment",
     "decision_boundary",
+    "contribution_format",
 }
 REQUIRED_LOCALE_HEADINGS = {
     "## 何時套用",
@@ -50,6 +51,13 @@ REQUIRED_LOCALE_HEADINGS = {
     "## 場景與語氣",
     "## 誤判防護",
     "## 交付前檢查",
+}
+REQUIRED_CONVENTION_SOURCES = {
+    "CONTRIBUTING.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/",
+    "CHANGELOG.md",
+    "Signed-off-by:",
 }
 REQUIRED_PROVENANCE_URLS = {
     "https://deepmind.google/models/synthid/",
@@ -105,6 +113,28 @@ def validate_locale_pack(errors: list[str]) -> None:
         fail(f"zh-Hant-TW locale pack is missing headings: {missing}", errors)
     if text.count("|") < 40:
         fail("zh-Hant-TW terminology table is unexpectedly small", errors)
+
+
+def validate_target_conventions(skill_text: str, errors: list[str]) -> None:
+    path = ROOT / "references" / "target-repo-conventions.md"
+    if not path.exists():
+        fail("missing references/target-repo-conventions.md", errors)
+        return
+    if "target-repo-conventions.md" not in skill_text:
+        fail("SKILL.md does not route to references/target-repo-conventions.md", errors)
+    text = path.read_text(encoding="utf-8")
+    normalized = " ".join(text.split())
+    for source in sorted(REQUIRED_CONVENTION_SOURCES):
+        if source not in text:
+            fail(f"target-repo-conventions.md is missing contribution source {source}", errors)
+    required_boundaries = [
+        "Do not check a contributor agreement, code-of-conduct, or verification box for the author.",
+        "Do not add a `Signed-off-by:` trailer for an identity you cannot verify.",
+        "Do not invent an issue number, a template section, or a requirement the repository does not state.",
+    ]
+    for phrase in required_boundaries:
+        if phrase not in normalized:
+            fail(f"target-repo-conventions.md is missing boundary statement: {phrase}", errors)
 
 
 def validate_provenance(errors: list[str]) -> None:
@@ -230,6 +260,7 @@ def main() -> int:
         fail("SKILL.md exceeds 500 lines", errors)
     validate_local_links(errors)
     validate_locale_pack(errors)
+    validate_target_conventions(skill_text, errors)
     validate_provenance(errors)
     total, keep_count, change_count = validate_cases(errors)
 
@@ -242,7 +273,8 @@ def main() -> int:
     print(
         "Validation passed: "
         f"{total} forward cases ({keep_count} keep, {change_count} change/advice), "
-        "zh-Hant-TW locale pack, provenance boundaries, and local links."
+        "zh-Hant-TW locale pack, target-repository conventions, provenance boundaries, "
+        "and local links."
     )
     return 0
 

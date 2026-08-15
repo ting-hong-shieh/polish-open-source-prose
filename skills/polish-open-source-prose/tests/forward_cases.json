@@ -599,6 +599,45 @@
       "must_remove": ["show the expected JSON"],
       "must_not_introduce": ["all paths", "production provider"],
       "rationale": "A snapshot claim needs two identifiable states, raw output, the shared input and configuration, and a reproduction command before it can help a reviewer."
+    },
+    {
+      "id": "en-pr-template-required-sections",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "protected_content", "markup", "contribution_format"],
+      "input": "## Description\n\nThis PR is a major improvement that makes the parser much more robust. It stops the crash on an empty `locale:` key reported in #412.\n\n## Motivation and Context\n\nSee above.\n\n## How Has This Been Tested?\n\n- [x] `pytest tests/test_parser.py`\n\n## Checklist\n\n- [ ] I have signed the CLA.\n\nSigned-off-by: Rin Watanabe <rin@example.org>",
+      "recommended_revision": "## Description\n\nThis change stops the crash on an empty `locale:` key reported in #412.\n\n## Motivation and Context\n\n#412 reports that an empty `locale:` key crashes the parser.\n\n## How Has This Been Tested?\n\n- [x] `pytest tests/test_parser.py`\n\n## Checklist\n\n- [ ] I have signed the CLA.\n\nSigned-off-by: Rin Watanabe <rin@example.org>",
+      "must_preserve": ["## Description", "## Motivation and Context", "## How Has This Been Tested?", "## Checklist", "- [x] `pytest tests/test_parser.py`", "- [ ] I have signed the CLA.", "Signed-off-by: Rin Watanabe <rin@example.org>", "#412"],
+      "must_remove": ["a major improvement that makes the parser much more robust", "See above."],
+      "must_not_introduce": ["## Summary", "- [x] I have signed the CLA.", "all tests pass"],
+      "rationale": "The template's sections, checklist state, and sign-off trailer are required structure. The edit drops the unsupported claim and answers the empty field with the facts already in the report; it does not merge the sections into a generic summary or check the contributor agreement for the author."
+    },
+    {
+      "id": "en-keep-conventional-commit-signoff",
+      "locale": "en",
+      "surface": "commit message",
+      "mode": "keep",
+      "focus": ["false_positive", "protected_content", "contribution_format"],
+      "input": "fix(locale): reject an empty `locale:` key instead of crashing\n\nThe parser read the key without checking for an empty value, so a config file containing `locale:` with no value raised `KeyError`.\n\nFixes #412\n\nSigned-off-by: Rin Watanabe <rin@example.org>",
+      "recommended_revision": "fix(locale): reject an empty `locale:` key instead of crashing\n\nThe parser read the key without checking for an empty value, so a config file containing `locale:` with no value raised `KeyError`.\n\nFixes #412\n\nSigned-off-by: Rin Watanabe <rin@example.org>",
+      "must_preserve": ["fix(locale):", "`KeyError`", "Fixes #412", "Signed-off-by: Rin Watanabe <rin@example.org>"],
+      "must_remove": [],
+      "must_not_introduce": ["Update code", "chore:"],
+      "rationale": "The message already carries the project's Conventional Commits prefix, the cause and correction, the closing keyword, and the DCO trailer. Rewriting the subject as plain prose or dropping a trailer would fail the project's own checks."
+    },
+    {
+      "id": "en-changelog-house-format",
+      "locale": "en",
+      "surface": "changelog",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "specificity", "contribution_format"],
+      "input": "## [Unreleased]\n\n### Fixed\n\n- Massively improved locale handling: the parser no longer crashes on an empty `locale:` key ([#413](https://example.org/pull/413))",
+      "recommended_revision": "## [Unreleased]\n\n### Fixed\n\n- Reject an empty `locale:` key instead of crashing the parser ([#413](https://example.org/pull/413))",
+      "must_preserve": ["## [Unreleased]", "### Fixed", "([#413](https://example.org/pull/413))", "`locale:`"],
+      "must_remove": ["Massively improved locale handling"],
+      "must_not_introduce": ["### Improvements", "### Changes"],
+      "rationale": "The Keep a Changelog section names, entry syntax, and pull request link are the project's required format. The edit replaces the unmeasurable claim with the behavior change and leaves the structure that release tooling reads."
     }
   ]
 }
