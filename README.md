@@ -169,6 +169,27 @@ The corpus examples above are stable regression specifications. These case studi
 show a different part of the skill: helping a contributor communicate with maintainers
 and reviewers using the facts of a real project.
 
+### Respond to a request with a reproducible before/after snapshot
+
+**Sources:** [Switchyard PR #389](https://github.com/NVIDIA-NeMo/Switchyard/pull/389#issuecomment-5274177204)
+and [PR #397](https://github.com/NVIDIA-NeMo/Switchyard/pull/397#issuecomment-5282263627)
+
+**Before:** In each PR, a maintainer asked for an output or trace snapshot before and
+after the change so the behavior would be easier and faster to review.
+
+**After:** The contributor posted [#389's snapshot](https://github.com/NVIDIA-NeMo/Switchyard/pull/389#issuecomment-5274372233)
+29 minutes 46 seconds later and [#397's snapshot](https://github.com/NVIDIA-NeMo/Switchyard/pull/397#issuecomment-5282378945)
+9 minutes 59 seconds later. Each response names the base and head commits, states the
+in-process path exercised, rules out a provider call, and shows the raw JSON before
+interpretation.
+
+**Observed outcome:** #389 merged 21 hours 12 minutes after its snapshot (25 hours
+37 minutes after the PR opened). #397 was still awaiting review when this case study
+was recorded, so it is not presented as merge-speed evidence.
+
+**Collaboration value:** The reviewer can reproduce the requested comparison without
+deriving behavior from a prose summary.
+
 ### Turn a broad feature request into a reviewable first step
 
 **Source:** [RocketPy issue #816](https://github.com/RocketPy-Team/RocketPy/issues/816)
@@ -214,8 +235,11 @@ states that no provider endpoint or real credential was used.
 coverage without asking the contributor to disclose sensitive data.
 
 These historical examples are context-dependent case studies, not guaranteed output
-strings. They should inform future forward cases while the corpus remains the
-deterministic test surface.
+strings. The Switchyard snapshots predate the first public revision of this skill;
+they show the collaboration outcome that the current reviewer-follow-up guidance now
+specifies, not a claim that the skill generated them. Review and merge timestamps also
+depend on reviewer availability, CI, patch scope, and project policy. They should
+inform future forward cases while the corpus remains the deterministic test surface.
 
 ## How it works
 
