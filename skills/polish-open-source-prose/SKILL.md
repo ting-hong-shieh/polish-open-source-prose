@@ -38,6 +38,9 @@ Preserve the author's meaning and make every edit earn its place.
   document or product surfaces.
 - Read [references/examples.md](references/examples.md) when examples would clarify
   the desired transformation.
+- For a PR or issue follow-up that asks for a snapshot, trace, benchmark, test result,
+  or before/after comparison, read
+  [references/review-evidence.md](references/review-evidence.md).
 - For another language, apply the core workflow and inspect native project prose.
   Do not translate English or Chinese phrase lists mechanically.
 
@@ -68,6 +71,18 @@ Protect these elements unless the user explicitly changes them:
 
 When a protected element looks wrong, flag it separately. Do not silently normalize it
 as an editorial preference.
+
+### 1a. Build reproducible review evidence when verification is requested
+
+Treat a requested snapshot, trace, benchmark, or test comparison as an evidence packet,
+not a prose-polishing exercise. State the commits, reproduction path, raw result,
+comparison rule, scope, and decision before drawing a conclusion. Distinguish measured
+or external validation from deterministic regression coverage. A result from an earlier
+commit does not verify the current head; report the final-head command or CI status
+separately. Do not invent reference values, test output, or a claim of complete coverage.
+
+Use [references/review-evidence.md](references/review-evidence.md) for the required
+fields and response template.
 
 ### 2. Diagnose before editing
 

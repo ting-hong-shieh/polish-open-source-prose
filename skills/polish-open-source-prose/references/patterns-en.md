@@ -91,6 +91,8 @@ repeat mechanically, obscure syntax, or produce a stack of slogans.
 
 When a reviewer asks for verification — a trace, a benchmark, a before/after
 comparison — the response is a technical artifact, not a conversation.
+For a reproducible packet that also covers snapshots, experiment type, and final-head
+status, read [review-evidence.md](review-evidence.md).
 
 ### Anchor to commits
 

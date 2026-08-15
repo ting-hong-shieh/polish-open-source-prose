@@ -38,6 +38,9 @@ REQUIRED_FOCUS = {
     "prompt_boundary",
     "long_form",
     "provenance",
+    "snapshot",
+    "experiment",
+    "decision_boundary",
 }
 REQUIRED_LOCALE_HEADINGS = {
     "## 何時套用",
