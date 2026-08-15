@@ -56,9 +56,13 @@ REQUIRED_CONVENTION_SOURCES = {
     "CONTRIBUTING.md",
     ".github/pull_request_template.md",
     ".github/ISSUE_TEMPLATE/",
+    "commitlint",
+    "DCO",
+    "CLA",
     "CHANGELOG.md",
     "Signed-off-by:",
 }
+CONVENTION_ROUTE = "](references/target-repo-conventions.md)"
 REQUIRED_PROVENANCE_URLS = {
     "https://deepmind.google/models/synthid/",
     "https://github.com/google-deepmind/synthid-text",
@@ -120,8 +124,8 @@ def validate_target_conventions(skill_text: str, errors: list[str]) -> None:
     if not path.exists():
         fail("missing references/target-repo-conventions.md", errors)
         return
-    if "target-repo-conventions.md" not in skill_text:
-        fail("SKILL.md does not route to references/target-repo-conventions.md", errors)
+    if CONVENTION_ROUTE not in skill_text:
+        fail("SKILL.md does not link references/target-repo-conventions.md", errors)
     text = path.read_text(encoding="utf-8")
     normalized = " ".join(text.split())
     for source in sorted(REQUIRED_CONVENTION_SOURCES):

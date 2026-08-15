@@ -167,8 +167,9 @@ Run a semantic diff before delivery:
   causal claim, and ordered step.
 - Confirm commands, names, links, claims, and code examples against the repository.
 - Confirm headings, anchors, tables, placeholders, and links still work after edits.
-- Confirm required template sections, checklist items, trailers, and commit prefixes
-  survive when the text targets another repository.
+- Confirm required template sections, checklist items, trailers, commit prefixes, and
+  changelog section names, entry syntax, and release placement survive when the text
+  targets another repository.
 - Confirm translations preserve meaning and use the requested locale consistently.
 - Confirm repeated sections do not fall into identical rhythm or canned conclusions.
 - Read the prose aloud mentally; restore connectors when compression makes it jerky.

@@ -126,6 +126,12 @@ $polish-open-source-prose
 | 引文與規範 | 引文、引用、授權、政策、安全步驟 |
 | 結構 | 標題、錨點、表格、清單、程式碼區塊、預留位置、frontmatter |
 | 貢獻格式 | 目標專案的範本章節、檢查項、sign-off 標記、commit 前綴、changelog 格式 |
+
+要寫進其他專案的 PR、issue、commit message 或 changelog 時，skill 會先讀該專案自己的
+規定：`CONTRIBUTING.md`、PR 與 issue 範本、commit 慣例、DCO 或 CLA 要求、changelog
+格式；讀不到的來源會講出來，不當成「沒有規定」。必填欄位用該專案的說法補上，不會
+刪掉；skill 不會代作者勾 CLA 或驗證項目，也不會替無法確認的身分加上 sign-off。若要求
+的修改與該專案格式衝突，會指出衝突而不是逕自改成自己的格式。
 | 聲音 | 刻意的幽默、社群詞彙、語域與第一人稱立場 |
 
 ## 語系支援

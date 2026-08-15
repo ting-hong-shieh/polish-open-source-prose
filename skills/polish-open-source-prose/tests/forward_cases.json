@@ -633,7 +633,7 @@
       "mode": "rewrite",
       "focus": ["surface_fit", "specificity", "contribution_format"],
       "input": "## [Unreleased]\n\n### Fixed\n\n- Massively improved locale handling: the parser no longer crashes on an empty `locale:` key ([#413](https://example.org/pull/413))",
-      "recommended_revision": "## [Unreleased]\n\n### Fixed\n\n- Reject an empty `locale:` key instead of crashing the parser ([#413](https://example.org/pull/413))",
+      "recommended_revision": "## [Unreleased]\n\n### Fixed\n\n- The parser no longer crashes on an empty `locale:` key ([#413](https://example.org/pull/413))",
       "must_preserve": ["## [Unreleased]", "### Fixed", "([#413](https://example.org/pull/413))", "`locale:`"],
       "must_remove": ["Massively improved locale handling"],
       "must_not_introduce": ["### Improvements", "### Changes"],

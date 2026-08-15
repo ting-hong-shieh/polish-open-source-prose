@@ -65,9 +65,10 @@ evidence available in the repository into a response a reviewer can reproduce.
 Before drafting a pull request body, issue report, commit message, or changelog entry
 for a target project, the skill reads that project's own rules: `CONTRIBUTING.md`, the
 pull request and issue templates, the commit convention, any DCO or CLA requirement,
-and the changelog format. Required sections, checklist items, sign-off trailers, and
-commit prefixes are protected the same way Markdown structure is protected, and a
-missing field is answered in the project's wording instead of being deleted.
+and the changelog format. Sources it cannot read are named rather than treated as
+absent rules. Required sections, checklist items, sign-off trailers, and commit
+prefixes are protected the same way Markdown structure is protected, and a missing
+field is answered in the project's wording instead of being deleted.
 
 The skill does not check a contributor agreement box, add a sign-off for an identity it
 cannot verify, or mark a verification item as done. When a requested edit conflicts with
