@@ -163,7 +163,11 @@ mechanically.
 
 **Surface:** README · **Mode:** keep
 
-Before and after:
+Before:
+
+> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
+
+After:
 
 > The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
 
@@ -207,7 +211,7 @@ deriving behavior from a prose summary.
 
 ### Turn a broad feature request into a reviewable first step
 
-**Source:** [RocketPy issue #816](https://github.com/RocketPy-Team/RocketPy/issues/816)
+**Source:** [RocketPy issue #816 comment](https://github.com/RocketPy-Team/RocketPy/issues/816#issuecomment-5275932923)
 
 **Before:** The request was to add tube fins similar to OpenRocket.
 
