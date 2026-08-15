@@ -20,14 +20,16 @@
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
-> An agent skill for editing public project prose and turning PR or issue verification
-> requests into reproducible review evidence: exact commits, raw before/after output,
-> and a stated validation scope. Runs on Claude Code and Codex.
+> An agent skill for making public project prose less generic or AI-sounding without
+> treating a blacklist or detector score as a style guide. It protects the facts,
+> limits, commands, and project voice that open source depends on—and turns PR or issue
+> verification requests into reproducible review evidence. Runs on Claude Code and
+> Codex.
 
 <table>
   <tr>
     <td width="33%">
-      <strong>Meaning stays intact</strong><br>
+      <strong>OSS facts stay intact</strong><br>
       Protect facts, numbers, versions, conditions, negation, attribution, causality,
       commands, links, quotations, and markup.
     </td>
