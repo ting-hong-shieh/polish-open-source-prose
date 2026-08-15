@@ -163,6 +163,60 @@ tests, project terminology, and document surface. See [RocketPy #1141](https://g
 [Switchyard #428](https://github.com/NVIDIA-NeMo/Switchyard/pull/428) for public
 case studies that require that project context.
 
+## Real-world collaboration case studies
+
+The corpus examples above are stable regression specifications. These case studies
+show a different part of the skill: helping a contributor communicate with maintainers
+and reviewers using the facts of a real project.
+
+### Turn a broad feature request into a reviewable first step
+
+**Source:** [RocketPy issue #816](https://github.com/RocketPy-Team/RocketPy/issues/816)
+
+**Before:** The request was to add tube fins similar to OpenRocket.
+
+**After:** The contribution proposal defined the first slice: a `TubeFins` surface,
+the supported geometry, a Ribner-based normal-force slope, a 20-degree angle-of-attack
+cap, and a fixed quarter-chord center of pressure for `Mach <= 0.5`. It also listed
+Mach-dependent center of pressure, component drag, cant, overlapping tubes, and yaw
+behavior as deferred work.
+
+**Collaboration value:** Maintainers can review a bounded implementation plan without
+having to infer which parts of the upstream model are being promised.
+
+### Answer a reviewer with evidence and a version boundary
+
+**Source:** [RocketPy PR #1122 comment](https://github.com/RocketPy-Team/RocketPy/pull/1122#issuecomment-5299852239)
+
+**Before:** A simple “the PR should proceed” would have implied that the latest head
+had been tested.
+
+**After:** The response named the verified commit (`9cc93a1`), stated the behavior that
+was checked, noted that the current head (`fce9756`) was not covered by that local
+verification, and called out the failing Documentation check before merge.
+
+**Collaboration value:** The reviewer gets a useful recommendation without an
+unsupported claim about the current branch.
+
+### Describe a security fix without exposing real credentials
+
+**Source:** [Switchyard PR #428](https://github.com/NVIDIA-NeMo/Switchyard/pull/428)
+
+**Before:** The change needed a PR description that gave reviewers enough context
+about the source of the client-visible error and the verification boundary.
+
+**After:** The description explains that transport and timeout source strings could
+include a credential-bearing upstream URL, states which HTTP classifications remain
+unchanged, and records regression tests using `CANARY_ADMIN_QUERY_KEY` only. It also
+states that no provider endpoint or real credential was used.
+
+**Collaboration value:** Reviewers can assess root cause, compatibility, and test
+coverage without asking the contributor to disclose sensitive data.
+
+These historical examples are context-dependent case studies, not guaranteed output
+strings. They should inform future forward cases while the corpus remains the
+deterministic test surface.
+
 ## How it works
 
 1. **Establish the source of truth.** Inspect code, tests, configuration, and project
