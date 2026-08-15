@@ -212,7 +212,7 @@ deriving behavior from a prose summary.
 
 ### Turn a broad feature request into a reviewable first step
 
-**Source:** [RocketPy issue #816](https://github.com/RocketPy-Team/RocketPy/issues/816)
+**Source:** [RocketPy issue #816 comment](https://github.com/RocketPy-Team/RocketPy/issues/816#issuecomment-5275932923)
 and [PR #1144](https://github.com/RocketPy-Team/RocketPy/pull/1144)
 
 **Before:** The request was to add tube fins similar to OpenRocket.
