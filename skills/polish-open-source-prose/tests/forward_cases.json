@@ -560,6 +560,45 @@
       "must_remove": [],
       "must_not_introduce": ["all configurations", "verified"],
       "rationale": "The response cites the reference commit, quantity compared, tolerance, exclusions, and test environment. This is the evidence pattern that reviewer follow-ups should aim for."
+    },
+    {
+      "id": "en-review-scope-expansion-boundary",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "semantics", "specificity", "experiment", "decision_boundary"],
+      "input": "Only apogee is checked. We can add max_speed, impact coordinates, and max_acceleration, so the full flight will be validated. The measured apogee AGL is `9308.320 m`; current simulation is `9242.183 m` (`0.711%` error, below `1%`).",
+      "recommended_revision": "Current acceptance check: apogee AGL is `9242.183 m` against the measured `9308.320 m` (`0.711%` relative error; threshold below `1%`). I can add deterministic regression assertions for max_speed, impact coordinates, and max_acceleration once the test condition, reference source, and tolerance are recorded for each metric. Those assertions would extend regression coverage; they would not establish that the full flight is validated.",
+      "must_preserve": ["apogee", "max_speed", "impact coordinates", "max_acceleration", "`9308.320 m`", "`9242.183 m`", "`0.711%`", "`1%`"],
+      "must_remove": ["so the full flight will be validated"],
+      "must_not_introduce": ["all outputs verified", "measured max_speed"],
+      "rationale": "Keep the current measured acceptance criterion and requested metric names. Require a test condition, reference source, and tolerance before broadening coverage, and distinguish deterministic regression assertions from full-flight validation."
+    },
+    {
+      "id": "en-review-final-head-evidence-boundary",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "semantics", "snapshot", "experiment"],
+      "input": "`17 passed, 9 warnings` at `fa63fb7`. The new assertions are now on `3564fc4`, so all tests pass for the final change.",
+      "recommended_revision": "`17 passed, 9 warnings` was recorded at `fa63fb7`. The new assertions are on `3564fc4`; that earlier result does not verify the final change. Run and report the relevant command at `3564fc4`, then state the final CI result separately.",
+      "must_preserve": ["`17 passed, 9 warnings`", "`fa63fb7`", "`3564fc4`", "new assertions"],
+      "must_remove": ["so all tests pass for the final change"],
+      "must_not_introduce": ["CI passed", "fully verified"],
+      "rationale": "A result belongs to the commit on which it was run. The response must not use a pre-change result as final-head verification."
+    },
+    {
+      "id": "en-review-snapshot-reproduction",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "specificity", "snapshot"],
+      "input": "Before and after snapshots show the expected JSON. No provider call occurs.",
+      "recommended_revision": "Before (commit `a1b2c3d`): [raw JSON]. After (commit `d4e5f60`): [raw JSON]. Both runs use `tests/fixtures/request.json` with `provider=disabled`; command: `pytest tests/test_trace.py -k snapshot`. No provider call occurs.",
+      "must_preserve": ["JSON", "No provider call occurs"],
+      "must_remove": ["show the expected JSON"],
+      "must_not_introduce": ["all paths", "production provider"],
+      "rationale": "A snapshot claim needs two identifiable states, raw output, the shared input and configuration, and a reproduction command before it can help a reviewer."
     }
   ]
 }

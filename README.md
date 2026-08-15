@@ -16,7 +16,7 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-43-0f766e?style=flat-square" alt="43 forward cases">
+  <img src="https://img.shields.io/badge/forward_cases-46-0f766e?style=flat-square" alt="46 forward cases">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
@@ -52,9 +52,10 @@ When a reviewer asks for a trace, benchmark, or before/after comparison, use the
 to produce an evidence response with:
 
 - the exact base and head commits;
-- the same test or translation path for both states;
+- the same test or translation path, fixture, and configuration for both states;
 - raw output before interpretation; and
-- the environment, covered scope, and excluded cases.
+- the environment, comparison rule, covered scope, excluded cases, and final-head CI
+  status.
 
 The skill does not invent test output or prove a patch correct. It helps turn the
 evidence available in the repository into a response a reviewer can reproduce.
@@ -163,7 +164,11 @@ mechanically.
 
 **Surface:** README · **Mode:** keep
 
-Before and after:
+Before:
+
+> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
+
+After:
 
 > The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
 
@@ -208,6 +213,7 @@ deriving behavior from a prose summary.
 ### Turn a broad feature request into a reviewable first step
 
 **Source:** [RocketPy issue #816](https://github.com/RocketPy-Team/RocketPy/issues/816)
+and [PR #1144](https://github.com/RocketPy-Team/RocketPy/pull/1144)
 
 **Before:** The request was to add tube fins similar to OpenRocket.
 
