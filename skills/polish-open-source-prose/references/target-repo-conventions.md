@@ -56,7 +56,11 @@ against an English template, or a merged checklist against a per-item confirmati
 Name the conflict, quote the rule it comes from, and let the author decide.
 
 When sources disagree, start from the repository's written rules and fall back to this
-skill's defaults only where the project states nothing. Apply a thread instruction over
+skill's defaults only where the project states nothing. Two written rules can also
+disagree — `CONTRIBUTING.md` against a template heading, a stated commit convention
+against the recent history. Report each source and what it requires, and let the author
+choose; picking one silently hides the requirement the draft breaks. Apply a thread
+instruction over
 a written rule only when the author is identifiable as a maintainer — author
 association, write access, or another platform signal — and the instruction does not
 touch a legal, security, DCO or CLA, or machine-enforced requirement. Otherwise report
@@ -81,5 +85,5 @@ Required sections: <section list from the template>.
 Required trailers or prefix: <sign-off, closing keyword, commit prefix>.
 Changelog format: <section name>; <entry syntax>; <release the entry belongs to>.
 Unanswered fields: <field> — <reason it is not answered>.
-Conflicts: <requested edit> conflicts with <rule and its source>.
+Conflicts: <requested edit, or a second source> conflicts with <rule and its source>.
 ```
