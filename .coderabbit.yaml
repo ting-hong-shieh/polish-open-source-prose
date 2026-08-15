@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+
+# Review language. This repository's issues, PRs, and docs are English-first, so
+# review comments stay in English for outside contributors. Switch to zh-TW only
+# if the contributor base becomes Traditional Chinese first.
+language: en-US
+
+tone_instructions: >-
+  Be direct and specific. Cite the exact passage or line you object to and state the
+  concrete consequence. Do not suggest rewording for style alone. Skip praise.
+
+reviews:
+  profile: chill
+  # Never gate a merge on the bot. Maintainer review stays the deciding signal.
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  poem: false
+  abort_on_close: true
+
+  auto_review:
+    base_branches:
+      - main
+    drafts: false
+    ignore_title_keywords:
+      - wip
+      - "[skip review]"
+
+  path_filters:
+    # Generated, binary, and vendored text carries no reviewable diff.
+    - "!docs/assets/**"
+    - "!**/*.svg"
+    - "!**/*.png"
+    - "!LICENSE"
+    - "!NOTICE"
+    - "!THIRD_PARTY_NOTICES.md"
+    - "!skills/polish-open-source-prose/LICENSE.stop-slop"
+
+  path_instructions:
+    - path: "skills/**/*.md"
+      instructions: >-
+        This is agent instruction text, not documentation for humans. Judge it on
+        whether an agent can act on it unambiguously: check that every referenced
+        file path exists in the repository, that the frontmatter `name` matches the
+        directory name, and that the `description` still covers the behavior the body
+        specifies. Flag guidance that contradicts another reference file. Do not
+        propose stylistic rewrites of prose that is already unambiguous.
+
+    - path: "skills/polish-open-source-prose/references/locales/**"
+      instructions: >-
+        Review against the locale pack contract in
+        skills/polish-open-source-prose/references/locale-pack-contract.md. A locale
+        pack needs a specific BCP 47 tag, contextual terminology rules rather than a
+        bare replacement list, and false-positive guards for structures that are
+        natural in the locale. Flag any rule that reads as a mechanical translation of
+        the English or zh-Hant-TW phrase list. Do not evaluate the target-language
+        prose for grammar; native reviewers own that judgment.
+
+    - path: "skills/polish-open-source-prose/tests/forward_cases.json"
+      instructions: >-
+        These fixtures deliberately contain weak, promotional, or AI-sounding prose as
+        test input. Never flag the writing quality of `input` fields. Review only the
+        case structure: a stable unique case ID, locale, surface, mode, focus, input,
+        recommended result, protected substrings, wording to remove, wording that must
+        not be introduced, and a rationale. Verify that every protected substring
+        actually appears verbatim in both input and recommended result, and that the
+        recommended revision introduces no fact absent from the input. Flag a suite
+        that drifts toward only obvious promotional text, since that cannot measure
+        false positives.
+
+    - path: "{README.md,README.zh-Hant-TW.md,CONTRIBUTING.md}"
+      instructions: >-
+        Entry-point prose. Verify that install commands, plugin names, file paths, and
+        links resolve against the current tree. When README.md and
+        README.zh-Hant-TW.md diverge in factual content, flag the divergence; do not
+        ask for a literal translation, since the Chinese README is allowed its own
+        phrasing.
+
+    - path: "{.claude-plugin/*.json,.codex-plugin/*.json,skills/**/agents/*.yaml}"
+      instructions: >-
+        Plugin and agent manifests. Check that version, name, and skill paths agree
+        across .claude-plugin/plugin.json, .codex-plugin/plugin.json,
+        .claude-plugin/marketplace.json, and the skill's own frontmatter. A manifest
+        that points at a path not present in the tree is a blocking defect.
+
+    - path: "**/*.py"
+      instructions: >-
+        Validation scripts run in CI on untrusted contributor input. Check that failure
+        modes exit non-zero with a message naming the offending file, and that the
+        script does not silently pass when an expected file is missing.
+
+    - path: ".github/workflows/**"
+      instructions: >-
+        Verify that `permissions` stays least-privilege, that actions are pinned to a
+        major version at minimum, and that no step interpolates untrusted PR-controlled
+        values into a shell command.
+
+  tools:
+    # Security scanner built for agent skills — reads SKILL.md manifests directly.
+    skillspector:
+      enabled: true
+    markdownlint:
+      enabled: true
+    ruff:
+      enabled: true
+    actionlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+    # Disabled on purpose. This repository argues that a phrase blacklist is not a
+    # style guide, and its fixtures hold deliberately bad prose. A grammar checker
+    # would fight both. Enable only if README typos start slipping through.
+    languagetool:
+      enabled: false
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  learnings:
+    scope: local
+  issues:
+    scope: local
