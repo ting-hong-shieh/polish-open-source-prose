@@ -20,9 +20,9 @@
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
-> An agent skill for editing README files, documentation, release notes, contribution
-> guides, PRs, issues, UI copy, error messages, and prompts—without treating a
-> blacklist or detector score as a style guide. Runs on Claude Code and Codex.
+> An agent skill for editing public project prose and turning PR or issue verification
+> requests into reproducible review evidence: exact commits, raw before/after output,
+> and a stated validation scope. Runs on Claude Code and Codex.
 
 <table>
   <tr>
@@ -32,9 +32,9 @@
       commands, links, quotations, and markup.
     </td>
     <td width="33%">
-      <strong>Edits fit the surface</strong><br>
-      Apply different standards to a README, tutorial, PR, release note, error message,
-      or policy document.
+      <strong>Review evidence is reproducible</strong><br>
+      Anchor before/after traces to commits, show raw output, and state what the
+      comparison does and does not cover.
     </td>
     <td width="33%">
       <strong>Locales stay specific</strong><br>
@@ -43,6 +43,19 @@
     </td>
   </tr>
 </table>
+
+## For PR and issue follow-ups
+
+When a reviewer asks for a trace, benchmark, or before/after comparison, use the skill
+to produce an evidence response with:
+
+- the exact base and head commits;
+- the same test or translation path for both states;
+- raw output before interpretation; and
+- the environment, covered scope, and excluded cases.
+
+The skill does not invent test output or prove a patch correct. It helps turn the
+evidence available in the repository into a response a reviewer can reproduce.
 
 ## Quick start
 
