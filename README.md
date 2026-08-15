@@ -107,6 +107,62 @@ Localize these release notes for zh-Hant-TW without changing product behavior.
 Review this PR description for unsupported claims and lost qualifications.
 ```
 
+## Before and after
+
+These examples come from the current
+[forward-case corpus](skills/polish-open-source-prose/tests/forward_cases.json).
+They show both kinds of decisions the skill makes: replacing vague prose with a
+verified behavior, and leaving clear technical text unchanged.
+
+### Replace promotion with behavior
+
+**Surface:** README · **Mode:** rewrite
+
+Before:
+
+> PolyglotGuard is a powerful, next-generation solution that seamlessly protects your multilingual codebase across today's rapidly evolving ecosystem.
+
+After:
+
+> PolyglotGuard checks pull requests for translated strings that alter commands, links, or placeholders.
+
+Why: The revision removes unsupported promotion and keeps the observable check.
+
+### Remove hype without changing behavior in `zh-Hant-TW`
+
+**Surface:** README · **Locale:** `zh-Hant-TW` · **Mode:** rewrite
+
+Before:
+
+> PolyglotGuard 是一款革命性的工具，全面賦能開發團隊，讓每個 pull request 都更有品質。它會檢查翻譯是否改動命令、連結或預留位置。
+
+After:
+
+> PolyglotGuard 會在 pull request 中檢查翻譯是否改動命令、連結或預留位置。
+
+Why: The Taiwan-locale case keeps the product name, command-related terms, and
+behavior while removing generic claims; it does not translate technical identifiers
+mechanically.
+
+### Keep clear technical prose unchanged
+
+**Surface:** README · **Mode:** keep
+
+Before and after:
+
+> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
+
+Why: The paragraph names the configuration file, processing order, fallback, and
+negative guarantee. Rewriting it would risk losing a constraint without adding clarity.
+
+These corpus examples are expected outputs, not claims that the skill will produce the
+same wording for every repository. Real-world results depend on the source code,
+tests, project terminology, and document surface. See [RocketPy #1141](https://github.com/RocketPy-Team/RocketPy/pull/1141),
+[RocketPy #1122](https://github.com/RocketPy-Team/RocketPy/pull/1122),
+[RocketPy #816](https://github.com/RocketPy-Team/RocketPy/issues/816), and
+[Switchyard #428](https://github.com/NVIDIA-NeMo/Switchyard/pull/428) for public
+case studies that require that project context.
+
 ## How it works
 
 1. **Establish the source of truth.** Inspect code, tests, configuration, and project
