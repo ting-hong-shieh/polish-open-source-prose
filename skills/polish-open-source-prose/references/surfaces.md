@@ -34,6 +34,8 @@ page and fail in an error message.
   warrants it.
 - Avoid “major,” “exciting,” “powerful,” and “improved” without saying what changed.
 - Do not rewrite historical entries merely to impose the current voice unless asked.
+- Match the project's existing changelog format — section names, entry syntax, and
+  release ordering — instead of importing another convention.
 
 ## Pull requests and issues
 
@@ -41,6 +43,9 @@ page and fail in an error message.
 - Separate evidence from interpretation. Link exact artifacts when available.
 - Avoid narrating routine effort or praising the patch.
 - Preserve uncertainty when the cause or outcome is not verified.
+- Keep the target project's template sections, checklist items, and sign-off trailers.
+  Read [target-repo-conventions.md](target-repo-conventions.md) before drafting text for
+  another repository.
 
 ### Reviewer follow-up responses
 

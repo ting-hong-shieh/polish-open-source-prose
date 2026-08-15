@@ -41,6 +41,9 @@ Preserve the author's meaning and make every edit earn its place.
 - For a PR or issue follow-up that asks for a snapshot, trace, benchmark, test result,
   or before/after comparison, read
   [references/review-evidence.md](references/review-evidence.md).
+- For text that will be posted to a specific repository — a pull request body, issue
+  report, commit message, or changelog entry — read
+  [references/target-repo-conventions.md](references/target-repo-conventions.md).
 - For another language, apply the core workflow and inspect native project prose.
   Do not translate English or Chinese phrase lists mechanically.
 
@@ -67,7 +70,10 @@ Protect these elements unless the user explicitly changes them:
 - product names, brand names, official UI labels, SEO keywords, and community terms;
 - deliberate humor, authorial quirks, register, and first-person stance;
 - Markdown structure, frontmatter, tables, code fences, examples, and localization
-  conventions.
+  conventions;
+- the target repository's required contribution format: template sections and their
+  order, checklist items, sign-off and closing trailers, commit prefixes, and changelog
+  entry syntax.
 
 When a protected element looks wrong, flag it separately. Do not silently normalize it
 as an editorial preference.
@@ -83,6 +89,23 @@ separately. Do not invent reference values, test output, or a claim of complete 
 
 Use [references/review-evidence.md](references/review-evidence.md) for the required
 fields and response template.
+
+### 1b. Match the target repository's contribution format
+
+When the result will be posted to a specific repository, read that project's rules
+before drafting: `CONTRIBUTING.md`, the pull request and issue templates, the commit
+convention, any DCO or CLA requirement, and the changelog format. State which of these
+you could not read rather than assuming the project has no rule.
+
+Keep every required section, field, checklist item, and trailer, and answer a missing
+field in the project's own wording instead of the shape this skill would choose. Do not
+check a contributor agreement or verification box for the author, and do not add a
+sign-off trailer for an identity you cannot verify.
+
+When the requested edit conflicts with a required format, name the conflict and the
+rule it comes from instead of normalizing the text. Use
+[references/target-repo-conventions.md](references/target-repo-conventions.md) for the
+sources to check and the preflight fields.
 
 ### 2. Diagnose before editing
 
@@ -144,6 +167,9 @@ Run a semantic diff before delivery:
   causal claim, and ordered step.
 - Confirm commands, names, links, claims, and code examples against the repository.
 - Confirm headings, anchors, tables, placeholders, and links still work after edits.
+- Confirm required template sections, checklist items, trailers, commit prefixes, and
+  changelog section names, entry syntax, and release placement survive when the text
+  targets another repository.
 - Confirm translations preserve meaning and use the requested locale consistently.
 - Confirm repeated sections do not fall into identical rhythm or canned conclusions.
 - Read the prose aloud mentally; restore connectors when compression makes it jerky.
@@ -169,4 +195,6 @@ limitations.
 - When asked for clean copy, return clean copy without an unsolicited audit essay.
 - When asked for Taiwan localization, state any official names or regional terms left
   unchanged on purpose.
+- When the text targets another repository, name the contribution rules you read, the
+  required fields still unanswered, and any conflict with the requested edit.
 - If the text is already strong, say so and leave it alone.
