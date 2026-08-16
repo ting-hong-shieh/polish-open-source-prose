@@ -599,6 +599,32 @@
       "must_remove": ["show the expected JSON"],
       "must_not_introduce": ["all paths", "production provider"],
       "rationale": "A snapshot claim needs two identifiable states, raw output, the shared input and configuration, and a reproduction command before it can help a reviewer."
+    },
+    {
+      "id": "provenance-tool-added-coauthor-trailer",
+      "locale": "en",
+      "surface": "commit message",
+      "mode": "provenance",
+      "focus": ["provenance", "decision_boundary"],
+      "input": "TST: cover the retry path in the upload client\n\nThe retry loop had no test, so a change to the backoff went unnoticed. Add two cases that pin the delay sequence.\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\nGenerated with Claude Code",
+      "recommended_revision": "TST: cover the retry path in the upload client\n\nThe retry loop had no test, so a change to the backoff went unnoticed. Add two cases that pin the delay sequence.",
+      "must_preserve": ["TST: cover the retry path in the upload client", "backoff"],
+      "must_remove": ["Co-Authored-By: Claude", "Generated with Claude Code"],
+      "must_not_introduce": ["written without tooling", "hand-written"],
+      "rationale": "The trailer and the footer are defaults of the tool rather than decisions of the author, and the trailer lands in the commit record where GitHub reads it. This project states no disclosure policy, so attribution stays with the author. The message body is already specific and is left alone."
+    },
+    {
+      "id": "provenance-keep-required-disclosure",
+      "locale": "zh-Hant-TW",
+      "surface": "pull request",
+      "mode": "keep",
+      "focus": ["provenance", "false_positive"],
+      "input": "修正 `parse_manifest()` 在 `version` 欄位為空字串時丟出 `KeyError` 的問題，改為回傳 `None` 並記錄一則警告。加上兩個 regression 測試，涵蓋空字串與缺欄位兩種輸入。\n\n依 CONTRIBUTING.md 要求揭露：本次的測試草稿由 AI 助理協助產生，我逐行檢查並改寫過斷言。",
+      "recommended_revision": "修正 `parse_manifest()` 在 `version` 欄位為空字串時丟出 `KeyError` 的問題，改為回傳 `None` 並記錄一則警告。加上兩個 regression 測試，涵蓋空字串與缺欄位兩種輸入。\n\n依 CONTRIBUTING.md 要求揭露：本次的測試草稿由 AI 助理協助產生，我逐行檢查並改寫過斷言。",
+      "must_preserve": ["`parse_manifest()`", "`KeyError`", "依 CONTRIBUTING.md 要求揭露"],
+      "must_remove": [],
+      "must_not_introduce": [],
+      "rationale": "專案自己要求揭露協助來源，這一行是政策要求的內容，不是工具預設加上的署名，不得為了讓貢獻看起來未經協助而刪除。其餘敘述已寫出行為差異與測試範圍，維持原樣。"
     }
   ]
 }

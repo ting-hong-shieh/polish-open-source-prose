@@ -312,10 +312,14 @@ This project does not:
 - promise removal of a statistical watermark;
 - invent metrics, product behavior, user stories, opinions, or personal experience;
 - claim native support for a locale without a reviewed locale pack;
+- add its own attribution to a contribution, such as a co-author trailer naming a
+  model or a "generated with" footer;
 - replace legal, security, or domain review.
 
 For authorship provenance, the skill recommends a signed canonical artifact rather
 than treating writing style or a statistical watermark as proof of identity.
+Attribution follows the project's disclosure policy where one exists, and otherwise
+stays with the author rather than defaulting to the tool's own trailer.
 
 ## Validation
 
