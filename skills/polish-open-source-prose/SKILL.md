@@ -1,6 +1,6 @@
 ---
 name: polish-open-source-prose
-description: Audit, draft, and revise public-facing prose for open-source software so it is specific, credible, and natural without flattening the project's voice. Use for README files, documentation, landing pages, release notes, changelogs, contribution guides, PR or issue text, UI copy, error messages, prompts, Traditional Chinese (Taiwan) localization, and questions about AI-text watermarking or author provenance. Use when the user asks to remove AI-sounding language, marketing fluff, generic wording, or improve editorial quality. Do not use for code-only tasks with no prose work.
+description: Audit, draft, and revise public-facing prose for open-source software so it is specific, credible, and natural without flattening the project's voice. Use for README files, documentation, landing pages, release notes, changelogs, contribution guides, PR or issue text, commit messages, UI copy, error messages, prompts, Traditional Chinese (Taiwan) localization, and questions about AI-text watermarking, tool-added co-author attribution, or author provenance. Use when the user asks to remove AI-sounding language, marketing fluff, generic wording, or improve editorial quality. Do not use for code-only tasks with no prose work.
 ---
 
 # Polish Open-Source Prose
@@ -160,6 +160,13 @@ as a GitHub username. For proof that a public artifact came from a particular au
 prefer a cryptographic signature or attestation tied to that identity. Follow
 [references/provenance.md](references/provenance.md) for the exact recommendation and
 limitations.
+
+Do not add your own attribution to a contribution. A `Co-Authored-By` trailer naming a
+model, a "generated with" footer, or a tool name in a branch is a default of the tool
+rather than a decision of the author, and a trailer in particular lands in the commit
+record. Follow the project's stated policy when it has one, including a policy that
+requires disclosure; where it states nothing, leave the attribution out rather than
+adding it for the author to remove.
 
 ## Report at the requested level
 

@@ -79,6 +79,32 @@ GitHub username. For a statement that needs durable authorship evidence, publish
 canonical text in a signed commit or signed file and link it from the comment. The
 comment remains the discussion surface; the signed artifact is the evidence.
 
+## Attribution the tool adds by default
+
+An assistant that writes a commit, a pull request body, or a branch name may add its
+own attribution: a `Co-Authored-By` trailer naming the model, a "generated with" footer,
+or a tool name in the branch. Those are defaults of the tool, not decisions of the
+author, and they behave differently from prose. A `Co-Authored-By` trailer is a record:
+GitHub reads it, credits the address in the commit, and it survives in history after the
+pull request text is forgotten.
+
+Attribution belongs to the project's policy first and the author's decision second.
+
+- Follow a stated policy exactly. A project may require disclosure of assisted
+  contributions in `CONTRIBUTING.md`, a DCO, a pull request template, or a dedicated AI
+  policy. Where it does, include what it asks for, and never remove a disclosure the
+  project requires in order to make a contribution look unassisted.
+- Where the project states nothing, do not add attribution the author did not ask for.
+  Omit the trailer and the footer rather than adding them and inviting the author to
+  strip them afterwards. The same applies to branch names and pull request titles.
+- Ask when a project's policy is unclear and the contribution is substantial. Do not
+  infer a disclosure requirement from the absence of one.
+
+Do not describe a missing trailer as evidence that no tool was involved. That is the
+same conflation the rest of this file warns about: removing an attribution line changes
+the record, not the history of how the text was produced. An author who wants durable
+evidence of authorship should sign the commit, as described above.
+
 ## If prototyping a keyed text watermark
 
 Keep the prototype outside this prose-editing skill. Use an open model that exposes

@@ -60,6 +60,10 @@ comparison — the response is a technical artifact, not a conversation.
 - Name the component or area, the incorrect behavior or gap, and the correction.
 - "Fix bug" and "update code" tell the reader nothing the diff does not already show.
 - Follow the project's commit convention (conventional commits, imperative mood, etc.).
+- Do not add a `Co-Authored-By` trailer or a "generated with" footer naming the tool
+  that helped write the change. Follow the project's disclosure policy where it has
+  one; otherwise leave attribution to the author. See
+  [provenance.md](provenance.md).
 
 ### Review comments
 
