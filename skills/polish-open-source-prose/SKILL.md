@@ -38,8 +38,9 @@ Preserve the author's meaning and make every edit earn its place.
   document or product surfaces.
 - Read [references/examples.md](references/examples.md) when examples would clarify
   the desired transformation.
-- For a PR or issue follow-up that asks for a snapshot, trace, benchmark, test result,
-  or before/after comparison, read
+- For public PR, issue, review, release, or documentation prose that contains a
+  quantitative, absolute, causal, or guarantee-like claim—or for a follow-up that
+  requests a snapshot, trace, benchmark, test result, or before/after comparison—read
   [references/review-evidence.md](references/review-evidence.md).
 - For another language, apply the core workflow and inspect native project prose.
   Do not translate English or Chinese phrase lists mechanically.
@@ -72,17 +73,30 @@ Protect these elements unless the user explicitly changes them:
 When a protected element looks wrong, flag it separately. Do not silently normalize it
 as an editorial preference.
 
-### 1a. Build reproducible review evidence when verification is requested
+### 1a. Audit public claims before publication
 
-Treat a requested snapshot, trace, benchmark, or test comparison as an evidence packet,
-not a prose-polishing exercise. State the commits, reproduction path, raw result,
-comparison rule, scope, and decision before drawing a conclusion. Distinguish measured
-or external validation from deterministic regression coverage. A result from an earlier
-commit does not verify the current head; report the final-head command or CI status
-separately. Do not invent reference values, test output, or a claim of complete coverage.
+Run an evidence audit proactively when public OSS prose contains counts, percentages,
+coverage, benchmarks, durations, memory, tolerances, version ranges, completeness
+language, or claims such as `all`, `every`, `exactly`, `only`, `guarantee`, `always`,
+`never`, `fully validated`, `no behavior change`, `CI is unaffected`, or “works in
+serial and parallel.” Do not wait for a reviewer to request proof.
 
-Use [references/review-evidence.md](references/review-evidence.md) for the required
-fields and response template.
+Build a compact Claim–Evidence Matrix with the claim, exact evidence, head commit,
+command or CI run, tested scope, limitations, and one of `VERIFIED`, `PARTIAL`, or
+`UNSUPPORTED`. If evidence supports only a narrower statement, narrow it. If evidence
+is missing, qualify or remove the statement; do not merely polish it into more
+confident prose.
+
+When a reviewer requests a snapshot, trace, benchmark, or test comparison, treat it as
+an evidence packet rather than a prose-polishing exercise. State the commits,
+reproduction path, raw result, comparison rule, scope, and decision before drawing a
+conclusion. Distinguish measured or external validation from deterministic regression
+coverage. A result from an earlier commit does not verify the current head; report the
+final-head command or CI status separately. Do not invent reference values, test
+output, or a claim of complete coverage.
+
+Use [references/review-evidence.md](references/review-evidence.md) for the trigger,
+required fields, statuses, and response templates.
 
 ### 2. Diagnose before editing
 
@@ -143,6 +157,8 @@ Run a semantic diff before delivery:
 - Compare every subject, number, version, condition, exception, negation, attribution,
   causal claim, and ordered step.
 - Confirm commands, names, links, claims, and code examples against the repository.
+- Confirm each quantitative, absolute, or guarantee-like public claim is bound to
+  current-head evidence, narrowed to the tested scope, or removed.
 - Confirm headings, anchors, tables, placeholders, and links still work after edits.
 - Confirm translations preserve meaning and use the requested locale consistently.
 - Confirm repeated sections do not fall into identical rhythm or canned conclusions.
