@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "description": "Forward cases for proactive public claim-evidence auditing.",
+  "cases": [
+    {
+      "id": "en-proactive-coverage-claim",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": [
+        "semantics",
+        "specificity",
+        "experiment",
+        "decision_boundary"
+      ],
+      "input": "At commit `abc1234`, five workflow-equivalent commands measured a `5.39` point coverage increase and `6` statements remaining to the target. All tests pass.",
+      "recommended_revision": "At commit `abc1234`, five workflow-equivalent commands measured a `5.39` point coverage increase and `6` statements remaining to the target. The available evidence does not establish that all tests pass at the current head.",
+      "must_preserve": [
+        "`abc1234`",
+        "five workflow-equivalent commands",
+        "`5.39`",
+        "`6`"
+      ],
+      "must_remove": [
+        "All tests pass."
+      ],
+      "must_not_introduce": [
+        "fully validated"
+      ],
+      "rationale": "Preserve the measured coverage evidence while removing a broader current-head test claim that the cited commands do not establish."
+    },
+    {
+      "id": "en-proactive-parallel-guarantee",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": [
+        "semantics",
+        "specificity",
+        "experiment"
+      ],
+      "input": "The serial regression passes at `abc1234`, so this guarantees correct behavior in serial and parallel.",
+      "recommended_revision": "The serial regression passes at `abc1234`; parallel behavior has not been verified.",
+      "must_preserve": [
+        "serial regression",
+        "`abc1234`"
+      ],
+      "must_remove": [
+        "guarantees correct behavior in serial and parallel"
+      ],
+      "must_not_introduce": [
+        "all execution modes"
+      ],
+      "rationale": "A serial test supports only the serial path; narrow the publication text before a reviewer has to challenge the guarantee."
+    },
+    {
+      "id": "en-keep-current-head-claim-evidence",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "keep",
+      "focus": [
+        "false_positive",
+        "specificity",
+        "experiment"
+      ],
+      "input": "At head `d4e5f60`, `pytest tests/test_parser.py -q` reports `18 passed`; this covers the three documented parser fixtures and does not exercise network input.",
+      "recommended_revision": "At head `d4e5f60`, `pytest tests/test_parser.py -q` reports `18 passed`; this covers the three documented parser fixtures and does not exercise network input.",
+      "must_preserve": [
+        "`d4e5f60`",
+        "`pytest tests/test_parser.py -q`",
+        "`18 passed`",
+        "three documented parser fixtures",
+        "does not exercise network input"
+      ],
+      "must_remove": [],
+      "must_not_introduce": [
+        "all parser behavior"
+      ],
+      "rationale": "The claim is already tied to a current head, literal command, raw result, bounded scope, and exclusion."
+    }
+  ]
+}
