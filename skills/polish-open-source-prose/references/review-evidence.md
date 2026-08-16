@@ -1,13 +1,54 @@
-# Review evidence: snapshots and experiments
+# Review evidence: proactive claims, snapshots, and experiments
 
-Use this guidance for a PR or issue follow-up that requests a snapshot, trace,
-benchmark, test result, or before/after comparison. The goal is a reviewer-reproducible
-artifact, not a reassuring summary.
+Use this guidance before publishing public OSS prose that contains a quantitative,
+absolute, causal, or guarantee-like claim, and whenever a PR or issue follow-up
+requests a snapshot, trace, benchmark, test result, or before/after comparison. The
+goal is a reviewer-reproducible artifact, not a reassuring summary.
+
+## Trigger before a reviewer asks
+
+Build evidence before publication when text includes or implies:
+
+- counts, percentages, coverage, benchmark results, duration, memory, tolerance, or a
+  version/platform range;
+- `all`, `every`, `exactly`, `only`, `none`, `complete`, or `fully`;
+- `guarantee`, `always`, `never`, `no behavior change`, or `CI is unaffected`;
+- “works in serial and parallel,” “each fix was reverted independently,” “all tests
+  pass,” or another completeness claim.
+
+The trigger does not mean the claim is wrong. It means the claim must be traceable to
+current evidence.
+
+## Claim–Evidence Matrix
+
+For each triggered claim, record:
+
+1. **Claim** — The exact statement being prepared for publication.
+2. **Evidence** — Literal command, CI job, code/test/configuration location, raw output,
+   or pinned external reference.
+3. **State** — Exact head commit and, when comparative, the base/reference commit.
+4. **Scope** — Configurations, behaviors, inputs, platforms, and exclusions.
+5. **Status** — `VERIFIED`, `PARTIAL`, or `UNSUPPORTED`.
+6. **Publication text** — The exact bounded statement that the evidence permits.
+
+Resolve the status as follows:
+
+- **VERIFIED:** keep the statement with its scope and current-head identity.
+- **PARTIAL:** narrow it and name what was not tested.
+- **UNSUPPORTED:** remove it or state the uncertainty. Do not make it sound more
+  credible through style alone.
+
+```markdown
+| Claim | Evidence | Head | Scope | Status | Publication text |
+| --- | --- | --- | --- | --- | --- |
+| `<claim>` | `<command/CI/artifact>` | `<sha>` | `<covered and excluded>` | VERIFIED / PARTIAL / UNSUPPORTED | `<bounded wording>` |
+```
 
 ## Evidence packet
 
-Provide these fields in the response, omitting only fields that genuinely do not apply.
-State what is unavailable instead of filling a gap with an inference.
+For a requested snapshot, trace, benchmark, or comparison, provide these fields,
+omitting only fields that genuinely do not apply. State what is unavailable instead of
+filling a gap with an inference.
 
 1. **State** — Give the exact base and head commit. Say which commit each result
    represents.
@@ -50,5 +91,6 @@ Status: `<final-head command or CI job>` <passed/failed/is pending> at `<head>`.
 Decision: add <item> now; defer <item> to <issue/reason>.
 ```
 
-Avoid saying "all tests pass," "fully validated," or "accepted" unless the exact
-command or CI state, commit, scope, and review decision support that claim.
+Avoid saying “all tests pass,” “fully validated,” “accepted,” or another broad closure
+unless the exact command or CI state, current commit, scope, and review decision support
+that claim.
