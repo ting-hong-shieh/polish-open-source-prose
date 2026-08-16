@@ -11,7 +11,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "SKILL.md"
-CASES = ROOT / "tests" / "forward_cases.json"
+CASE_FILES = (
+    ROOT / "tests" / "forward_cases.json",
+    ROOT / "tests" / "claim_evidence_cases.json",
+)
 
 ALLOWED_MODES = {"rewrite", "keep", "audit", "provenance"}
 REQUIRED_FIELDS = {
@@ -127,19 +130,26 @@ def validate_provenance(errors: list[str]) -> None:
             fail(f"provenance.md is missing boundary statement: {phrase}", errors)
 
 
-def validate_cases(errors: list[str]) -> tuple[int, int, int]:
-    try:
-        payload = json.loads(CASES.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        fail(f"cannot load forward cases: {exc}", errors)
-        return 0, 0, 0
+def load_cases(errors: list[str]) -> list[dict]:
+    cases: list[dict] = []
+    for path in CASE_FILES:
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            fail(f"cannot load {path.relative_to(ROOT)}: {exc}", errors)
+            continue
+        if payload.get("version") != 1:
+            fail(f"{path.relative_to(ROOT)} version must be 1", errors)
+        file_cases = payload.get("cases")
+        if not isinstance(file_cases, list):
+            fail(f"{path.relative_to(ROOT)} cases must be a list", errors)
+            continue
+        cases.extend(file_cases)
+    return cases
 
-    if payload.get("version") != 1:
-        fail("forward case version must be 1", errors)
-    cases = payload.get("cases")
-    if not isinstance(cases, list):
-        fail("forward cases must be a list", errors)
-        return 0, 0, 0
+
+def validate_cases(errors: list[str]) -> tuple[int, int, int]:
+    cases = load_cases(errors)
     if len(cases) < 24:
         fail(f"expected at least 24 forward cases, found {len(cases)}", errors)
 
