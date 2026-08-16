@@ -14,6 +14,11 @@ reviews:
   # Never gate a merge on the bot. Maintainer review stays the deciding signal.
   request_changes_workflow: false
   high_level_summary: true
+  # Keep the summary in the bot's own walkthrough comment. Left false, CodeRabbit
+  # edits the pull request description and appends the summary under whatever the
+  # author wrote, so the author's own account of the change stops being the whole
+  # description.
+  high_level_summary_in_walkthrough: true
   review_status: true
   poem: false
   abort_on_close: true
