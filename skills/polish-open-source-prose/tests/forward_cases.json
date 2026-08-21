@@ -191,11 +191,11 @@
       "mode": "rewrite",
       "focus": ["coherence", "semantics", "taiwan_locale"],
       "input": "workflow 本身也是 release gate 的一部分；若 Action 或 Python 套件退回浮動版本，同一個 commit 日後可能執行不同程式碼。這些測試刻意不引入 YAML parser，避免為了檢查 CI 再增加一組 CI 依賴。",
-      "recommended_revision": "CI 是發布前的必要關卡。若第三方 Action 或 Python 套件未固定版本，外部更新後，同一個 commit 可能執行未經本專案審查的新版程式碼，使原本通過的 CI 日後失敗或產生不同結果。為使 CI 的執行內容可追溯，並在失敗時重現相同環境，本測試會檢查兩者是否使用固定版本。\n\n測試只讀取本機檔案，不連網，也不解析 YAML，以免為了檢查 CI 而新增相依套件。",
+      "recommended_revision": "本測試檢查 CI 使用的 Action 與 Python 套件是否固定版本。\n\n若這些外部依賴未固定，同一個 commit 在不同時間可能使用不同版本，導致原本通過的 CI 日後失敗。發生問題時，我們也難以判斷原因來自專案程式碼，還是外部依賴更新。\n\n因此，本測試要求 CI 固定外部依賴版本，讓執行環境可以重現，測試結果也比較容易追查。\n\n測試只讀取本機檔案，不連網，也不解析 YAML，以免為了檢查 CI 而新增相依套件。",
       "must_preserve": ["CI", "Action", "Python", "commit", "YAML"],
       "must_remove": ["release gate", "退回浮動版本", "YAML parser"],
       "must_not_introduce": ["一定", "完全可重現"],
-      "rationale": "依角色、風險、具體後果、防護方式與實作取捨重排資訊；保留必要術語，不把中英夾用本身當成錯誤。"
+      "rationale": "依檢查目標、版本變動、具體後果、防護方式與實作取捨重排資訊；保留必要術語，不把中英夾用本身當成錯誤。"
     },
     {
       "id": "preserve-step-order",
