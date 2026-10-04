@@ -37,6 +37,9 @@ page and fail in an error message.
 
 ## Pull requests and issues
 
+- Open with one plain sentence that a reviewer outside this code path can follow:
+  what fails or changes, and for whom. A function or field name may be its subject
+  only when the sentence still says what users or callers observe.
 - Explain the observed problem, cause or rationale, chosen change, and verification.
 - Separate evidence from interpretation. Link exact artifacts when available.
 - Avoid narrating routine effort or praising the patch.
@@ -66,6 +69,15 @@ comparison — the response is a technical artifact, not a conversation.
 - Cite the function, variable, or line that motivates the comment.
 - State the structural or behavioral reason, not just "this is better."
 - A specific review comment lets the author act without guessing intent.
+
+### Code comments
+
+- Match the comment density of the surrounding file. Every added comment is text the
+  maintainers must keep accurate.
+- Keep what the code cannot show: a reason, an external constraint, or a non-obvious
+  invariant. Delete sentences that restate what the next lines do.
+- Prefer one line. Move investigation notes, rejected alternatives, and change history
+  to the commit message or pull request description.
 
 ## UI copy and error messages
 

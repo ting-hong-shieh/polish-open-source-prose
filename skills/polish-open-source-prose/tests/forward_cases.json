@@ -471,6 +471,58 @@
       "rationale": "Name the environment actually tested and state what remains unchecked. 'Exhaustively validated' without listing configurations is unverifiable."
     },
     {
+      "id": "en-pr-lead-with-plain-problem",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "coherence"],
+      "input": "## What\n\nReplays assistant reasoning under both OpenAI-compatible spellings instead of `reasoning` alone.\n\n`encode_openai_message_plaintext_reasoning` and the structured fallback in `encode_openai_message_structured_reasoning` now go through one helper that writes `reasoning` and `reasoning_content` with the same text. No public API change; `TargetCapabilities` is untouched.\n\n## Why\n\n#415 stopped request history from dropping reasoning, which was the original report in #449. It replays it as `message[\"reasoning\"]`, while the response encoder in the same file writes `reasoning_content`, so the two directions disagree on the name.\n\nReasoning-required upstreams look for `reasoning_content` specifically and treat it as present-or-absent rather than reading the alias. So the second turn still fails on those upstreams today even though the reasoning is replayed.",
+      "recommended_revision": "The second turn of a conversation fails on upstreams that require `reasoning_content`, because request history replays the previous assistant reasoning only as `reasoning`. This change sends the same text under both names.\n\n## What\n\nReplays assistant reasoning under both OpenAI-compatible spellings instead of `reasoning` alone.\n\n`encode_openai_message_plaintext_reasoning` and the structured fallback in `encode_openai_message_structured_reasoning` now go through one helper that writes `reasoning` and `reasoning_content` with the same text. No public API change; `TargetCapabilities` is untouched.\n\n## Why\n\n#415 stopped request history from dropping reasoning, which was the original report in #449. It replays it as `message[\"reasoning\"]`, while the response encoder in the same file writes `reasoning_content`, so the two directions disagree on the name.\n\nReasoning-required upstreams look for `reasoning_content` specifically and treat it as present-or-absent rather than reading the alias. So the second turn still fails on those upstreams today even though the reasoning is replayed.",
+      "must_preserve": ["`encode_openai_message_plaintext_reasoning`", "`reasoning_content`", "No public API change", "#415", "#449", "second turn"],
+      "must_remove": [],
+      "must_not_introduce": ["all providers", "every upstream", "always"],
+      "rationale": "The user-visible failure appears only in the last sentence, after two function names. Lead with that failure in plain words, then keep the identifiers and details unchanged. Adapted from the author's own pull request after a reviewer asked for a simpler explanation of the bug."
+    },
+    {
+      "id": "en-keep-pr-identifier-states-behavior",
+      "locale": "en",
+      "surface": "pull request",
+      "mode": "keep",
+      "focus": ["false_positive", "surface_fit"],
+      "input": "`MonteCarlo.simulate()` returned normally after Ctrl-C. Both execution modes caught the interrupt and neither re-raised it, so `simulate()` went on to `__terminate_simulation()` and returned exactly as it does after a complete study. A caller could not tell a partial run from a finished one without opening the output file and counting rows, and a command-line caller could not return the conventional interrupted status.",
+      "recommended_revision": "`MonteCarlo.simulate()` returned normally after Ctrl-C. Both execution modes caught the interrupt and neither re-raised it, so `simulate()` went on to `__terminate_simulation()` and returned exactly as it does after a complete study. A caller could not tell a partial run from a finished one without opening the output file and counting rows, and a command-line caller could not return the conventional interrupted status.",
+      "must_preserve": ["`MonteCarlo.simulate()`", "Ctrl-C", "`__terminate_simulation()`"],
+      "must_remove": [],
+      "must_not_introduce": ["seamless", "robust"],
+      "rationale": "The first sentence already states observable behavior: the method returns normally after Ctrl-C. An identifier as the subject is fine when the sentence says what the caller sees; leading with a plain summary does not mean removing names."
+    },
+    {
+      "id": "en-code-comment-restates-code",
+      "locale": "en",
+      "surface": "code comment",
+      "mode": "rewrite",
+      "focus": ["surface_fit", "specificity"],
+      "input": "// Reads Anthropic's structured-output schema into the neutral response format.\n//\n// `output_config.format` is the current field; the top-level `output_format` is\n// the earlier beta spelling that Anthropic still accepts, so both are read and\n// the current one wins. The neutral contract is OpenAI-shaped and requires a\n// schema name that Anthropic never sends, so one is supplied here.\n//\n// A format that cannot be mapped is reported rather than dropped in silence: the\n// caller asked for constrained output and would otherwise receive prose with no\n// indication that the constraint never reached the upstream.\nfn decode_anthropic_output_format(\n    body: &Map<String, Value>,\n    diagnostics: &mut Vec<TranslationDiagnostic>,\n    policy: &TranslationPolicy,\n) -> Result<Option<Value>> {\n    let Some(format) = body\n        .get(\"output_config\")\n        .and_then(Value::as_object)\n        .and_then(|config| config.get(\"format\"))\n        .or_else(|| body.get(\"output_format\"))\n    else {\n        return Ok(None);\n    };",
+      "recommended_revision": "// Reads the current `output_config.format`, or the beta `output_format` it replaced,\n// into the neutral OpenAI-shaped response format.\nfn decode_anthropic_output_format(\n    body: &Map<String, Value>,\n    diagnostics: &mut Vec<TranslationDiagnostic>,\n    policy: &TranslationPolicy,\n) -> Result<Option<Value>> {\n    let Some(format) = body\n        .get(\"output_config\")\n        .and_then(Value::as_object)\n        .and_then(|config| config.get(\"format\"))\n        .or_else(|| body.get(\"output_format\"))\n    else {\n        return Ok(None);\n    };",
+      "must_preserve": ["`output_config.format`", "`output_format`", "fn decode_anthropic_output_format("],
+      "must_remove": ["the current one wins", "dropped in silence"],
+      "must_not_introduce": ["always", "TODO"],
+      "rationale": "The `.or_else` chain already shows that the current field wins, and the rest of the function shows how the schema name and unmapped formats are handled. Keep the fact the code cannot show: `output_format` is the beta spelling that `output_config.format` replaced. Adapted from the author's own pull request after a reviewer asked for one-line comments."
+    },
+    {
+      "id": "en-keep-code-comment-external-constraint",
+      "locale": "en",
+      "surface": "code comment",
+      "mode": "keep",
+      "focus": ["false_positive", "semantics"],
+      "input": "// Retry once on ECONNRESET: the upstream load balancer closes idle keep-alive\n// connections after 60 s without sending FIN, so the first write on a reused\n// connection can fail even though the request never reached the server.\nlet response = send_with_single_retry(&client, request)?;",
+      "recommended_revision": "// Retry once on ECONNRESET: the upstream load balancer closes idle keep-alive\n// connections after 60 s without sending FIN, so the first write on a reused\n// connection can fail even though the request never reached the server.\nlet response = send_with_single_retry(&client, request)?;",
+      "must_preserve": ["ECONNRESET", "60 s", "FIN"],
+      "must_remove": [],
+      "must_not_introduce": ["TODO"],
+      "rationale": "The comment records an external constraint the code cannot show. Without it, a later reader could remove the retry as unexplained; shortening it to one line would drop the reason."
+    },
+    {
       "id": "en-readme-long-form",
       "locale": "en",
       "surface": "README",
