@@ -32,7 +32,7 @@ It is an [Agent Skill](https://agentskills.io) for README files, documentation, 
 notes, changelogs, pull requests, issues, code comments, UI copy, and error messages,
 and it runs on Claude Code and Codex.
 
-## What it changes
+## What it prevents
 
 Each example below shows the input, what Claude Opus 5.5 returned without the skill,
 and what it returned with the skill. All three come from the
@@ -156,43 +156,75 @@ projects publish: README paragraphs, pull request descriptions, review replies, 
 messages, and code comments. Each case records the input and the expected result. Some
 passages are already fine and should come back unchanged; the rest need an edit.
 
-We gave each passage to three models with an instruction to revise it: once without the
-skill, once with v0.1.0, and once with this version. Claude Opus 5.5 ran in Claude Code,
-twice per version. GPT-6.1 Sol and GPT-6 Astra ran in Codex, once per version. Each
-model got the same instruction in every run, but the wording differed a little between
-models, so compare the columns, not the rows.
+We gave each passage to three models with an instruction to revise it, under five
+conditions:
+
+- **No skill**: the instruction alone.
+- **One sentence**: the instruction, preceded by "If the text is already clear and fits
+  its surface, returning it unchanged is a valid answer."
+- **Three sentences**: the instruction, preceded by the
+  [short instruction](#without-installing-the-skill) below.
+- **v0.1.0** and **v0.2.0**: the instruction, with that version of the skill.
+
+Claude Opus 5.5 ran in Claude Code, twice per condition. GPT-6.1 Sol and GPT-6 Astra
+ran in Codex, once per condition. Each model got the same instruction under every
+condition, but the wording differed a little between models, so compare across a row,
+not down a column.
 
 Results for the 21 English cases. A cell with two numbers shows two runs.
 
 **Passages that should stay unchanged (8)**
 
-| Model | No skill | v0.1.0 | v0.2.0 |
-| --- | --- | --- | --- |
-| Claude Opus 5.5 | 0, 2 | 5, 6 | 8, 8 |
-| GPT-6.1 Sol | 0 | 1 | 8 |
-| GPT-6 Astra | 0 | 1 | 8 |
+| Model | No skill | One sentence | Three sentences | v0.1.0 | v0.2.0 |
+| --- | --- | --- | --- | --- | --- |
+| Claude Opus 5.5 | 0, 2 | 5, 6 | 7, 7 | 5, 6 | 8, 8 |
+| GPT-6.1 Sol | 0 | 3 | 7 | 1 | 8 |
+| GPT-6 Astra | 0 | 3 | 6 | 1 | 8 |
 
 **Passages that need an edit (11)**
 
-| Model | No skill | v0.1.0 | v0.2.0 |
-| --- | --- | --- | --- |
-| Claude Opus 5.5 | 8, 7 | 6, 7 | 10, 10 |
-| GPT-6.1 Sol | 8 | 8 | 10 |
-| GPT-6 Astra | 6 | 8 | 10 |
+| Model | No skill | One sentence | Three sentences | v0.1.0 | v0.2.0 |
+| --- | --- | --- | --- | --- | --- |
+| Claude Opus 5.5 | 8, 7 | 8, 7 | 5, 5 | 6, 7 | 10, 10 |
+| GPT-6.1 Sol | 8 | 5 | 2 | 8 | 10 |
+| GPT-6 Astra | 6 | 7 | 4 | 8 | 10 |
 
 The remaining two cases expect the model to ask for missing facts instead of editing; a
 word check cannot score that, so they are left out.
 
-What this shows: without the skill, every model rewrote almost every passage that was
-already fine. With v0.2.0, all three left them alone. On passages that needed an edit,
-v0.2.0 passed a few more, but with 11 cases the difference is small.
+What this shows:
 
-What it does not show: we wrote the cases and the expected results ourselves, the
-scoring checks for specific words rather than judging quality, and each model ran only
-once or twice. The last rule in `SKILL.md`, about keeping facts that sit inside a
-promotional sentence, was added after these runs and was checked only on the case that
-needed it and on the unchanged-passage cases. Treat these numbers as a regression
-check, not a benchmark.
+- Without guidance, every model rewrote almost every passage that was already fine.
+- A short instruction removes most of those edits, and three sentences remove more than
+  one. If restraint is all you need, the instruction below may be enough.
+- The three-sentence instruction also made every model skip edits that were needed:
+  on the 11 English passages that needed one, results fell to 5, 2, and 4.
+- v0.2.0 kept the clear passages unchanged and still made the needed edits. The skill
+  adds the second half: which problems are worth an edit.
+
+What it does not show:
+
+- We wrote the cases and the expected results ourselves, and the scoring checks for
+  specific words rather than judging quality.
+- While building v0.2.0 we corrected the expected results of several cases that need
+  an edit and added rules after seeing failures on them, so v0.2.0 has a home advantage
+  on that table. The expected results of the unchanged passages were not changed.
+- Each model ran only once or twice, and the two short instructions were in English.
+
+Treat these numbers as a regression check, not a benchmark.
+
+### Without installing the skill
+
+If you only want a model to stop rewriting text that was fine, put this before your
+request:
+
+```text
+Polish this text only where there is a concrete problem. Leave already-clear text
+unchanged. Preserve facts, scope, conditions, negation, commands, links, quotations,
+and author voice. Do not invent missing facts.
+```
+
+Expect it to skip some edits that are needed.
 
 ## Languages
 
