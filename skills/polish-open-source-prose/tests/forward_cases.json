@@ -425,11 +425,11 @@
       "mode": "rewrite",
       "focus": ["semantics", "specificity"],
       "input": "This is a much more robust and elegant approach that will scale better going forward.",
-      "recommended_revision": "This approach looks better to me. Could you say what makes it more robust, and whether a test or benchmark shows that it scales better?",
+      "recommended_revision": "Could you say what makes this approach more robust, and whether a test or benchmark shows that it scales better?",
       "must_preserve": [],
       "must_remove": ["robust and elegant", "scale better going forward"],
       "must_not_introduce": ["decode_tool_result", "second pass"],
-      "rationale": "The comment asserts robustness and scaling without evidence. Keep the reviewer's approval as a judgment and ask for the evidence; the input names no function or mechanism to cite."
+      "rationale": "The comment asserts robustness and scaling without evidence. Ask for the evidence instead of restating the praise; the input names no function or mechanism to cite."
     },
     {
       "id": "en-readme-promo-to-behavior",
