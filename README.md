@@ -156,27 +156,43 @@ projects publish: README paragraphs, pull request descriptions, review replies, 
 messages, and code comments. Each case records the input and the expected result. Some
 passages are already fine and should come back unchanged; the rest need an edit.
 
-We gave each passage to Claude Opus 5.5 with the instruction "Revise the following
-text", once without the skill, once with v0.1.0, and once with this version, and
-repeated the whole run. For the 21 English cases:
+We gave each passage to three models with an instruction to revise it: once without the
+skill, once with v0.1.0, and once with this version. Claude Opus 5.5 ran in Claude Code,
+twice per version. GPT-6.1 Sol and GPT-6 Astra ran in Codex, once per version. Each
+model got the same instruction in every run, but the wording differed a little between
+models, so compare the columns, not the rows.
 
-| | No skill | v0.1.0 | v0.2.0 |
+Results for the 21 English cases. A cell with two numbers shows two runs.
+
+**Passages that should stay unchanged (8)**
+
+| Model | No skill | v0.1.0 | v0.2.0 |
 | --- | --- | --- | --- |
-| Passages that should stay unchanged (8) | 0, 2 | 5, 6 | 8, 8 |
-| Passages that need an edit (11) | 8, 7 | 6, 7 | 10, 10 |
+| Claude Opus 5.5 | 0, 2 | 5, 6 | 8, 8 |
+| GPT-6.1 Sol | 0 | 1 | 8 |
+| GPT-6 Astra | 0 | 1 | 8 |
 
-Each cell shows the two runs. The remaining two cases expect the model to ask for
-missing facts instead of editing; a word check cannot score that, so they are left out.
+**Passages that need an edit (11)**
 
-What this shows: without the skill, the model rewrote almost every passage that was
-already fine. The skill mostly helps by leaving those alone. On passages that needed an
-edit, v0.2.0 passed a few more, but with 11 cases the difference is small. Earlier runs of v0.1.0 on
-GPT-6.1 Sol and GPT-6 Astra through Codex showed the same pattern; v0.2.0 has not been
-run on them yet.
+| Model | No skill | v0.1.0 | v0.2.0 |
+| --- | --- | --- | --- |
+| Claude Opus 5.5 | 8, 7 | 6, 7 | 10, 10 |
+| GPT-6.1 Sol | 8 | 8 | 10 |
+| GPT-6 Astra | 6 | 8 | 10 |
+
+The remaining two cases expect the model to ask for missing facts instead of editing; a
+word check cannot score that, so they are left out.
+
+What this shows: without the skill, every model rewrote almost every passage that was
+already fine. With v0.2.0, all three left them alone. On passages that needed an edit,
+v0.2.0 passed a few more, but with 11 cases the difference is small.
 
 What it does not show: we wrote the cases and the expected results ourselves, the
-scoring checks for specific words rather than judging quality, and the runs used one
-model. Treat these numbers as a regression check, not a benchmark.
+scoring checks for specific words rather than judging quality, and each model ran only
+once or twice. The last rule in `SKILL.md`, about keeping facts that sit inside a
+promotional sentence, was added after these runs and was checked only on the case that
+needed it and on the unchanged-passage cases. Treat these numbers as a regression
+check, not a benchmark.
 
 ## Languages
 
