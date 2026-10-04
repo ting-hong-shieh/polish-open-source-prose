@@ -98,7 +98,9 @@ It does not:
   detector;
 - remove a statistical watermark or treat one as proof of identity; for authorship, it
   recommends a signed commit or file;
-- replace legal, security, or domain review.
+- replace legal, security, or domain review;
+- fix most of what reviewers object to in real pull requests, which usually needs facts
+  only the author has (see [held-out tests](#held-out-tests)).
 
 ## Quick start
 
@@ -156,7 +158,7 @@ projects publish: README paragraphs, pull request descriptions, review replies, 
 messages, and code comments. Each case records the input and the expected result. Some
 passages are already fine and should come back unchanged; the rest need an edit.
 
-We gave each passage to three models with an instruction to revise it, under five
+We gave each passage to models with an instruction to revise it, under five
 conditions:
 
 - **No skill**: the instruction alone.
@@ -165,6 +167,12 @@ conditions:
 - **Three sentences**: the instruction, preceded by the
   [short instruction](#without-installing-the-skill) below.
 - **v0.1.0** and **v0.2.0**: the instruction, with that version of the skill.
+
+The full benchmark, with seven model configurations, two held-out sets, and blind
+grading by two judge models, is in the [report](docs/report/report.pdf). This section
+gives the English results.
+
+### Development set
 
 Claude Opus 5.5 ran in Claude Code, twice per condition. GPT-6.1 Sol and GPT-6 Astra
 ran in Codex, once per condition. Each model got the same instruction under every
@@ -211,7 +219,50 @@ What it does not show:
   on that table. The expected results of the unchanged passages were not changed.
 - Each model ran only once or twice, and the two short instructions were in English.
 
-Treat these numbers as a regression check, not a benchmark.
+Treat these numbers as a regression check. The held-out tests below are the better
+guide.
+
+### Held-out tests
+
+To check that the results above were not an artifact of tuning, we ran seven model
+configurations (Claude Opus 5.5, Opus 4.6, and Sonnet 5.5; GPT-6.1 Sol, GPT-6 Astra at
+high and low effort, and GPT-6 Luna) on two sets frozen before any run:
+
+- **A1**: 24 new cases written after v0.2.0 was released, 16 of them in English.
+- **A2**: 21 real pull request titles and descriptions from Apache Airflow, Arrow,
+  DataFusion, and CPython, as they stood before a reviewer criticized them. The text
+  stays private; the URLs and a hash are in
+  [`evals/heldout/a2_manifest.json`](evals/heldout/a2_manifest.json).
+
+Claude Opus 5.5 and GPT-6.1 Sol graded the outputs blind. A *clean fix* scores how well
+an output fixed the problem, counting it only when it neither added a fact nor damaged
+text that was needed. Averages over the seven configurations; a range shows the two
+judges.
+
+| | No skill | Three sentences | v0.1.0 | v0.2.0 |
+| --- | --- | --- | --- | --- |
+| A1 English: clear passages left unchanged | 4% | 96% | 40% | 96% |
+| A1 English: clean fix (0 to 1) | 0.42 | 0.26–0.28 | 0.63–0.65 | 0.67–0.69 |
+| A2: clean fix (0 to 1) | 0.12–0.15 | 0.07–0.10 | 0.22–0.25 | 0.18–0.19 |
+| A2: rewrites that added a fact | 21–38% | 0–5% | 8–18% | 0–1% |
+
+What this adds:
+
+- On new cases the pattern held. The three-sentence instruction kept clear text as well
+  as v0.2.0 did, but fixed unsupported claims far less often.
+- On real pull requests, no condition cleanly fixed more than about a quarter of what
+  reviewers objected to; most critiques needed facts only the author had. v0.2.0 mostly
+  avoided making things worse. Without an instruction, rewrites often added facts, and
+  in 10 of 70 outputs changed or deleted the author's `Generated-by:` disclosure line.
+  With v0.2.0, none did.
+- v0.1.0 fixed somewhat more of the real critiques than v0.2.0, especially unclear
+  descriptions and misleading titles. The difference is not significant on 21 cases.
+- In Claude Code, a v0.2.0 run cost 2.5 to 3.3 times as much as a run without it.
+- GPT-6 Luna at max effort ignored the first rule on about half the clear passages.
+
+Limits: we wrote the development set and A1, and A1 was drafted with Claude Opus 5.5,
+which is also a tested model and a judge. A2 has 21 English pull requests. The report
+covers the rest.
 
 ### Without installing the skill
 
