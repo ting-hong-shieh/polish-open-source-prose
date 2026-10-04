@@ -67,9 +67,10 @@ Change a passage only when it:
 - uses a term that misleads readers of the target locale;
 - takes space without saying anything.
 
-Make the smallest change that removes the cost. Passive voice, repeated API names,
-parallel steps, fragments, dashes, rhetorical questions, and polished sentences are
-not defects on their own.
+Make the smallest change that removes the cost. When you remove a promotional
+sentence, keep any fact it carried, such as where or when the tool runs. Passive voice,
+repeated API names, parallel steps, fragments, dashes, rhetorical questions, and
+polished sentences are not defects on their own.
 
 For code comments, delete only sentences that restate the next lines. Keep reasons,
 external constraints, and history the code cannot show, even when that takes a second
