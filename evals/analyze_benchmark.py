@@ -11,6 +11,7 @@ Usage: POLISH_EVAL_DATA=/mnt/d/Data .venv/bin/python evals/analyze_benchmark.py
 from __future__ import annotations
 
 import glob
+import hashlib
 import json
 import math
 import os
@@ -101,6 +102,15 @@ def case_bootstrap(per_case: dict[str, list[float]], n: int = 2000) -> tuple[flo
     return float(point), float(lo), float(hi)
 
 
+def read_a2_cases(path: Path) -> list[dict]:
+    """Load the private A2 cases, refusing a file whose SHA-256 differs from the committed manifest."""
+    raw = path.read_bytes()
+    expected = json.loads((REPO / "evals/heldout/a2_manifest.json").read_text())["sha256"]
+    if hashlib.sha256(raw).hexdigest() != expected:
+        raise SystemExit(f"{path} does not match the SHA-256 in evals/heldout/a2_manifest.json")
+    return json.loads(raw)["cases"]
+
+
 def load() -> tuple[list[dict], dict, dict]:
     bench = json.loads((REPO / "evals/results/benchmark.json").read_text())
     records = bench["records"]
@@ -111,7 +121,7 @@ def load() -> tuple[list[dict], dict, dict]:
     for f in (REPO / "evals/results/judgments.json", PROCESSED / "judgments-a2.json"):
         if f.exists():
             judgments.update(json.loads(f.read_text()))
-    a2cases = {c["id"]: c for c in json.loads((PROCESSED / "heldout-a2-cases.json").read_text())["cases"]}
+    a2cases = {c["id"]: c for c in read_a2_cases(PROCESSED / "heldout-a2-cases.json")}
     return records, judgments, a2cases
 
 

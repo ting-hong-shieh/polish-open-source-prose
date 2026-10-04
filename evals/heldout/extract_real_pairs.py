@@ -38,7 +38,12 @@ def comments(pr: dict) -> list[dict]:
 
 
 def body_at(pr: dict, when: str) -> str:
-    """Body text as it stood just before `when` (edits are newest-first; diff holds full text)."""
+    """Body text as it stood just before `when`.
+
+    GitHub documents UserContentEdit.diff as a summary of the edit, but for pull request bodies
+    it holds the full text: in the collected threads the newest edit's diff equals the current
+    body in 302 of 303 pull requests (the exception had its body cleared afterwards).
+    """
     edits = sorted(pr["userContentEdits"]["nodes"], key=lambda e: e["editedAt"])
     before = [e for e in edits if e["editedAt"] < when and e.get("diff") is not None]
     if before:

@@ -16,6 +16,7 @@ Usage: POLISH_EVAL_DATA=/mnt/d/Data python3 evals/score_benchmark.py
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -74,6 +75,15 @@ SETS = {"main": ("2a05713", "skills/polish-open-source-prose/tests/forward_cases
 A2_RECORDS = Path(os.environ.get("POLISH_EVAL_DATA", "/mnt/d/Data")) / "Processed/polish-open-source-prose/benchmark-a2.json"
 
 
+def read_a2_cases(path: Path) -> list[dict]:
+    """Load the private A2 cases, refusing a file whose SHA-256 differs from the committed manifest."""
+    raw = path.read_bytes()
+    expected = json.loads((REPO / "evals/heldout/a2_manifest.json").read_text())["sha256"]
+    if hashlib.sha256(raw).hexdigest() != expected:
+        raise SystemExit(f"{path} does not match the SHA-256 in evals/heldout/a2_manifest.json")
+    return json.loads(raw)["cases"]
+
+
 def nfc(s: str) -> str:
     return unicodedata.normalize("NFC", s).replace("\r\n", "\n").rstrip("\n")
 
@@ -107,7 +117,7 @@ def main() -> None:
             src = Path(os.environ.get("POLISH_EVAL_DATA", "/mnt/d/Data")) / path
             if not src.exists():
                 continue
-            cases = json.loads(src.read_text())["cases"]
+            cases = read_a2_cases(src)
         else:
             cases = json.loads(subprocess.check_output(["git", "show", f"{commit}:{path}"], cwd=REPO, text=True))["cases"]
         for (model, effort, platform), conds in layout.items():

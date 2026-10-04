@@ -77,6 +77,15 @@ Return only a JSON array, one object per output, in the same order: {{"label": "
 {outputs}"""
 
 
+def read_a2_cases(path: Path) -> list[dict]:
+    """Load the private A2 cases, refusing a file whose SHA-256 differs from the committed manifest."""
+    raw = path.read_bytes()
+    expected = json.loads((REPO / "evals/heldout/a2_manifest.json").read_text())["sha256"]
+    if hashlib.sha256(raw).hexdigest() != expected:
+        raise SystemExit(f"{path} does not match the SHA-256 in evals/heldout/a2_manifest.json")
+    return json.loads(raw)["cases"]
+
+
 def load_items() -> tuple[list[dict], dict]:
     bench = json.loads((REPO / "evals/results/benchmark.json").read_text())["records"]
     a2_path = DATA / "Processed/polish-open-source-prose/benchmark-a2.json"
@@ -85,7 +94,7 @@ def load_items() -> tuple[list[dict], dict]:
         ["git", "show", "fa993da:evals/heldout/a1_cases.json"], cwd=REPO, text=True))["cases"]}
     main = {c["id"]: c for c in json.loads(subprocess.check_output(
         ["git", "show", "2a05713:skills/polish-open-source-prose/tests/forward_cases.json"], cwd=REPO, text=True))["cases"]}
-    a2cases = {c["id"]: c for c in json.loads(A2_CASES.read_text())["cases"]} if A2_CASES.exists() else {}
+    a2cases = {c["id"]: c for c in read_a2_cases(A2_CASES)} if A2_CASES.exists() else {}
     cases = {"main": main, "a1": a1, "a2": a2cases}
     items = []
     for r in bench + a2:

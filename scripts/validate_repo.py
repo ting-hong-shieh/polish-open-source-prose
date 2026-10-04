@@ -177,13 +177,12 @@ def validate_files(errors: list[str]) -> None:
         if not path.is_file() or ".git" in path.parts or ".venv" in path.parts:
             continue
         # Recorded model outputs are data and may contain unfilled placeholders.
-        if path.is_relative_to(ROOT / "evals" / "results"):
-            continue
+        is_result = path.is_relative_to(ROOT / "evals" / "results")
         is_text = path.suffix in TEXT_SUFFIXES or path.name in {"NOTICE", "LICENSE"}
         if not is_text:
             continue
         text = path.read_text(encoding="utf-8")
-        if scaffold_marker in text:
+        if scaffold_marker in text and not is_result:
             errors.append(f"Unresolved scaffold placeholder in {path.relative_to(ROOT)}")
         if local_home_prefix in text:
             errors.append(f"Local absolute path in {path.relative_to(ROOT)}")
