@@ -15,6 +15,9 @@ PLUGIN = ROOT / ".codex-plugin" / "plugin.json"
 CLAUDE_PLUGIN = ROOT / ".claude-plugin" / "plugin.json"
 CLAUDE_MARKETPLACE = ROOT / ".claude-plugin" / "marketplace.json"
 SKILL = ROOT / "skills" / "polish-open-source-prose"
+# The skill directory is tracked in Git; the checkout folder name is not, so a
+# worktree or a clone into another folder still validates.
+PLUGIN_NAME = SKILL.name
 
 SEMVER = r"\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?"
 
@@ -56,8 +59,8 @@ def validate_plugin(errors: list[str]) -> None:
     missing = REQUIRED_PLUGIN_FIELDS - manifest.keys()
     if missing:
         errors.append(f"Plugin manifest is missing: {sorted(missing)}")
-    if manifest.get("name") != ROOT.name:
-        errors.append("Plugin name must match the repository folder name")
+    if manifest.get("name") != PLUGIN_NAME:
+        errors.append(f"Plugin name must be {PLUGIN_NAME}")
     if not re.fullmatch(SEMVER, manifest.get("version", "")):
         errors.append("Plugin version must use strict semantic versioning")
     if manifest.get("license") != "Apache-2.0":
@@ -92,8 +95,8 @@ def validate_claude_plugin(errors: list[str]) -> dict:
     missing = REQUIRED_CLAUDE_PLUGIN_FIELDS - manifest.keys()
     if missing:
         errors.append(f"Claude plugin manifest is missing: {sorted(missing)}")
-    if manifest.get("name") != ROOT.name:
-        errors.append("Claude plugin name must match the repository folder name")
+    if manifest.get("name") != PLUGIN_NAME:
+        errors.append(f"Claude plugin name must be {PLUGIN_NAME}")
     if not re.fullmatch(SEMVER, manifest.get("version", "")):
         errors.append("Claude plugin version must use strict semantic versioning")
     if manifest.get("license") != "Apache-2.0":
@@ -129,8 +132,8 @@ def validate_claude_marketplace(errors: list[str], plugin: dict) -> None:
     if not isinstance(entry, dict):
         errors.append("Claude marketplace plugin entry must be an object")
         return
-    if entry.get("name") != ROOT.name:
-        errors.append("Claude marketplace plugin name must match the repository folder name")
+    if entry.get("name") != PLUGIN_NAME:
+        errors.append(f"Claude marketplace plugin name must be {PLUGIN_NAME}")
     # A relative source resolves against the marketplace root, which is this repository.
     if entry.get("source") != "./":
         errors.append("Claude marketplace plugin source must be ./ for a root-level plugin")
