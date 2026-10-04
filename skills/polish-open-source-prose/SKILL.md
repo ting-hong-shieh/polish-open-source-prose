@@ -1,6 +1,6 @@
 ---
 name: polish-open-source-prose
-description: Audit, draft, and revise public-facing prose for open-source software so it is specific, credible, and natural without flattening the project's voice. Use for README files, documentation, landing pages, release notes, changelogs, contribution guides, PR or issue text, UI copy, error messages, prompts, Traditional Chinese (Taiwan) localization, and questions about AI-text watermarking or author provenance. Use when the user asks to remove AI-sounding language, marketing fluff, generic wording, or improve editorial quality. Do not use for code-only tasks with no prose work.
+description: Audit, draft, and revise public-facing prose for open-source software so it is specific, credible, and natural without flattening the project's voice. Use for README files, documentation, landing pages, release notes, changelogs, contribution guides, PR or issue text, code comments, UI copy, error messages, prompts, Traditional Chinese (Taiwan) localization, and questions about AI-text watermarking or author provenance. Use when the user asks to remove AI-sounding language, marketing fluff, generic wording, or improve editorial quality. Do not use for code-only tasks with no prose work.
 ---
 
 # Polish Open-Source Prose
@@ -117,6 +117,10 @@ Prefer one of these operations, in order:
 Do not add testimonials, metrics, citations, anecdotes, personal experience, or
 competitive claims to make prose feel more human. Do not make every sentence short,
 casual, or active. Natural prose needs variation and domain-appropriate precision.
+
+For code comments, deleting a sentence that restates the code is not a fidelity loss.
+Keep the reasons and constraints the code cannot show; see
+[references/surfaces.md](references/surfaces.md).
 
 For translation or localization, preserve the source's claims and information order
 where they carry meaning, but write idiomatic target-language sentences. Keep an

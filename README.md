@@ -16,7 +16,7 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-46-0f766e?style=flat-square" alt="46 forward cases">
+  <img src="https://img.shields.io/badge/forward_cases-50-0f766e?style=flat-square" alt="50 forward cases">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 

@@ -20,7 +20,7 @@
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 授權">
 </p>
 
-> 一套用來編輯 README、文件、release note、貢獻指南、PR、issue、UI 文案、
+> 一套用來編輯 README、文件、release note、貢獻指南、PR、issue、程式碼註解、UI 文案、
 > 錯誤訊息與 prompt 的 agent skill；它不把禁詞表或偵測器分數當成文風準則。
 > 可在 Claude Code 與 Codex 上執行。
 
