@@ -176,6 +176,9 @@ def validate_files(errors: list[str]) -> None:
     for path in ROOT.rglob("*"):
         if not path.is_file() or ".git" in path.parts:
             continue
+        # Recorded model outputs are data and may contain unfilled placeholders.
+        if path.is_relative_to(ROOT / "evals" / "results"):
+            continue
         is_text = path.suffix in TEXT_SUFFIXES or path.name in {"NOTICE", "LICENSE"}
         if not is_text:
             continue
