@@ -16,6 +16,7 @@
 \captionsetup{font=small,labelfont=bf}
 \graphicspath{{figures/}}
 \newcommand{\code}[1]{\texttt{#1}}
+\setlength{\emergencystretch}{2em}
 
 \title{Leave Clear Text Alone:\\Does an Editing Skill Keep Coding Agents from Making\\Open-Source Prose Worse?}
 \author{Ting-Hong Shieh\\\small\url{https://github.com/ting-hong-shieh/polish-open-source-prose}}
@@ -130,6 +131,41 @@ of the code, the process, or the contributor's conduct; a thread can carry sever
     comes from a phrase search, so it shows what reviewers object to, not how often.}
   \label{fig:critiques}
 \end{figure}
+
+\section{Related work}
+
+\paragraph{Over-editing.} Studies of grammatical error correction found that ChatGPT tends
+to over-correct, producing fluent rewrites where a minimal edit was expected
+\cite{fang2023gec}. Our keep cases measure the same tendency in a coding-agent setting,
+where the cost is not a lower correction score but a reviewer reading changes nobody asked
+for.
+
+\paragraph{Instruction following.} IFEval scores whether a model follows instructions that
+can be checked mechanically, such as length or required keywords \cite{zhou2023ifeval}.
+Our literal checks follow the same idea for an editing task: strings that must survive,
+must go, or must not appear, plus exact equality for text that should not change.
+
+\paragraph{LLM judges.} Using strong models as judges agrees reasonably well with human
+preferences but shows position, verbosity, and self-enhancement biases
+\cite{zheng2023judge}, and models can recognize and favor their own outputs
+\cite{panickssery2024self}. We therefore hide model and condition from the judges, use two
+judges from different vendors, report them separately, and measure self-preference
+(Section~\ref{sec:judges}).
+
+\paragraph{Detection and provenance.} Detectors of model-written text misclassify writing
+by non-native English speakers as machine-generated \cite{liang2023detectors} and can be
+defeated by paraphrasing \cite{sadasivan2023detect}. Watermarks such as SynthID-Text are
+applied while the model samples tokens \cite{dathathri2024synthid}, so a later editing step
+cannot add or certify one. For these reasons the skill does not try to make text sound
+human or pass a detector, and v0.2.0 dropped the phrase lists that v0.1.0 had used for
+that purpose.
+
+\paragraph{Agent Skills.} Anthropic introduced the skill format with progressive
+disclosure: the agent sees each skill's name and description and loads the body when a
+task needs it \cite{zhang2025skills}. A study of 238 \code{SKILL.md} files found that over
+99\% violate at least one authoring best practice \cite{hong2026skillsmells}. That work
+examines how skills are written; this report measures what one skill changes in agent
+output, against instructions short enough to put in a prompt.
 
 \section{What we compared}
 
@@ -413,6 +449,7 @@ texts alone than the one-sentence instruction did, and it used more tokens than 
 everywhere. Rules about when not to edit did more than lists of what to fix.
 
 \section{Threats to validity}
+\label{sec:threats}
 
 \begin{itemize}
   \item \textbf{Who wrote the cases.} The development set was written by the maintainer
@@ -456,6 +493,45 @@ most of that needs facts only the author has.
 For a contributor the practical advice is short. Tell the agent to leave clear text alone
 and not to add facts. Use the skill when the agent writes claims about your change. Then
 check what it wrote against what you did.
+
+\section*{Use of AI tools}
+
+The experiments were carried out with Claude Code running Claude Opus 5.5, under the
+author's direction. It wrote the scoring, judging, and analysis scripts, drafted the A1
+cases, labeled the sample of review threads, ran the models, and drafted this report. The
+author chose the research questions, conditions, models, and data sources, approved each
+step before it ran, and takes responsibility for the content. Claude Opus 5.5 is also one
+of the tested models and one of the two judges; Sections~\ref{sec:judges}
+and~\ref{sec:threats} discuss what that may bias.
+
+\begin{thebibliography}{99}\small
+\bibitem{dathathri2024synthid} S.~Dathathri, A.~See, S.~Ghaisas, P.-S.~Huang, et al.
+  Scalable watermarking for identifying large language model outputs.
+  \emph{Nature}, 634:818--823, 2024.
+\bibitem{fang2023gec} T.~Fang, S.~Yang, K.~Lan, D.~F.~Wong, J.~Hu, L.~S.~Chao, and Y.~Zhang.
+  Is ChatGPT a highly fluent grammatical error correction system? A comprehensive
+  evaluation. arXiv:2304.01746, 2023.
+\bibitem{hong2026skillsmells} D.~B.~Hong, A.~Imani, and I.~Ahmed.
+  From anatomy to smells: An empirical study of SKILL.md in Agent Skills.
+  arXiv:2607.01456, 2026.
+\bibitem{liang2023detectors} W.~Liang, M.~Yuksekgonul, Y.~Mao, E.~Wu, and J.~Zou.
+  GPT detectors are biased against non-native English writers.
+  \emph{Patterns}, 2023. arXiv:2304.02819.
+\bibitem{panickssery2024self} A.~Panickssery, S.~R.~Bowman, and S.~Feng.
+  LLM evaluators recognize and favor their own generations. arXiv:2404.13076, 2024.
+\bibitem{sadasivan2023detect} V.~S.~Sadasivan, A.~Kumar, S.~Balasubramanian, W.~Wang, and
+  S.~Feizi. Can AI-generated text be reliably detected?
+  \emph{Transactions on Machine Learning Research}, 2025. arXiv:2303.11156.
+\bibitem{zhang2025skills} B.~Zhang, K.~Lazuka, and M.~Murag.
+  Equipping agents for the real world with Agent Skills. Anthropic Engineering, October
+  2025. \url{https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills}
+\bibitem{zheng2023judge} L.~Zheng, W.-L.~Chiang, Y.~Sheng, S.~Zhuang, Z.~Wu, et al.
+  Judging LLM-as-a-judge with MT-Bench and Chatbot Arena.
+  In \emph{NeurIPS Datasets and Benchmarks Track}, 2023. arXiv:2306.05685.
+\bibitem{zhou2023ifeval} J.~Zhou, T.~Lu, S.~Mishra, S.~Brahma, S.~Basu, Y.~Luan, D.~Zhou,
+  and L.~Hou. Instruction-following evaluation for large language models.
+  arXiv:2311.07911, 2023.
+\end{thebibliography}
 
 \appendix
 \section{Reproducing}

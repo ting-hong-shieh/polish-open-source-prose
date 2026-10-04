@@ -364,7 +364,7 @@ def fig_critiques(cc: dict) -> None:
     for i, (_, v) in enumerate(items):
         ax.text(v + 0.4, i, str(v), va="center", color=INK, fontsize=7)
     ax.set_yticks(y, [names.get(k, k) for k, _ in items])
-    ax.set_xlabel(f"Threads (n = {cc['threads']}; one thread can have several)")
+    ax.set_xlabel(f"Threads (n = {cc['threads']}; labels overlap)")
     ax.xaxis.grid(True, color=GRID, lw=0.5)
     ax.set_axisbelow(True)
     fig.tight_layout()
