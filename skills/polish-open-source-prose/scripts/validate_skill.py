@@ -44,12 +44,10 @@ REQUIRED_FOCUS = {
 }
 REQUIRED_LOCALE_HEADINGS = {
     "## 何時套用",
-    "## 編輯順序",
     "## 字形與標點",
     "## 地區詞彙",
-    "## 場景與語氣",
+    "## 法律、安全與引文",
     "## 誤判防護",
-    "## 交付前檢查",
 }
 REQUIRED_PROVENANCE_URLS = {
     "https://deepmind.google/models/synthid/",
