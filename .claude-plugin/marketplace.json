@@ -8,7 +8,7 @@
       "name": "polish-open-source-prose",
       "source": "./",
       "description": "Edit open-source prose without rewriting clear text, changing protected content, or inventing facts.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "keywords": [
         "open-source",
         "documentation",
