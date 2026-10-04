@@ -128,11 +128,11 @@ expected output is the input.
 
 **Surface:** pull request · **Locale:** `zh-Hant-TW` · **Mode:** keep
 
-> 這個 bug 真的很鬧：只有週一、locale 是 `zh-Hant-TW` 時才會出現。我先補回歸測試。
+> 這個 bug 不太正常，只有禮拜一、locale 是 `zh-Hant-TW` 的時候才會出現。
+> 我先補做 regression test。
 
-In evaluation runs without the skill, models rewrote 「真的很鬧」 as 「很難重現」
-or dropped the first person. The condition and the next step are already clear, so the expected output is
-the input.
+「不太正常」, 「禮拜一」, and 「補做」 are the author's own casual wording, and the
+condition and the next step are already clear, so the expected output is the input.
 
 ### Remove unsupported claims without inventing replacements
 
