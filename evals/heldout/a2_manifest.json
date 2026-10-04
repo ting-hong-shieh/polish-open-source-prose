@@ -1,0 +1,133 @@
+{
+ "description": "Private held-out set A2: real pull request titles and descriptions as they stood before a reviewer criticized their prose. Text is kept outside Git; this file fixes the set by URL and hash before any model ran on it.",
+ "cases_file": "$POLISH_EVAL_DATA/Processed/polish-open-source-prose/heldout-a2-cases.json",
+ "sha256": "b8aab5f62879d315648c63be12263ae6640b486d5f5bee98c2cc632c32c441ae",
+ "cases": [
+  {
+   "id": "a2-airflow-60733",
+   "url": "https://github.com/apache/airflow/pull/60733",
+   "critique_kind": "mismatch",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-airflow-67823",
+   "url": "https://github.com/apache/airflow/pull/67823",
+   "critique_kind": "mismatch",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-airflow-70096",
+   "url": "https://github.com/apache/airflow/pull/70096",
+   "critique_kind": "misleading_title",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-airflow-71315",
+   "url": "https://github.com/apache/airflow/pull/71315",
+   "critique_kind": "misleading_title",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-airflow-71403",
+   "url": "https://github.com/apache/airflow/pull/71403",
+   "critique_kind": "unclear",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-airflow-71460",
+   "url": "https://github.com/apache/airflow/pull/71460",
+   "critique_kind": "unclear",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-airflow-71734",
+   "url": "https://github.com/apache/airflow/pull/71734",
+   "critique_kind": "overclaim",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-airflow-72068",
+   "url": "https://github.com/apache/airflow/pull/72068",
+   "critique_kind": "misleading_title",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-airflow-72157",
+   "url": "https://github.com/apache/airflow/pull/72157",
+   "critique_kind": "mismatch",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-airflow-73185",
+   "url": "https://github.com/apache/airflow/pull/73185",
+   "critique_kind": "misleading_title",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-airflow-73288",
+   "url": "https://github.com/apache/airflow/pull/73288",
+   "critique_kind": "mismatch",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-arrow-49171",
+   "url": "https://github.com/apache/arrow/pull/49171",
+   "critique_kind": "overclaim",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-arrow-49771",
+   "url": "https://github.com/apache/arrow/pull/49771",
+   "critique_kind": "unclear",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-arrow-50377",
+   "url": "https://github.com/apache/arrow/pull/50377",
+   "critique_kind": "ai_sounding",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-arrow-50635",
+   "url": "https://github.com/apache/arrow/pull/50635",
+   "critique_kind": "overclaim",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-arrow-51133",
+   "url": "https://github.com/apache/arrow/pull/51133",
+   "critique_kind": "other",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-arrow-51237",
+   "url": "https://github.com/apache/arrow/pull/51237",
+   "critique_kind": "overclaim",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-datafusion-24167",
+   "url": "https://github.com/apache/datafusion/pull/24167",
+   "critique_kind": "overclaim",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-datafusion-25109",
+   "url": "https://github.com/apache/datafusion/pull/25109",
+   "critique_kind": "ai_sounding",
+   "judgeable_from_text": true
+  },
+  {
+   "id": "a2-cpython-143246",
+   "url": "https://github.com/python/cpython/pull/143246",
+   "critique_kind": "overclaim",
+   "judgeable_from_text": false
+  },
+  {
+   "id": "a2-cpython-150425",
+   "url": "https://github.com/python/cpython/pull/150425",
+   "critique_kind": "other",
+   "judgeable_from_text": false
+  }
+ ]
+}

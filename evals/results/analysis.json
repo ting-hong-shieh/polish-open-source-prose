@@ -1,0 +1,3632 @@
+{
+ "literal": {
+  "main": {
+   "Opus 5.5": {
+    "no_skill/keep": 0.079,
+    "no_skill/edit": 0.732,
+    "one_sentence/keep": 0.684,
+    "one_sentence/edit": 0.786,
+    "three_sentences/keep": 0.816,
+    "three_sentences/edit": 0.643,
+    "v0.1.0/keep": 0.711,
+    "v0.1.0/edit": 0.75,
+    "v0.2.0/keep": 1.0,
+    "v0.2.0/edit": 0.893
+   },
+   "Opus 4.6": {
+    "no_skill/keep": 0.079,
+    "no_skill/edit": 0.679,
+    "one_sentence/keep": 0.763,
+    "one_sentence/edit": 0.679,
+    "three_sentences/keep": 0.816,
+    "three_sentences/edit": 0.429,
+    "v0.1.0/keep": 0.5,
+    "v0.1.0/edit": 0.875,
+    "v0.2.0/keep": 0.947,
+    "v0.2.0/edit": 0.839
+   },
+   "Sonnet 5.5": {
+    "no_skill/keep": 0.158,
+    "no_skill/edit": 0.679,
+    "one_sentence/keep": 0.789,
+    "one_sentence/edit": 0.714,
+    "three_sentences/keep": 0.921,
+    "three_sentences/edit": 0.607,
+    "v0.1.0/keep": 0.921,
+    "v0.1.0/edit": 0.821,
+    "v0.2.0/keep": 1.0,
+    "v0.2.0/edit": 0.893
+   },
+   "GPT-6.1 Sol": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.643,
+    "one_sentence/keep": 0.421,
+    "one_sentence/edit": 0.536,
+    "three_sentences/keep": 0.789,
+    "three_sentences/edit": 0.429,
+    "v0.1.0/keep": 0.316,
+    "v0.1.0/edit": 0.821,
+    "v0.2.0/keep": 0.947,
+    "v0.2.0/edit": 0.893
+   },
+   "GPT-6 Astra (high)": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.571,
+    "one_sentence/keep": 0.421,
+    "one_sentence/edit": 0.643,
+    "three_sentences/keep": 0.895,
+    "three_sentences/edit": 0.5,
+    "v0.1.0/keep": 0.263,
+    "v0.1.0/edit": 0.75,
+    "v0.2.0/keep": 1.0,
+    "v0.2.0/edit": 0.929
+   },
+   "GPT-6 Astra (low)": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.607,
+    "one_sentence/keep": 0.158,
+    "one_sentence/edit": 0.571,
+    "three_sentences/keep": 0.789,
+    "three_sentences/edit": 0.429,
+    "v0.1.0/keep": 0.105,
+    "v0.1.0/edit": 0.714,
+    "v0.2.0/keep": 1.0,
+    "v0.2.0/edit": 0.929
+   },
+   "GPT-6 Luna (max)": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.357,
+    "one_sentence/keep": 0.368,
+    "one_sentence/edit": 0.393,
+    "three_sentences/keep": 0.632,
+    "three_sentences/edit": 0.393,
+    "v0.1.0/keep": 0.053,
+    "v0.1.0/edit": 0.571,
+    "v0.2.0/keep": 0.526,
+    "v0.2.0/edit": 0.679
+   }
+  },
+  "a1": {
+   "Opus 5.5": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.333,
+    "one_sentence/keep": 0.708,
+    "one_sentence/edit": 0.417,
+    "three_sentences/keep": 0.792,
+    "three_sentences/edit": 0.625,
+    "v0.1.0/keep": 0.792,
+    "v0.1.0/edit": 0.75,
+    "v0.2.0/keep": 0.958,
+    "v0.2.0/edit": 0.833
+   },
+   "Opus 4.6": {
+    "no_skill/keep": 0.125,
+    "no_skill/edit": 0.375,
+    "one_sentence/keep": 0.583,
+    "one_sentence/edit": 0.583,
+    "three_sentences/keep": 0.792,
+    "three_sentences/edit": 0.5,
+    "v0.1.0/keep": 0.542,
+    "v0.1.0/edit": 0.542,
+    "v0.2.0/keep": 0.917,
+    "v0.2.0/edit": 0.708
+   },
+   "Sonnet 5.5": {
+    "no_skill/keep": 0.042,
+    "no_skill/edit": 0.458,
+    "one_sentence/keep": 0.917,
+    "one_sentence/edit": 0.583,
+    "three_sentences/keep": 0.917,
+    "three_sentences/edit": 0.583,
+    "v0.1.0/keep": 0.875,
+    "v0.1.0/edit": 0.75,
+    "v0.2.0/keep": 0.917,
+    "v0.2.0/edit": 0.833
+   },
+   "GPT-6.1 Sol": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.417,
+    "one_sentence/keep": 0.25,
+    "one_sentence/edit": 0.25,
+    "three_sentences/keep": 0.833,
+    "three_sentences/edit": 0.25,
+    "v0.1.0/keep": 0.0,
+    "v0.1.0/edit": 0.5,
+    "v0.2.0/keep": 0.917,
+    "v0.2.0/edit": 0.75
+   },
+   "GPT-6 Astra (high)": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.333,
+    "one_sentence/keep": 0.333,
+    "one_sentence/edit": 0.417,
+    "three_sentences/keep": 0.917,
+    "three_sentences/edit": 0.417,
+    "v0.1.0/keep": 0.083,
+    "v0.1.0/edit": 0.417,
+    "v0.2.0/keep": 0.917,
+    "v0.2.0/edit": 0.917
+   },
+   "GPT-6 Astra (low)": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.5,
+    "one_sentence/keep": 0.083,
+    "one_sentence/edit": 0.333,
+    "three_sentences/keep": 1.0,
+    "three_sentences/edit": 0.25,
+    "v0.1.0/keep": 0.0,
+    "v0.1.0/edit": 0.417,
+    "v0.2.0/keep": 0.917,
+    "v0.2.0/edit": 0.917
+   },
+   "GPT-6 Luna (max)": {
+    "no_skill/keep": 0.0,
+    "no_skill/edit": 0.333,
+    "one_sentence/keep": 0.333,
+    "one_sentence/edit": 0.333,
+    "three_sentences/keep": 0.667,
+    "three_sentences/edit": 0.167,
+    "v0.1.0/keep": 0.0,
+    "v0.1.0/edit": 0.25,
+    "v0.2.0/keep": 0.583,
+    "v0.2.0/edit": 0.583
+   }
+  }
+ },
+ "bootstrap_95": {
+  "main": {
+   "keep": {
+    "no_skill": [
+     0.045112781954887216,
+     0.011278195488721804,
+     0.08270676691729323
+    ],
+    "one_sentence": [
+     0.5150375939849624,
+     0.37969924812030076,
+     0.6541353383458647
+    ],
+    "three_sentences": [
+     0.8082706766917294,
+     0.6917293233082706,
+     0.9135338345864662
+    ],
+    "v0.1.0": [
+     0.40977443609022557,
+     0.31203007518796994,
+     0.5112781954887218
+    ],
+    "v0.2.0": [
+     0.9172932330827067,
+     0.8721804511278195,
+     0.9548872180451128
+    ]
+   },
+   "edit": {
+    "no_skill": [
+     0.6096938775510204,
+     0.47959183673469385,
+     0.7346938775510204
+    ],
+    "one_sentence": [
+     0.6173469387755102,
+     0.4948341836734694,
+     0.7372448979591837
+    ],
+    "three_sentences": [
+     0.4897959183673469,
+     0.3469387755102041,
+     0.6378188775510201
+    ],
+    "v0.1.0": [
+     0.7576530612244898,
+     0.6428571428571429,
+     0.8596938775510204
+    ],
+    "v0.2.0": [
+     0.8647959183673469,
+     0.760140306122449,
+     0.9464285714285714
+    ]
+   }
+  },
+  "a1": {
+   "keep": {
+    "no_skill": [
+     0.023809523809523808,
+     0.0,
+     0.05357142857142857
+    ],
+    "one_sentence": [
+     0.4583333333333333,
+     0.32142857142857145,
+     0.5892857142857143
+    ],
+    "three_sentences": [
+     0.8452380952380952,
+     0.6904761904761905,
+     0.9642857142857143
+    ],
+    "v0.1.0": [
+     0.3273809523809524,
+     0.24404761904761904,
+     0.40476190476190477
+    ],
+    "v0.2.0": [
+     0.875,
+     0.7202380952380952,
+     0.9761904761904762
+    ]
+   },
+   "edit": {
+    "no_skill": [
+     0.39285714285714285,
+     0.22023809523809523,
+     0.5714285714285714
+    ],
+    "one_sentence": [
+     0.4166666666666667,
+     0.2619047619047619,
+     0.5595238095238095
+    ],
+    "three_sentences": [
+     0.39880952380952384,
+     0.1962797619047619,
+     0.6013392857142849
+    ],
+    "v0.1.0": [
+     0.5178571428571429,
+     0.3333333333333333,
+     0.7083333333333334
+    ],
+    "v0.2.0": [
+     0.7916666666666666,
+     0.6190476190476191,
+     0.9166666666666666
+    ]
+   }
+  }
+ },
+ "sign_tests": [
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 19,
+   "losses": 0,
+   "n": 19,
+   "p": 3.814697265625e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 18,
+   "losses": 0,
+   "n": 19,
+   "p": 7.62939453125e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 17,
+   "losses": 0,
+   "n": 19,
+   "p": 1.52587890625e-05,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 18,
+   "losses": 0,
+   "n": 19,
+   "p": 7.62939453125e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 19,
+   "losses": 0,
+   "n": 19,
+   "p": 3.814697265625e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 19,
+   "losses": 0,
+   "n": 19,
+   "p": 3.814697265625e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 10,
+   "losses": 0,
+   "n": 19,
+   "p": 0.001953125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 19,
+   "losses": 0,
+   "n": 19,
+   "p": 3.814697265625e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 7,
+   "losses": 0,
+   "n": 19,
+   "p": 0.015625,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 0,
+   "n": 19,
+   "p": 0.0625,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 19,
+   "p": 0.125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 10,
+   "losses": 0,
+   "n": 19,
+   "p": 0.001953125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 11,
+   "losses": 0,
+   "n": 19,
+   "p": 0.0009765625,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 16,
+   "losses": 0,
+   "n": 19,
+   "p": 3.0517578125e-05,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 3,
+   "losses": 0,
+   "n": 19,
+   "p": 0.25,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 17,
+   "losses": 0,
+   "n": 19,
+   "p": 1.52587890625e-05,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 19,
+   "p": 0.125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 3,
+   "losses": 0,
+   "n": 19,
+   "p": 0.25,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 2,
+   "losses": 0,
+   "n": 19,
+   "p": 0.5,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 3,
+   "losses": 0,
+   "n": 19,
+   "p": 0.25,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 2,
+   "losses": 0,
+   "n": 19,
+   "p": 0.5,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 4,
+   "losses": 0,
+   "n": 19,
+   "p": 0.125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 1,
+   "losses": 3,
+   "n": 19,
+   "p": 0.625,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 8,
+   "losses": 2,
+   "n": 19,
+   "p": 0.109375,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 6,
+   "losses": 0,
+   "n": 19,
+   "p": 0.03125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 10,
+   "losses": 0,
+   "n": 19,
+   "p": 0.001953125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 2,
+   "losses": 0,
+   "n": 19,
+   "p": 0.5,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 12,
+   "losses": 0,
+   "n": 19,
+   "p": 0.00048828125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 14,
+   "losses": 0,
+   "n": 19,
+   "p": 0.0001220703125,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 17,
+   "losses": 0,
+   "n": 19,
+   "p": 1.52587890625e-05,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 9,
+   "losses": 0,
+   "n": 19,
+   "p": 0.00390625,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 19,
+   "losses": 0,
+   "n": 19,
+   "p": 3.814697265625e-06,
+   "set": "main",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 7,
+   "losses": 2,
+   "n": 28,
+   "p": 0.1796875,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 10,
+   "losses": 2,
+   "n": 28,
+   "p": 0.03857421875,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 8,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0390625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 7,
+   "losses": 0,
+   "n": 28,
+   "p": 0.015625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 10,
+   "losses": 0,
+   "n": 28,
+   "p": 0.001953125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 9,
+   "losses": 0,
+   "n": 28,
+   "p": 0.00390625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 10,
+   "losses": 1,
+   "n": 28,
+   "p": 0.01171875,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 17,
+   "losses": 4,
+   "n": 28,
+   "p": 0.007197380065917969,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 5,
+   "losses": 1,
+   "n": 28,
+   "p": 0.21875,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 8,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0390625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 8,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0390625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 10,
+   "losses": 0,
+   "n": 28,
+   "p": 0.001953125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 8,
+   "losses": 0,
+   "n": 28,
+   "p": 0.0078125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 10,
+   "losses": 0,
+   "n": 28,
+   "p": 0.001953125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 9,
+   "losses": 1,
+   "n": 28,
+   "p": 0.021484375,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 19,
+   "losses": 2,
+   "n": 28,
+   "p": 0.00022125244140625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 8,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0390625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 14,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0009765625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 9,
+   "losses": 1,
+   "n": 28,
+   "p": 0.021484375,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 14,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0009765625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 12,
+   "losses": 0,
+   "n": 28,
+   "p": 0.00048828125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 14,
+   "losses": 0,
+   "n": 28,
+   "p": 0.0001220703125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 10,
+   "losses": 2,
+   "n": 28,
+   "p": 0.03857421875,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 20,
+   "losses": 1,
+   "n": 28,
+   "p": 2.09808349609375e-05,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 6,
+   "losses": 1,
+   "n": 28,
+   "p": 0.125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 4,
+   "losses": 4,
+   "n": 28,
+   "p": 1.0,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 3,
+   "losses": 2,
+   "n": 28,
+   "p": 1.0,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 3,
+   "losses": 1,
+   "n": 28,
+   "p": 0.625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 5,
+   "losses": 0,
+   "n": 28,
+   "p": 0.0625,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 7,
+   "losses": 1,
+   "n": 28,
+   "p": 0.0703125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 6,
+   "losses": 3,
+   "n": 28,
+   "p": 0.5078125,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 13,
+   "losses": 4,
+   "n": 28,
+   "p": 0.049041748046875,
+   "set": "main",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 12,
+   "losses": 0,
+   "n": 12,
+   "p": 0.00048828125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 10,
+   "losses": 0,
+   "n": 12,
+   "p": 0.001953125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 12,
+   "losses": 0,
+   "n": 12,
+   "p": 0.00048828125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 0,
+   "losses": 0,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 10,
+   "losses": 0,
+   "n": 12,
+   "p": 0.001953125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 4,
+   "losses": 1,
+   "n": 12,
+   "p": 0.375,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 2,
+   "losses": 0,
+   "n": 12,
+   "p": 0.5,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 0,
+   "losses": 0,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 1,
+   "losses": 0,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 0,
+   "losses": 0,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 0,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 2,
+   "losses": 3,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 2,
+   "losses": 3,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 1,
+   "losses": 0,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 10,
+   "losses": 0,
+   "n": 12,
+   "p": 0.001953125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 12,
+   "losses": 0,
+   "n": 12,
+   "p": 0.00048828125,
+   "set": "a1",
+   "kind": "keep"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 8,
+   "losses": 1,
+   "n": 12,
+   "p": 0.0390625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 6,
+   "losses": 1,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 7,
+   "losses": 2,
+   "n": 12,
+   "p": 0.1796875,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 11,
+   "losses": 1,
+   "n": 12,
+   "p": 0.00634765625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 2,
+   "losses": 0,
+   "n": 12,
+   "p": 0.5,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 11,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0009765625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 3,
+   "losses": 1,
+   "n": 12,
+   "p": 0.625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 1,
+   "n": 12,
+   "p": 0.375,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 6,
+   "losses": 1,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 9,
+   "losses": 1,
+   "n": 12,
+   "p": 0.021484375,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 2,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 4,
+   "losses": 1,
+   "n": 12,
+   "p": 0.375,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 2,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 4,
+   "losses": 1,
+   "n": 12,
+   "p": 0.375,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 9,
+   "losses": 0,
+   "n": 12,
+   "p": 0.00390625,
+   "set": "a1",
+   "kind": "edit"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 4,
+   "losses": 1,
+   "n": 12,
+   "p": 0.375,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 9,
+   "losses": 2,
+   "n": 12,
+   "p": 0.0654296875,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 2,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 8,
+   "losses": 1,
+   "n": 12,
+   "p": 0.0390625,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 12,
+   "losses": 0,
+   "n": 12,
+   "p": 0.00048828125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 1,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 2,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 1,
+   "losses": 2,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 2,
+   "losses": 0,
+   "n": 12,
+   "p": 0.5,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 1,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 2,
+   "losses": 0,
+   "n": 12,
+   "p": 0.5,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 7,
+   "losses": 3,
+   "n": 12,
+   "p": 0.34375,
+   "set": "a1",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 10,
+   "losses": 1,
+   "n": 12,
+   "p": 0.01171875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 3,
+   "losses": 1,
+   "n": 12,
+   "p": 0.625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 5,
+   "losses": 1,
+   "n": 12,
+   "p": 0.21875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 4,
+   "losses": 0,
+   "n": 12,
+   "p": 0.125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 10,
+   "losses": 1,
+   "n": 12,
+   "p": 0.01171875,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 6,
+   "losses": 0,
+   "n": 12,
+   "p": 0.03125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 8,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0078125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 8,
+   "losses": 2,
+   "n": 12,
+   "p": 0.109375,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 7,
+   "losses": 0,
+   "n": 12,
+   "p": 0.015625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 12,
+   "losses": 0,
+   "n": 12,
+   "p": 0.00048828125,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 5,
+   "losses": 0,
+   "n": 12,
+   "p": 0.0625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 1,
+   "losses": 1,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 1,
+   "n": 12,
+   "p": 0.375,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 2,
+   "losses": 2,
+   "n": 12,
+   "p": 1.0,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 3,
+   "losses": 0,
+   "n": 12,
+   "p": 0.25,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 1,
+   "losses": 3,
+   "n": 12,
+   "p": 0.625,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 2,
+   "losses": 0,
+   "n": 12,
+   "p": 0.5,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 9,
+   "losses": 3,
+   "n": 12,
+   "p": 0.14599609375,
+   "set": "a1",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 5,
+   "losses": 7,
+   "n": 21,
+   "p": 0.7744140625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 3,
+   "n": 21,
+   "p": 0.7265625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 3,
+   "losses": 8,
+   "n": 21,
+   "p": 0.2265625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 1,
+   "losses": 6,
+   "n": 21,
+   "p": 0.125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 1,
+   "losses": 6,
+   "n": 21,
+   "p": 0.125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 1,
+   "losses": 5,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 0,
+   "losses": 7,
+   "n": 21,
+   "p": 0.015625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 7,
+   "losses": 9,
+   "n": 21,
+   "p": 0.803619384765625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 7,
+   "losses": 5,
+   "n": 21,
+   "p": 0.7744140625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 2,
+   "n": 21,
+   "p": 0.453125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 5,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 1,
+   "losses": 5,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 0,
+   "losses": 7,
+   "n": 21,
+   "p": 0.015625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 1,
+   "losses": 4,
+   "n": 21,
+   "p": 0.375,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 0,
+   "losses": 5,
+   "n": 21,
+   "p": 0.0625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 5,
+   "losses": 8,
+   "n": 21,
+   "p": 0.5810546875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 8,
+   "losses": 2,
+   "n": 21,
+   "p": 0.109375,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 1,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 9,
+   "losses": 2,
+   "n": 21,
+   "p": 0.0654296875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 6,
+   "losses": 0,
+   "n": 21,
+   "p": 0.03125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 5,
+   "losses": 1,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 7,
+   "losses": 0,
+   "n": 21,
+   "p": 0.015625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 3,
+   "losses": 2,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 12,
+   "losses": 1,
+   "n": 21,
+   "p": 0.00341796875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 3,
+   "losses": 6,
+   "n": 21,
+   "p": 0.5078125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 4,
+   "losses": 3,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 2,
+   "losses": 5,
+   "n": 21,
+   "p": 0.453125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 0,
+   "losses": 5,
+   "n": 21,
+   "p": 0.0625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 1,
+   "losses": 6,
+   "n": 21,
+   "p": 0.125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 1,
+   "losses": 5,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 0,
+   "losses": 7,
+   "n": 21,
+   "p": 0.015625,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 2,
+   "losses": 12,
+   "n": 21,
+   "p": 0.012939453125,
+   "set": "a2",
+   "kind": "edit, addressed"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 5.5",
+   "wins": 9,
+   "losses": 4,
+   "n": 21,
+   "p": 0.266845703125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 2,
+   "n": 21,
+   "p": 0.453125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "Sonnet 5.5",
+   "wins": 7,
+   "losses": 3,
+   "n": 21,
+   "p": 0.34375,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6.1 Sol",
+   "wins": 4,
+   "losses": 4,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (high)",
+   "wins": 6,
+   "losses": 4,
+   "n": 21,
+   "p": 0.75390625,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Astra (low)",
+   "wins": 5,
+   "losses": 3,
+   "n": 21,
+   "p": 0.7265625,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "GPT-6 Luna (max)",
+   "wins": 1,
+   "losses": 6,
+   "n": 21,
+   "p": 0.125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "no_skill",
+   "model": "pooled",
+   "wins": 10,
+   "losses": 7,
+   "n": 21,
+   "p": 0.629058837890625,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 5.5",
+   "wins": 9,
+   "losses": 3,
+   "n": 21,
+   "p": 0.14599609375,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 1,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "Sonnet 5.5",
+   "wins": 4,
+   "losses": 5,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6.1 Sol",
+   "wins": 3,
+   "losses": 4,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (high)",
+   "wins": 3,
+   "losses": 3,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Astra (low)",
+   "wins": 4,
+   "losses": 4,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "GPT-6 Luna (max)",
+   "wins": 3,
+   "losses": 6,
+   "n": 21,
+   "p": 0.5078125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "one_sentence",
+   "model": "pooled",
+   "wins": 9,
+   "losses": 5,
+   "n": 21,
+   "p": 0.4239501953125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 5.5",
+   "wins": 8,
+   "losses": 2,
+   "n": 21,
+   "p": 0.109375,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Opus 4.6",
+   "wins": 5,
+   "losses": 1,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "Sonnet 5.5",
+   "wins": 9,
+   "losses": 2,
+   "n": 21,
+   "p": 0.0654296875,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6.1 Sol",
+   "wins": 6,
+   "losses": 0,
+   "n": 21,
+   "p": 0.03125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (high)",
+   "wins": 5,
+   "losses": 1,
+   "n": 21,
+   "p": 0.21875,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Astra (low)",
+   "wins": 7,
+   "losses": 0,
+   "n": 21,
+   "p": 0.015625,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "GPT-6 Luna (max)",
+   "wins": 2,
+   "losses": 2,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "three_sentences",
+   "model": "pooled",
+   "wins": 12,
+   "losses": 1,
+   "n": 21,
+   "p": 0.00341796875,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 5.5",
+   "wins": 4,
+   "losses": 5,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Opus 4.6",
+   "wins": 4,
+   "losses": 1,
+   "n": 21,
+   "p": 0.375,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "Sonnet 5.5",
+   "wins": 2,
+   "losses": 3,
+   "n": 21,
+   "p": 1.0,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6.1 Sol",
+   "wins": 2,
+   "losses": 5,
+   "n": 21,
+   "p": 0.453125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (high)",
+   "wins": 3,
+   "losses": 6,
+   "n": 21,
+   "p": 0.5078125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Astra (low)",
+   "wins": 2,
+   "losses": 4,
+   "n": 21,
+   "p": 0.6875,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "GPT-6 Luna (max)",
+   "wins": 0,
+   "losses": 5,
+   "n": 21,
+   "p": 0.0625,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  },
+  {
+   "vs": "v0.1.0",
+   "model": "pooled",
+   "wins": 4,
+   "losses": 9,
+   "n": 21,
+   "p": 0.266845703125,
+   "set": "a2",
+   "kind": "edit, clean fix"
+  }
+ ],
+ "judges": {
+  "edit": {
+   "claude": {
+    "a1": {
+     "no_skill": {
+      "n": 120,
+      "addressed": 0.595,
+      "clean": 0.488,
+      "invented": 0.113,
+      "damaged": 0.071,
+      "unchanged": 0.0
+     },
+     "one_sentence": {
+      "n": 120,
+      "addressed": 0.568,
+      "clean": 0.485,
+      "invented": 0.113,
+      "damaged": 0.024,
+      "unchanged": 0.149
+     },
+     "three_sentences": {
+      "n": 120,
+      "addressed": 0.336,
+      "clean": 0.336,
+      "invented": 0.0,
+      "damaged": 0.012,
+      "unchanged": 0.565
+     },
+     "v0.1.0": {
+      "n": 120,
+      "addressed": 0.729,
+      "clean": 0.714,
+      "invented": 0.024,
+      "damaged": 0.012,
+      "unchanged": 0.089
+     },
+     "v0.2.0": {
+      "n": 120,
+      "addressed": 0.765,
+      "clean": 0.756,
+      "invented": 0.006,
+      "damaged": 0.006,
+      "unchanged": 0.119
+     }
+    },
+    "a2": {
+     "no_skill": {
+      "n": 210,
+      "addressed": 0.272,
+      "clean": 0.153,
+      "invented": 0.211,
+      "damaged": 0.269,
+      "unchanged": 0.0
+     },
+     "one_sentence": {
+      "n": 210,
+      "addressed": 0.236,
+      "clean": 0.182,
+      "invented": 0.088,
+      "damaged": 0.177,
+      "unchanged": 0.071
+     },
+     "three_sentences": {
+      "n": 210,
+      "addressed": 0.075,
+      "clean": 0.075,
+      "invented": 0.0,
+      "damaged": 0.017,
+      "unchanged": 0.133
+     },
+     "v0.1.0": {
+      "n": 210,
+      "addressed": 0.276,
+      "clean": 0.252,
+      "invented": 0.075,
+      "damaged": 0.105,
+      "unchanged": 0.044
+     },
+     "v0.2.0": {
+      "n": 210,
+      "addressed": 0.187,
+      "clean": 0.184,
+      "invented": 0.014,
+      "damaged": 0.041,
+      "unchanged": 0.235
+     }
+    },
+    "a2-judgeable": {
+     "no_skill": {
+      "n": 90,
+      "addressed": 0.369,
+      "clean": 0.206,
+      "invented": 0.238,
+      "damaged": 0.238,
+      "unchanged": 0.0
+     },
+     "one_sentence": {
+      "n": 90,
+      "addressed": 0.321,
+      "clean": 0.266,
+      "invented": 0.095,
+      "damaged": 0.143,
+      "unchanged": 0.063
+     },
+     "three_sentences": {
+      "n": 90,
+      "addressed": 0.091,
+      "clean": 0.091,
+      "invented": 0.0,
+      "damaged": 0.0,
+      "unchanged": 0.111
+     },
+     "v0.1.0": {
+      "n": 90,
+      "addressed": 0.373,
+      "clean": 0.341,
+      "invented": 0.048,
+      "damaged": 0.048,
+      "unchanged": 0.04
+     },
+     "v0.2.0": {
+      "n": 90,
+      "addressed": 0.21,
+      "clean": 0.202,
+      "invented": 0.0,
+      "damaged": 0.016,
+      "unchanged": 0.206
+     }
+    }
+   },
+   "codex": {
+    "a1": {
+     "no_skill": {
+      "n": 120,
+      "addressed": 0.607,
+      "clean": 0.452,
+      "invented": 0.19,
+      "damaged": 0.054,
+      "unchanged": 0.0
+     },
+     "one_sentence": {
+      "n": 120,
+      "addressed": 0.571,
+      "clean": 0.464,
+      "invented": 0.155,
+      "damaged": 0.042,
+      "unchanged": 0.149
+     },
+     "three_sentences": {
+      "n": 120,
+      "addressed": 0.336,
+      "clean": 0.336,
+      "invented": 0.0,
+      "damaged": 0.012,
+      "unchanged": 0.565
+     },
+     "v0.1.0": {
+      "n": 120,
+      "addressed": 0.723,
+      "clean": 0.67,
+      "invented": 0.042,
+      "damaged": 0.054,
+      "unchanged": 0.089
+     },
+     "v0.2.0": {
+      "n": 120,
+      "addressed": 0.762,
+      "clean": 0.711,
+      "invented": 0.012,
+      "damaged": 0.054,
+      "unchanged": 0.119
+     }
+    },
+    "a2": {
+     "no_skill": {
+      "n": 210,
+      "addressed": 0.281,
+      "clean": 0.117,
+      "invented": 0.381,
+      "damaged": 0.228,
+      "unchanged": 0.0
+     },
+     "one_sentence": {
+      "n": 210,
+      "addressed": 0.26,
+      "clean": 0.155,
+      "invented": 0.224,
+      "damaged": 0.143,
+      "unchanged": 0.071
+     },
+     "three_sentences": {
+      "n": 210,
+      "addressed": 0.1,
+      "clean": 0.1,
+      "invented": 0.048,
+      "damaged": 0.007,
+      "unchanged": 0.133
+     },
+     "v0.1.0": {
+      "n": 210,
+      "addressed": 0.294,
+      "clean": 0.219,
+      "invented": 0.18,
+      "damaged": 0.082,
+      "unchanged": 0.044
+     },
+     "v0.2.0": {
+      "n": 210,
+      "addressed": 0.189,
+      "clean": 0.189,
+      "invented": 0.0,
+      "damaged": 0.007,
+      "unchanged": 0.235
+     }
+    },
+    "a2-judgeable": {
+     "no_skill": {
+      "n": 90,
+      "addressed": 0.385,
+      "clean": 0.202,
+      "invented": 0.413,
+      "damaged": 0.167,
+      "unchanged": 0.0
+     },
+     "one_sentence": {
+      "n": 90,
+      "addressed": 0.349,
+      "clean": 0.242,
+      "invented": 0.214,
+      "damaged": 0.079,
+      "unchanged": 0.063
+     },
+     "three_sentences": {
+      "n": 90,
+      "addressed": 0.139,
+      "clean": 0.139,
+      "invented": 0.0,
+      "damaged": 0.0,
+      "unchanged": 0.111
+     },
+     "v0.1.0": {
+      "n": 90,
+      "addressed": 0.377,
+      "clean": 0.298,
+      "invented": 0.151,
+      "damaged": 0.04,
+      "unchanged": 0.04
+     },
+     "v0.2.0": {
+      "n": 90,
+      "addressed": 0.222,
+      "clean": 0.222,
+      "invented": 0.0,
+      "damaged": 0.0,
+      "unchanged": 0.206
+     }
+    }
+   }
+  },
+  "keep": {
+   "claude": {
+    "main": {
+     "no_skill": {
+      "n": 190,
+      "changed": 0.955,
+      "harmful": 0.391
+     },
+     "one_sentence": {
+      "n": 190,
+      "changed": 0.485,
+      "harmful": 0.222
+     },
+     "three_sentences": {
+      "n": 190,
+      "changed": 0.192,
+      "harmful": 0.045
+     },
+     "v0.1.0": {
+      "n": 190,
+      "changed": 0.59,
+      "harmful": 0.098
+     },
+     "v0.2.0": {
+      "n": 190,
+      "changed": 0.083,
+      "harmful": 0.023
+     }
+    },
+    "a1": {
+     "no_skill": {
+      "n": 120,
+      "changed": 0.976,
+      "harmful": 0.298
+     },
+     "one_sentence": {
+      "n": 120,
+      "changed": 0.542,
+      "harmful": 0.101
+     },
+     "three_sentences": {
+      "n": 120,
+      "changed": 0.155,
+      "harmful": 0.0
+     },
+     "v0.1.0": {
+      "n": 120,
+      "changed": 0.673,
+      "harmful": 0.042
+     },
+     "v0.2.0": {
+      "n": 120,
+      "changed": 0.125,
+      "harmful": 0.0
+     }
+    }
+   },
+   "codex": {
+    "main": {
+     "no_skill": {
+      "n": 190,
+      "changed": 0.955,
+      "harmful": 0.444
+     },
+     "one_sentence": {
+      "n": 190,
+      "changed": 0.485,
+      "harmful": 0.203
+     },
+     "three_sentences": {
+      "n": 190,
+      "changed": 0.192,
+      "harmful": 0.049
+     },
+     "v0.1.0": {
+      "n": 190,
+      "changed": 0.59,
+      "harmful": 0.128
+     },
+     "v0.2.0": {
+      "n": 190,
+      "changed": 0.083,
+      "harmful": 0.023
+     }
+    },
+    "a1": {
+     "no_skill": {
+      "n": 120,
+      "changed": 0.976,
+      "harmful": 0.381
+     },
+     "one_sentence": {
+      "n": 120,
+      "changed": 0.542,
+      "harmful": 0.173
+     },
+     "three_sentences": {
+      "n": 120,
+      "changed": 0.155,
+      "harmful": 0.036
+     },
+     "v0.1.0": {
+      "n": 120,
+      "changed": 0.673,
+      "harmful": 0.107
+     },
+     "v0.2.0": {
+      "n": 120,
+      "changed": 0.125,
+      "harmful": 0.012
+     }
+    }
+   }
+  },
+  "agreement": {
+   "harmful": {
+    "n": 667,
+    "exact": 0.885,
+    "kappa": 0.733,
+    "rate_claude": 0.279,
+    "rate_codex": 0.346
+   },
+   "addressed": {
+    "n": 1650,
+    "exact": 0.906,
+    "weighted_kappa": 0.934
+   },
+   "invented": {
+    "n": 1650,
+    "exact": 0.921,
+    "kappa": 0.589,
+    "rate_claude": 0.072,
+    "rate_codex": 0.14
+   },
+   "damaged": {
+    "n": 1650,
+    "exact": 0.928,
+    "kappa": 0.462,
+    "rate_claude": 0.073,
+    "rate_codex": 0.07
+   }
+  },
+  "self_preference": {
+   "claude": {
+    "own": {
+     "n": 330,
+     "mean_gap": 0.018
+    },
+    "others": {
+     "n": 1320,
+     "mean_gap": -0.011
+    }
+   },
+   "codex": {
+    "own": {
+     "n": 165,
+     "mean_gap": 0.021
+    },
+    "others": {
+     "n": 1485,
+     "mean_gap": 0.003
+    }
+   }
+  },
+  "a1_notes_hidden": {
+   "claude": {
+    "no_skill": {
+     "n": 120,
+     "addressed": 0.577,
+     "clean": 0.503,
+     "invented": 0.089,
+     "damaged": 0.054,
+     "unchanged": 0.0
+    },
+    "one_sentence": {
+     "n": 120,
+     "addressed": 0.53,
+     "clean": 0.503,
+     "invented": 0.054,
+     "damaged": 0.024,
+     "unchanged": 0.149
+    },
+    "three_sentences": {
+     "n": 120,
+     "addressed": 0.304,
+     "clean": 0.304,
+     "invented": 0.0,
+     "damaged": 0.012,
+     "unchanged": 0.565
+    },
+    "v0.1.0": {
+     "n": 120,
+     "addressed": 0.696,
+     "clean": 0.69,
+     "invented": 0.012,
+     "damaged": 0.012,
+     "unchanged": 0.089
+    },
+    "v0.2.0": {
+     "n": 120,
+     "addressed": 0.726,
+     "clean": 0.708,
+     "invented": 0.006,
+     "damaged": 0.018,
+     "unchanged": 0.119
+    }
+   },
+   "codex": {
+    "no_skill": {
+     "n": 120,
+     "addressed": 0.586,
+     "clean": 0.476,
+     "invented": 0.161,
+     "damaged": 0.024,
+     "unchanged": 0.0
+    },
+    "one_sentence": {
+     "n": 120,
+     "addressed": 0.551,
+     "clean": 0.449,
+     "invented": 0.131,
+     "damaged": 0.024,
+     "unchanged": 0.149
+    },
+    "three_sentences": {
+     "n": 120,
+     "addressed": 0.315,
+     "clean": 0.315,
+     "invented": 0.0,
+     "damaged": 0.012,
+     "unchanged": 0.565
+    },
+    "v0.1.0": {
+     "n": 120,
+     "addressed": 0.688,
+     "clean": 0.661,
+     "invented": 0.048,
+     "damaged": 0.0,
+     "unchanged": 0.089
+    },
+    "v0.2.0": {
+     "n": 120,
+     "addressed": 0.726,
+     "clean": 0.717,
+     "invented": 0.0,
+     "damaged": 0.018,
+     "unchanged": 0.119
+    }
+   }
+  }
+ },
+ "costs": {
+  "Opus 5.5": {
+   "no_skill": {
+    "runs": 90,
+    "seconds": 13.9,
+    "usd": 0.0439
+   },
+   "one_sentence": {
+    "runs": 90,
+    "seconds": 12.2,
+    "usd": 0.0394
+   },
+   "three_sentences": {
+    "runs": 90,
+    "seconds": 11.5,
+    "usd": 0.0387
+   },
+   "v0.1.0": {
+    "runs": 90,
+    "seconds": 21.5,
+    "usd": 0.1624
+   },
+   "v0.2.0": {
+    "runs": 90,
+    "seconds": 16.9,
+    "usd": 0.1228
+   }
+  },
+  "Opus 4.6": {
+   "no_skill": {
+    "runs": 90,
+    "seconds": 13.3,
+    "usd": 0.038
+   },
+   "one_sentence": {
+    "runs": 90,
+    "seconds": 15.5,
+    "usd": 0.0402
+   },
+   "three_sentences": {
+    "runs": 90,
+    "seconds": 17.6,
+    "usd": 0.0439
+   },
+   "v0.1.0": {
+    "runs": 90,
+    "seconds": 50.0,
+    "usd": 0.1625
+   },
+   "v0.2.0": {
+    "runs": 90,
+    "seconds": 22.5,
+    "usd": 0.0933
+   }
+  },
+  "Sonnet 5.5": {
+   "no_skill": {
+    "runs": 90,
+    "seconds": 8.9,
+    "usd": 0.0178
+   },
+   "one_sentence": {
+    "runs": 90,
+    "seconds": 7.7,
+    "usd": 0.0167
+   },
+   "three_sentences": {
+    "runs": 90,
+    "seconds": 8.1,
+    "usd": 0.0176
+   },
+   "v0.1.0": {
+    "runs": 90,
+    "seconds": 15.9,
+    "usd": 0.085
+   },
+   "v0.2.0": {
+    "runs": 90,
+    "seconds": 11.5,
+    "usd": 0.0588
+   }
+  },
+  "GPT-6.1 Sol": {
+   "no_skill": {
+    "runs": 45,
+    "seconds": 15.1,
+    "input_tokens": 11952,
+    "output_tokens": 279
+   },
+   "one_sentence": {
+    "runs": 45,
+    "seconds": 15.7,
+    "input_tokens": 11971,
+    "output_tokens": 306
+   },
+   "three_sentences": {
+    "runs": 45,
+    "seconds": 18.2,
+    "input_tokens": 11996,
+    "output_tokens": 375
+   },
+   "v0.1.0": {
+    "runs": 45,
+    "seconds": 26.4,
+    "input_tokens": 42203,
+    "output_tokens": 454
+   },
+   "v0.2.0": {
+    "runs": 45,
+    "seconds": 23.3,
+    "input_tokens": 28430,
+    "output_tokens": 430
+   }
+  },
+  "GPT-6 Astra (high)": {
+   "no_skill": {
+    "runs": 45,
+    "seconds": 12.3,
+    "input_tokens": 11888,
+    "output_tokens": 224
+   },
+   "one_sentence": {
+    "runs": 45,
+    "seconds": 12.3,
+    "input_tokens": 11907,
+    "output_tokens": 242
+   },
+   "three_sentences": {
+    "runs": 45,
+    "seconds": 14.4,
+    "input_tokens": 11932,
+    "output_tokens": 309
+   },
+   "v0.1.0": {
+    "runs": 45,
+    "seconds": 22.8,
+    "input_tokens": 42099,
+    "output_tokens": 378
+   },
+   "v0.2.0": {
+    "runs": 45,
+    "seconds": 19.3,
+    "input_tokens": 28320,
+    "output_tokens": 371
+   }
+  },
+  "GPT-6 Astra (low)": {
+   "no_skill": {
+    "runs": 45,
+    "seconds": 11.3,
+    "input_tokens": 11888,
+    "output_tokens": 183
+   },
+   "one_sentence": {
+    "runs": 45,
+    "seconds": 12.0,
+    "input_tokens": 11907,
+    "output_tokens": 193
+   },
+   "three_sentences": {
+    "runs": 45,
+    "seconds": 12.7,
+    "input_tokens": 11932,
+    "output_tokens": 251
+   },
+   "v0.1.0": {
+    "runs": 45,
+    "seconds": 21.3,
+    "input_tokens": 42062,
+    "output_tokens": 328
+   },
+   "v0.2.0": {
+    "runs": 45,
+    "seconds": 18.0,
+    "input_tokens": 28340,
+    "output_tokens": 305
+   }
+  },
+  "GPT-6 Luna (max)": {
+   "no_skill": {
+    "runs": 45,
+    "seconds": 15.5,
+    "input_tokens": 11260,
+    "output_tokens": 480
+   },
+   "one_sentence": {
+    "runs": 45,
+    "seconds": 16.2,
+    "input_tokens": 11279,
+    "output_tokens": 542
+   },
+   "three_sentences": {
+    "runs": 45,
+    "seconds": 21.5,
+    "input_tokens": 11304,
+    "output_tokens": 712
+   },
+   "v0.1.0": {
+    "runs": 45,
+    "seconds": 38.4,
+    "input_tokens": 40136,
+    "output_tokens": 1293
+   },
+   "v0.2.0": {
+    "runs": 45,
+    "seconds": 38.1,
+    "input_tokens": 27030,
+    "output_tokens": 1239
+   }
+  }
+ },
+ "review_threads": {
+  "threads": 48,
+  "about_prose": 33,
+  "types": {
+   "other": 29,
+   "no_evidence": 24,
+   "ai_disclosure": 19,
+   "unrelated_changes": 11,
+   "description_mismatch": 8,
+   "verbose": 7,
+   "hard_to_understand": 6,
+   "canned_triage": 5,
+   "overclaim": 4,
+   "narrating_comments": 3,
+   "fabricated": 1
+  },
+  "author_edited_text": 13,
+  "author_response": {
+   "pushed_code_only": 18,
+   "edited_description": 9,
+   "no_response": 6,
+   "replied_only": 6,
+   "closed_by_author": 5,
+   "edited_both": 3,
+   "renamed_title": 1
+  }
+ },
+ "a2_disclosure_lines": {
+  "no_skill": {
+   "outputs": 70,
+   "altered": 8,
+   "kept": 60,
+   "tool_added": 5,
+   "deleted": 2
+  },
+  "one_sentence": {
+   "outputs": 70,
+   "kept": 61,
+   "altered": 6,
+   "tool_added": 2,
+   "deleted": 3
+  },
+  "three_sentences": {
+   "outputs": 70,
+   "altered": 1,
+   "kept": 69
+  },
+  "v0.1.0": {
+   "outputs": 70,
+   "kept": 69,
+   "altered": 1,
+   "tool_added": 1
+  },
+  "v0.2.0": {
+   "outputs": 70,
+   "kept": 70
+  },
+  "cases": 7
+ }
+}
