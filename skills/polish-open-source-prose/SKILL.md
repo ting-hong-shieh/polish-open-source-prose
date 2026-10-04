@@ -68,7 +68,8 @@ Change a passage only when it:
 - takes space without saying anything.
 
 Make the smallest change that removes the cost. When you remove a promotional
-sentence, keep any fact it carried, such as where or when the tool runs. Passive voice,
+sentence, keep any concrete detail it carried, such as where or when the tool runs;
+drop only the unsupported claim. Passive voice,
 repeated API names, parallel steps, fragments, dashes, rhetorical questions, and
 polished sentences are not defects on their own.
 
