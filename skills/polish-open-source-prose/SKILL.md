@@ -51,9 +51,10 @@ When a protected element looks wrong, flag it separately instead of silently fix
   not passing CI. Do not write "all tests pass", "fully validated", or "completely
   fixed" unless the source names the command, commit, and scope that support it.
 - Unsupported certainty is not a protected stance. When the source gives no evidence
-  for "clearly", "robust", or "顯然", state what was observed and present the cause or
-  benefit as the author's judgment, or ask for the evidence. Do not strengthen a claim
-  the source states tentatively.
+  for a cause ("clearly", "顯然"), state what was observed and mark the cause as a
+  hypothesis. When it gives no evidence for a quality claim ("robust", "faster",
+  "scales better"), ask what supports it or drop it; prefixing "I think" does not make
+  the claim informative. Do not strengthen a claim the source states tentatively.
 
 ## 4. Edit only where there is a concrete cost
 
@@ -62,6 +63,7 @@ Change a passage only when it:
 - makes a claim the source does not support;
 - hides the actor, limitation, or result the reader needs;
 - breaks the logic between sentences;
+- blames the user for an error, or does not say what happened and what to do next;
 - uses a term that misleads readers of the target locale;
 - takes space without saying anything.
 

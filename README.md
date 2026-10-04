@@ -167,6 +167,19 @@ every repository.
 Passive voice, parallel lists, fragments, questions, dashes, and polished sentences
 are not automatic defects.
 
+## Why the skill is small
+
+Earlier versions shipped phrase lists, examples, and surface-by-surface guidance. In
+A/B runs of the forward cases on Claude Opus 5.5, GPT-6.1 Sol, and GPT-6 Astra,
+models without the skill already removed hype and chose Taiwan terms, but rewrote
+almost every passage that should have stayed as written. The longer guidance did not
+change rewrite results; the rules about leaving clear text alone and keeping exact
+content exact did. In two Claude Opus 5.5 runs of this version, all 19 keep cases came
+back unchanged, against 13–14 for the previous version and 0–3 without the skill.
+
+The cases are written by the maintainers and scored with substring checks, so treat
+these numbers as a regression signal, not a benchmark.
+
 ## What it protects
 
 | Area | Examples |

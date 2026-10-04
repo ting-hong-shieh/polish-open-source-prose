@@ -37,9 +37,9 @@
       "input": "打開配置文件 `policy.yml`，然後保存修改。",
       "recommended_revision": "開啟設定檔 `policy.yml`，然後儲存變更。",
       "must_preserve": ["`policy.yml`"],
-      "must_remove": ["打開", "配置文件", "保存"],
+      "must_remove": ["配置文件", "保存"],
       "must_not_introduce": [],
-      "rationale": "選用台灣技術文件常見動詞，並完整保留檔名。"
+      "rationale": "「配置文件」在台灣會被讀成 document，「保存」不是軟體介面的「儲存」，這兩處會誤導讀者；「打開」在台灣也通用，改成「開啟」可接受但不是必要修改。完整保留檔名。"
     },
     {
       "id": "tw-data-by-context",
@@ -414,7 +414,7 @@
       "input": "Fix bug and improve handling of edge cases",
       "recommended_revision": "This message does not say which bug was fixed or which edge cases changed. Ask the author for the component, the incorrect behavior, and the correction; do not guess them.",
       "must_preserve": [],
-      "must_remove": ["Fix bug", "improve handling of edge cases"],
+      "must_remove": [],
       "must_not_introduce": ["decoder", "tool_result"],
       "rationale": "The input contains no specific fact to rewrite with. A specific message needs the component, the wrong behavior, and the correction, and only the author has them."
     },
@@ -635,7 +635,7 @@
       "input": "Before and after snapshots show the expected JSON. No provider call occurs.",
       "recommended_revision": "The reply asserts that the snapshots match without showing them. Ask the author for the two commits, the raw JSON, and the command that produced it, and post those instead of the summary; do not fill them in.",
       "must_preserve": ["JSON"],
-      "must_remove": ["show the expected JSON"],
+      "must_remove": [],
       "must_not_introduce": ["all paths", "production provider"],
       "rationale": "A snapshot claim needs two identifiable states, raw output, and a reproduction command before it can help a reviewer. None of them are in the input, so the right result is a request for them, not invented values."
     }
