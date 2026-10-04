@@ -320,12 +320,12 @@
       "surface": "pull request",
       "mode": "keep",
       "focus": ["false_positive", "voice_fit"],
-      "input": "這個 bug 真的很鬧：只有週一、locale 是 `zh-Hant-TW` 時才會出現。我先補回歸測試。",
-      "recommended_revision": "這個 bug 真的很鬧：只有週一、locale 是 `zh-Hant-TW` 時才會出現。我先補回歸測試。",
-      "must_preserve": ["真的很鬧", "只有週一", "`zh-Hant-TW`", "我先補回歸測試"],
+      "input": "這個 bug 不太正常，只有禮拜一、locale 是 `zh-Hant-TW` 的時候才會出現。\n我先補做 regression test。",
+      "recommended_revision": "這個 bug 不太正常，只有禮拜一、locale 是 `zh-Hant-TW` 的時候才會出現。\n我先補做 regression test。",
+      "must_preserve": ["不太正常", "只有禮拜一", "`zh-Hant-TW`", "我先補做 regression test"],
       "must_remove": [],
       "must_not_introduce": ["本團隊"],
-      "rationale": "口語帶有作者聲音，條件與下一步也很清楚，無須強行改成正式公文。"
+      "rationale": "「不太正常」「禮拜一」「補做」是作者自己的口語，條件與下一步也很清楚，無須改成正式公文或把 regression test 翻成中文。"
     },
     {
       "id": "long-form-readme",

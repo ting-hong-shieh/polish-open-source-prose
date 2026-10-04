@@ -7,7 +7,7 @@
   ·
   <a href="#quick-start">Quick start</a>
   ·
-  <a href="#locale-support">Locale support</a>
+  <a href="#how-we-tested-it">How we tested it</a>
   ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
@@ -15,40 +15,92 @@
 <p align="center">
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
-  <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
   <img src="https://img.shields.io/badge/forward_cases-49-0f766e?style=flat-square" alt="49 forward cases">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
-> An agent skill for editing open-source prose without making it worse. It leaves text
-> that is already clear alone, keeps facts, commands, quotations, licenses, and the
-> author's voice exact, and does not fill gaps with facts nobody supplied. Includes a
-> Traditional Chinese (Taiwan) locale layer. Runs on Claude Code and Codex.
+Ask a model to polish a paragraph and it will change something, even when nothing was
+wrong. In our tests, current models already cut hype on their own. They also turned
+"This fix addresses" into "This PR fixes", added "so a retry is safe" to a code comment,
+and decided that "multilingual codebase" meant "more than one programming language".
 
-<table>
-  <tr>
-    <td width="33%">
-      <strong>Clear text stays as written</strong><br>
-      A request to polish does not oblige an edit. Text that is already clear comes
-      back unchanged.
-    </td>
-    <td width="33%">
-      <strong>Exact content stays exact</strong><br>
-      Numbers, conditions, negation, commands, links, quotations, licenses, and
-      deliberate voice are not rewritten.
-    </td>
-    <td width="33%">
-      <strong>No invented facts</strong><br>
-      Missing details become questions for the author, not made-up metrics, commits,
-      or test results.
-    </td>
-  </tr>
-</table>
+This skill is the brake for that. It tells the agent to return clear text unchanged,
+keep exact content exact, and ask for missing facts instead of inventing them. It does
+not try to make prose sound more human; current models already do that.
+
+It is an [Agent Skill](https://agentskills.io) for README files, documentation, release
+notes, changelogs, pull requests, issues, code comments, UI copy, and error messages,
+and it runs on Claude Code and Codex.
+
+## What it prevents
+
+Each example below shows the input, what Claude Opus 5.5 returned without the skill,
+and what it returned with the skill. All three come from the
+[test cases](skills/polish-open-source-prose/tests/forward_cases.json); see
+[How we tested it](#how-we-tested-it).
+
+### A scoped claim stays scoped
+
+> This fix addresses the cache-key collision reported in #512. It does not cover the
+> stale-entry eviction discussed in #530.
+
+| Without the skill | With the skill |
+| --- | --- |
+| This PR **fixes** the cache-key collision reported in #512. It does not **address** the stale-entry eviction discussed in #530. | Unchanged. |
+
+"Addresses" leaves room for a partial fix. "Fixes" tells the reviewer the whole issue
+is closed, which the author did not say.
+
+### A code comment does not gain a claim
+
+```rust
+// Retry once on ECONNRESET: the upstream load balancer closes idle keep-alive
+// connections after 60 s without sending FIN, so the first write on a reused
+// connection can fail even though the request never reached the server.
+```
+
+In one of the two runs without the skill, the last line became "The request never
+reached the server, so a retry is safe." The original says why the write fails. It does
+not say that retrying is safe in general. With the skill, the comment came back
+unchanged in both runs.
+
+### A missing fact is asked for, not invented
+
+> PolyglotGuard is a powerful, next-generation solution that seamlessly protects your
+> multilingual codebase across today's rapidly evolving ecosystem.
+
+| Without the skill | With the skill |
+| --- | --- |
+| PolyglotGuard protects codebases that use more than one programming language. | PolyglotGuard protects multilingual codebases. |
+
+Both versions drop the hype. Without the skill, the model also picked a meaning for
+"multilingual" that the source never states. With the skill, it kept the sentence to
+what is known, and in one run asked afterwards: "What does "multilingual" mean here:
+several programming languages, or several human languages (i18n)?"
+
+## What it does and does not do
+
+The skill:
+
+- returns text unchanged when it is already clear and fits its surface;
+- keeps numbers, versions, conditions, negation, scope, commands, links, identifiers,
+  quotations, license and policy text, Markdown structure, and deliberate voice exact;
+- does not add metrics, test results, commit hashes, or behavior the source does not
+  contain, and asks for missing facts after the revision;
+- does not let "all tests pass" or "completely fixed" stand without a command, commit,
+  and scope, and drops or asks for evidence behind claims such as "robust" or "scales
+  better".
+
+It does not:
+
+- make prose sound more human, which current models already do without it;
+- decide whether a person or a model wrote a passage, or help text evade an AI
+  detector;
+- remove a statistical watermark or treat one as proof of identity; for authorship, it
+  recommends a signed commit or file;
+- replace legal, security, or domain review.
 
 ## Quick start
-
-The skill directory follows the [Agent Skills](https://agentskills.io) format, so the
-same files work in Claude Code and Codex.
 
 ### Install with Claude Code
 
@@ -83,140 +135,106 @@ You can also use the skill folder directly during local development:
 skills/polish-open-source-prose
 ```
 
-### Invoke the skill
+### Use it
 
-Claude Code loads the skill automatically when a request matches its description. To
-invoke it directly:
-
-```text
-/polish-open-source-prose
-```
-
-In Codex:
+Claude Code loads the skill when a request matches its description. To invoke it
+directly, use `/polish-open-source-prose` in Claude Code or `$polish-open-source-prose`
+in Codex. For example:
 
 ```text
-$polish-open-source-prose
+Polish this PR description. Leave anything that is already clear.
+
+Check this release note for claims the changes do not support.
+
+Review this README section and list only edits that fix a concrete problem.
 ```
 
-Try one of these requests:
+## How we tested it
+
+The repository has 49 short test cases taken from the kinds of text open-source
+projects publish: README paragraphs, pull request descriptions, review replies, commit
+messages, and code comments. Each case records the input and the expected result. Some
+passages are already fine and should come back unchanged; the rest need an edit.
+
+We gave each passage to three models with an instruction to revise it, under five
+conditions:
+
+- **No skill**: the instruction alone.
+- **One sentence**: the instruction, preceded by "If the text is already clear and fits
+  its surface, returning it unchanged is a valid answer."
+- **Three sentences**: the instruction, preceded by the
+  [short instruction](#without-installing-the-skill) below.
+- **v0.1.0** and **v0.2.0**: the instruction, with that version of the skill.
+
+Claude Opus 5.5 ran in Claude Code, twice per condition. GPT-6.1 Sol and GPT-6 Astra
+ran in Codex, once per condition. Each model got the same instruction under every
+condition, but the wording differed a little between models, so compare across a row,
+not down a column.
+
+Results for the 21 English cases. A cell with two numbers shows two runs.
+
+**Passages that should stay unchanged (8)**
+
+| Model | No skill | One sentence | Three sentences | v0.1.0 | v0.2.0 |
+| --- | --- | --- | --- | --- | --- |
+| Claude Opus 5.5 | 0, 2 | 5, 6 | 7, 7 | 5, 6 | 8, 8 |
+| GPT-6.1 Sol | 0 | 3 | 7 | 1 | 8 |
+| GPT-6 Astra | 0 | 3 | 6 | 1 | 8 |
+
+**Passages that need an edit (11)**
+
+| Model | No skill | One sentence | Three sentences | v0.1.0 | v0.2.0 |
+| --- | --- | --- | --- | --- | --- |
+| Claude Opus 5.5 | 8, 7 | 8, 7 | 5, 5 | 6, 7 | 10, 10 |
+| GPT-6.1 Sol | 8 | 5 | 2 | 8 | 10 |
+| GPT-6 Astra | 6 | 7 | 4 | 8 | 10 |
+
+The remaining two cases expect the model to ask for missing facts instead of editing; a
+word check cannot score that, so they are left out.
+
+What this shows:
+
+- Without guidance, every model rewrote almost every passage that was already fine.
+- A short instruction removes most of those edits, and three sentences remove more than
+  one. If restraint is all you need, the instruction below may be enough.
+- The three-sentence instruction also made every model skip edits that were needed:
+  on the 11 English passages that needed one, results fell to 5, 2, and 4.
+- v0.2.0 kept the clear passages unchanged and still made the needed edits. The skill
+  adds the second half: which problems are worth an edit.
+
+What it does not show:
+
+- We wrote the cases and the expected results ourselves, and the scoring checks for
+  specific words rather than judging quality.
+- While building v0.2.0 we corrected the expected results of several cases that need
+  an edit and added rules after seeing failures on them, so v0.2.0 has a home advantage
+  on that table. The expected results of the unchanged passages were not changed.
+- Each model ran only once or twice, and the two short instructions were in English.
+
+Treat these numbers as a regression check, not a benchmark.
+
+### Without installing the skill
+
+If you only want a model to stop rewriting text that was fine, put this before your
+request:
 
 ```text
-Audit this README and propose only evidence-backed edits.
-
-Localize these release notes for zh-Hant-TW without changing product behavior.
-
-Review this PR description for unsupported claims and lost qualifications.
+Polish this text only where there is a concrete problem. Leave already-clear text
+unchanged. Preserve facts, scope, conditions, negation, commands, links, quotations,
+and author voice. Do not invent missing facts.
 ```
 
-## Before and after
+Expect it to skip some edits that are needed.
 
-These examples come from the
-[forward-case corpus](skills/polish-open-source-prose/tests/forward_cases.json).
-They show the three decisions the skill makes most often.
+## Languages
 
-### Leave clear technical prose unchanged
+The rules in [`SKILL.md`](skills/polish-open-source-prose/SKILL.md) apply to any
+language. Traditional Chinese for Taiwan (`zh-Hant-TW`) has an extra layer for word
+choices that depend on context; it is described in the
+[Chinese README](README.zh-Hant-TW.md). To add another language, follow the
+[locale pack contract](docs/locale-pack-contract.md).
 
-**Surface:** README · **Mode:** keep
-
-> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
-
-The paragraph names the configuration file, processing order, fallback, and negative
-guarantee. Rewriting it would risk losing a constraint without adding clarity, so the
-expected output is the input.
-
-### Keep the author's voice
-
-**Surface:** pull request · **Locale:** `zh-Hant-TW` · **Mode:** keep
-
-> 這個 bug 真的很鬧：只有週一、locale 是 `zh-Hant-TW` 時才會出現。我先補回歸測試。
-
-In evaluation runs without the skill, models rewrote 「真的很鬧」 as 「很難重現」
-or dropped the first person. The condition and the next step are already clear, so the expected output is
-the input.
-
-### Remove unsupported claims without inventing replacements
-
-**Surface:** pull request · **Mode:** rewrite
-
-Before:
-
-> This groundbreaking fix completely resolves the multimodal content loss that has plagued users. The decoder now seamlessly handles image and document blocks, delivering a robust and comprehensive solution for all tool-result scenarios.
-
-After:
-
-> This fix addresses the multimodal content loss in tool results. The decoder now handles image and document blocks.
-
-The input does not name the provider, the block format, or how blocks move between
-messages, so the revision does not either. If those details matter, the skill asks
-the author for them after the revision.
-
-These are expected outputs from a fixed corpus, not a promise of identical wording on
-every repository.
-
-## How it works
-
-1. **Decide whether to edit at all.** Clear, specific text that fits its surface comes
-   back unchanged.
-2. **Protect what must stay exact.** Facts, qualifiers, identifiers, commands, links,
-   quotations, licenses, policy text, markup, and deliberate voice.
-3. **Do not add facts.** Remove or narrow unsupported claims, and ask for missing
-   details instead of filling them in.
-4. **Edit only where there is a concrete cost**, with the smallest change, and compare
-   the result with the source before delivery.
-
-Passive voice, parallel lists, fragments, questions, dashes, and polished sentences
-are not automatic defects.
-
-## Why the skill is small
-
-Earlier versions shipped phrase lists, examples, and surface-by-surface guidance. In
-A/B runs of the forward cases on Claude Opus 5.5, GPT-6.1 Sol, and GPT-6 Astra,
-models without the skill already removed hype and chose Taiwan terms, but rewrote
-almost every passage that should have stayed as written. The longer guidance did not
-change rewrite results; the rules about leaving clear text alone and keeping exact
-content exact did. In two Claude Opus 5.5 runs of this version, all 19 keep cases came
-back unchanged, against 13–14 for the previous version and 0–3 without the skill.
-
-The cases are written by the maintainers and scored with substring checks, so treat
-these numbers as a regression signal, not a benchmark.
-
-## What it protects
-
-| Area | Examples |
-| --- | --- |
-| Meaning | Subjects, scope, comparisons, conditions, exceptions, uncertainty |
-| Evidence | Numbers, dates, versions, attribution, causal claims |
-| Technical text | Commands, flags, APIs, identifiers, paths, URLs, error strings |
-| Quoted and governed text | Quotations, citations, licenses, policies, security steps |
-| Structure | Headings, anchors, tables, lists, code fences, placeholders, frontmatter |
-| Voice | Deliberate humor, community terms, register, and first-person stance |
-
-## Locale support
-
-| Locale | Status | Coverage |
-| --- | --- | --- |
-| Any | Core rules | The fidelity and edit rules in `SKILL.md` |
-| `zh-Hant-TW` | Locale layer | Context-dependent terms, punctuation, legal text, false-positive guards, forward cases |
-| Other locales | Core rules only | A native locale pack and review are still required |
-
-The [locale pack contract](docs/locale-pack-contract.md) defines what a new
-language-and-region pack must contain and how it is tested.
-
-## Boundaries
-
-This project does not:
-
-- determine whether a human or model wrote a passage;
-- optimize prose to evade an AI detector;
-- promise removal of a statistical watermark;
-- invent metrics, product behavior, user stories, opinions, or personal experience;
-- claim native support for a locale without a reviewed locale pack;
-- replace legal, security, or domain review.
-
-For authorship provenance, the skill recommends a signed canonical artifact rather
-than treating writing style or a statistical watermark as proof of identity.
-
-## Validation
+## Development
 
 Run all repository checks:
 
@@ -230,10 +248,9 @@ Run the skill checks directly:
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-The current corpus contains 49 forward specifications: 19 cases that should remain
-unchanged and 30 that should be revised, audited, or answered with provenance guidance.
-Structural checks catch protected-token drift and corpus errors; native review is
-still required to judge real project prose.
+These checks are structural. They confirm that every test case is well formed, that
+protected words appear in both the input and the expected result, and that links
+resolve. They do not run a model.
 
 <details>
 <summary><strong>Repository layout</strong></summary>
@@ -258,35 +275,33 @@ still required to judge real project prose.
 ```
 
 Each host reads its own manifest directory and the shared `skills/` tree, so adding an
-agent platform does not fork the editorial content.
-
-Repository documentation stays outside the skill directory so it is not loaded as
-agent instructions.
+agent platform does not fork the editorial content. Repository documentation stays
+outside the skill directory so it is not loaded as agent instructions.
 
 </details>
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a broad editorial rule or new
-locale. Particularly useful contributions include:
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a new rule or language. The
+most useful contributions are:
 
-- false-positive reports;
-- missing semantic safeguards;
-- contextual regional terminology;
-- examples that can be redistributed;
-- balanced change/keep forward cases;
-- native review of locale packs.
+- a passage the skill changed when it should have left it alone;
+- a passage where it kept an unsupported claim or invented a fact;
+- test cases from real project text you can redistribute;
+- native review of a language layer.
 
-## License and acknowledgments
+## Background
 
-Original contributions are licensed under Apache-2.0. Material derived from
-`hardikpandya/stop-slop` remains under its MIT license. See
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
-[LICENSE.stop-slop](skills/polish-open-source-prose/LICENSE.stop-slop).
-
-The design was informed by public work from
-[stop-slop](https://github.com/hardikpandya/stop-slop),
+This project started from the ideas in [stop-slop](https://github.com/hardikpandya/stop-slop)
+and several Taiwan "humanizer" projects:
 [speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw),
 [Humanizer-zh-TW](https://github.com/kevintsai1202/Humanizer-zh-TW),
 [humanizer-zh-tw](https://github.com/nagameTW/humanizer-zh-tw), and
-[Humanizer-zh-TW-Pro](https://github.com/slivenred/humanizer-zh-TW-Pro).
+[Humanizer-zh-TW-Pro](https://github.com/slivenred/humanizer-zh-TW-Pro). Testing showed
+that current models already do most of that work, so v0.2.0 removed the phrase lists
+and kept only the rules that stop over-editing. See
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for what earlier versions included.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).

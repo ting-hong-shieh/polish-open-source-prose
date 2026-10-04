@@ -39,7 +39,6 @@ reviews:
     - "!LICENSE"
     - "!NOTICE"
     - "!THIRD_PARTY_NOTICES.md"
-    - "!skills/polish-open-source-prose/LICENSE.stop-slop"
 
   path_instructions:
     - path: "skills/**/*.md"
