@@ -1,0 +1,18 @@
+\begin{table*}[t]\centering\small
+\caption{Development set: percentage of cases passing, by model and condition (mean over runs; 19 keep and 28 edit cases; the 2 provenance cases are left out).}\label{tab:main}
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{No skill} & \multicolumn{2}{c}{One sentence} & \multicolumn{2}{c}{Three sentences} & \multicolumn{2}{c}{Skill v0.1.0} & \multicolumn{2}{c}{Skill v0.2.0} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-11}
+ & keep & edit & keep & edit & keep & edit & keep & edit & keep & edit \\
+\midrule
+Opus 5.5 & 8 & 73 & 68 & 79 & 82 & 64 & 71 & 75 & 100 & 89 \\
+Opus 4.6 & 8 & 68 & 76 & 68 & 82 & 43 & 50 & 88 & 95 & 84 \\
+Sonnet 5.5 & 16 & 68 & 79 & 71 & 92 & 61 & 92 & 82 & 100 & 89 \\
+GPT-6.1 Sol & 0 & 64 & 42 & 54 & 79 & 43 & 32 & 82 & 95 & 89 \\
+GPT-6 Astra (high) & 0 & 57 & 42 & 64 & 90 & 50 & 26 & 75 & 100 & 93 \\
+GPT-6 Astra (low) & 0 & 61 & 16 & 57 & 79 & 43 & 10 & 71 & 100 & 93 \\
+GPT-6 Luna (max) & 0 & 36 & 37 & 39 & 63 & 39 & 5 & 57 & 53 & 68 \\
+\bottomrule
+\end{tabular}
+\end{table*}

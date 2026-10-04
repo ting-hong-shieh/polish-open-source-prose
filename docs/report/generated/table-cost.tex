@@ -1,0 +1,18 @@
+\begin{table}[t]\centering\small
+\caption{Mean seconds and cost per run on the held-out sets. Claude cost is the API-equivalent estimate that Claude Code reports, not a bill; for Codex the table gives input tokens.}\label{tab:cost}
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{No skill} & \multicolumn{2}{c}{Three sentences} & \multicolumn{2}{c}{Skill v0.2.0} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & s & cost & s & cost & s & cost \\
+\midrule
+Opus 5.5 & 14 & \$0.044 & 12 & \$0.039 & 17 & \$0.123 \\
+Opus 4.6 & 13 & \$0.038 & 18 & \$0.044 & 22 & \$0.093 \\
+Sonnet 5.5 & 9 & \$0.018 & 8 & \$0.018 & 12 & \$0.059 \\
+GPT-6.1 Sol & 15 & 12.0k & 18 & 12.0k & 23 & 28.4k \\
+GPT-6 Astra (high) & 12 & 11.9k & 14 & 11.9k & 19 & 28.3k \\
+GPT-6 Astra (low) & 11 & 11.9k & 13 & 11.9k & 18 & 28.3k \\
+GPT-6 Luna (max) & 16 & 11.3k & 22 & 11.3k & 38 & 27.0k \\
+\bottomrule
+\end{tabular}
+\end{table}

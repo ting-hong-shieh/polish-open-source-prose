@@ -1,0 +1,22 @@
+\begin{table*}[t]\centering\small
+\caption{Judged edit cases. In each pair the first number is from the Opus 5.5 judge and the second from the GPT-6.1 Sol judge. \emph{Addressed} and \emph{clean fix} are mean scores from 0 to 1; a clean fix counts the addressed score only when the revision neither added a fact nor damaged needed text. \emph{Added a fact}, \emph{damaged}, and \emph{unchanged} are percentages of outputs. Models weigh equally; Claude runs are averaged first.}\label{tab:judged}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{Addressed} & \multicolumn{2}{c}{Clean fix} & \multicolumn{2}{c}{Added a fact} & \multicolumn{2}{c}{Damaged} & Unchanged \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+\midrule
+\multicolumn{10}{l}{\emph{A1 (12 cases)}} \\
+\quad No skill & 0.59 & 0.61 & 0.49 & 0.45 & 11 & 19 & 7 & 5 & 0 \\
+\quad One sentence & 0.57 & 0.57 & 0.48 & 0.46 & 11 & 16 & 2 & 4 & 15 \\
+\quad Three sentences & 0.34 & 0.34 & 0.34 & 0.34 & 0 & 0 & 1 & 1 & 56 \\
+\quad Skill v0.1.0 & 0.73 & 0.72 & 0.71 & 0.67 & 2 & 4 & 1 & 5 & 9 \\
+\quad Skill v0.2.0 & 0.77 & 0.76 & 0.76 & 0.71 & 1 & 1 & 1 & 5 & 12 \\
+\multicolumn{10}{l}{\emph{A2 (21 real pull requests)}} \\
+\quad No skill & 0.27 & 0.28 & 0.15 & 0.12 & 21 & 38 & 27 & 23 & 0 \\
+\quad One sentence & 0.24 & 0.26 & 0.18 & 0.15 & 9 & 22 & 18 & 14 & 7 \\
+\quad Three sentences & 0.07 & 0.10 & 0.07 & 0.10 & 0 & 5 & 2 & 1 & 13 \\
+\quad Skill v0.1.0 & 0.28 & 0.29 & 0.25 & 0.22 & 8 & 18 & 10 & 8 & 4 \\
+\quad Skill v0.2.0 & 0.19 & 0.19 & 0.18 & 0.19 & 1 & 0 & 4 & 1 & 24 \\
+\bottomrule
+\end{tabular}
+\end{table*}
