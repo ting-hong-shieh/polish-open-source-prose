@@ -284,14 +284,16 @@ python3 skills/polish-open-source-prose/scripts/validate_skill.py
 - 可以公開散布的真實專案文字，做成測試案例；
 - 母語使用者審查語系編輯層。
 
-## 授權與致謝
+## 緣起
 
-原創內容以 Apache-2.0 授權。衍生自 `hardikpandya/stop-slop` 的內容仍依其 MIT 授權
-釋出，詳見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 與
-[LICENSE.stop-slop](skills/polish-open-source-prose/LICENSE.stop-slop)。
-
-設計參考了 [stop-slop](https://github.com/hardikpandya/stop-slop)、
-[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)、
+這個專案最早是從 [stop-slop](https://github.com/hardikpandya/stop-slop) 與幾個台灣的
+「去 AI 味」專案出發：[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)、
 [Humanizer-zh-TW](https://github.com/kevintsai1202/Humanizer-zh-TW)、
 [humanizer-zh-tw](https://github.com/nagameTW/humanizer-zh-tw) 與
-[Humanizer-zh-TW-Pro](https://github.com/slivenred/humanizer-zh-TW-Pro) 的公開成果。
+[Humanizer-zh-TW-Pro](https://github.com/slivenred/humanizer-zh-TW-Pro)。測試後發現，
+現在的模型自己就能做到其中大部分，所以 v0.2.0 拿掉了詞表，只留下防止模型改過頭的
+規則。早期版本包含哪些第三方內容，見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## 授權
+
+Apache-2.0，詳見 [LICENSE](LICENSE)。

@@ -290,16 +290,18 @@ most useful contributions are:
 - test cases from real project text you can redistribute;
 - native review of a language layer.
 
-## License and acknowledgments
+## Background
 
-Original contributions are licensed under Apache-2.0. Material derived from
-`hardikpandya/stop-slop` remains under its MIT license. See
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
-[LICENSE.stop-slop](skills/polish-open-source-prose/LICENSE.stop-slop).
-
-The design was informed by public work from
-[stop-slop](https://github.com/hardikpandya/stop-slop),
+This project started from the ideas in [stop-slop](https://github.com/hardikpandya/stop-slop)
+and several Taiwan "humanizer" projects:
 [speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw),
 [Humanizer-zh-TW](https://github.com/kevintsai1202/Humanizer-zh-TW),
 [humanizer-zh-tw](https://github.com/nagameTW/humanizer-zh-tw), and
-[Humanizer-zh-TW-Pro](https://github.com/slivenred/humanizer-zh-TW-Pro).
+[Humanizer-zh-TW-Pro](https://github.com/slivenred/humanizer-zh-TW-Pro). Testing showed
+that current models already do most of that work, so v0.2.0 removed the phrase lists
+and kept only the rules that stop over-editing. See
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for what earlier versions included.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).

@@ -163,7 +163,6 @@ def validate_files(errors: list[str]) -> None:
         ROOT / "NOTICE",
         ROOT / "THIRD_PARTY_NOTICES.md",
         SKILL / "SKILL.md",
-        SKILL / "LICENSE.stop-slop",
         CLAUDE_PLUGIN,
         CLAUDE_MARKETPLACE,
     ]
@@ -192,10 +191,6 @@ def validate_files(errors: list[str]) -> None:
                 local_target = target.split("#", 1)[0]
                 if not (path.parent / local_target).resolve().exists():
                     errors.append(f"Broken local link in {path.relative_to(ROOT)}: {target}")
-
-    upstream_license = (SKILL / "LICENSE.stop-slop").read_text(encoding="utf-8")
-    if "MIT License" not in upstream_license or "Hardik Pandya" not in upstream_license:
-        errors.append("Upstream stop-slop license or attribution is incomplete")
 
 
 def validate_skill(errors: list[str]) -> str:
