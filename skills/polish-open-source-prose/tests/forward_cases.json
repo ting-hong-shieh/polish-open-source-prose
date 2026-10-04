@@ -373,11 +373,11 @@
       "mode": "rewrite",
       "focus": ["surface_fit", "specificity"],
       "input": "This groundbreaking fix completely resolves the multimodal content loss that has plagued users. The decoder now seamlessly handles image and document blocks, delivering a robust and comprehensive solution for all tool-result scenarios.",
-      "recommended_revision": "The Anthropic decoder previously flattened non-text `tool_result` blocks into JSON text, dropping image and document structure. This change preserves text, image, and document blocks during decoding and relocates non-text output to the subsequent `user` message with a lossy-conversion warning.",
+      "recommended_revision": "This fix addresses the multimodal content loss in tool results. The decoder now handles image and document blocks.",
       "must_preserve": ["decoder", "image", "document"],
       "must_remove": ["groundbreaking", "seamlessly", "robust and comprehensive", "plagued"],
-      "must_not_introduce": ["all scenarios", "fully tested"],
-      "rationale": "Replace unsupported promotion with the observed problem, the change made, and how non-text blocks are handled."
+      "must_not_introduce": ["all scenarios", "fully tested", "Anthropic"],
+      "rationale": "Remove the promotion and the unsupported claim about all tool-result scenarios; keep the stated problem and change. The input does not name the provider, the block format, or how blocks move between messages, so the revision does not either."
     },
     {
       "id": "en-reviewer-response-vague-trace",
@@ -386,11 +386,11 @@
       "mode": "rewrite",
       "focus": ["surface_fit", "specificity"],
       "input": "Thanks for looking into this! I tested on commit `48b3b71` and the image data is preserved correctly now. Everything works great and the issue is completely fixed. Let me know if you need anything else!",
-      "recommended_revision": "On commit `48b3b71`, the image block is no longer serialized as JSON text inside the tool message. The `data:image/png;base64` payload is preserved in a subsequent `user` message, and the decoder emits a lossy-conversion diagnostic for the role change.",
-      "must_preserve": ["`48b3b71`", "image"],
-      "must_remove": ["Thanks for looking into this", "completely fixed", "Let me know if you need anything else"],
+      "recommended_revision": "Thanks for looking into this! I tested on commit `48b3b71` and the image data is preserved correctly now. Let me know if you need anything else!",
+      "must_preserve": ["`48b3b71`", "image data is preserved"],
+      "must_remove": ["Everything works great", "completely fixed"],
       "must_not_introduce": ["all formats", "fully validated"],
-      "rationale": "Replace social filler and unsupported closure with a before/after description anchored to the commit. Cite the concrete output location and the diagnostic emitted."
+      "rationale": "One test on one commit does not support \"everything works\" or \"completely fixed\", so that sentence goes. The commit and the observed result stay, and the courtesy lines are the author's voice."
     },
     {
       "id": "en-reviewer-response-unbounded-validation",
@@ -399,24 +399,24 @@
       "mode": "rewrite",
       "focus": ["semantics", "specificity"],
       "input": "I ran extensive tests and the results match perfectly across the board. The implementation is verified against OpenRocket on commit `3a4ac2f` and all values align with zero error.",
-      "recommended_revision": "Cross-checked against OpenRocket commit `3a4ac2f` for set-level normal-force derivative at Mach ≤ 0.5. Four tube-fin geometries produced matching CNa values with absolute tolerance `1e-12`. Transonic CP and roll damping were not compared.",
-      "must_preserve": ["`3a4ac2f`"],
+      "recommended_revision": "I compared the implementation against OpenRocket on commit `3a4ac2f`, and the values I compared matched.",
+      "must_preserve": ["`3a4ac2f`", "OpenRocket"],
       "must_remove": ["extensive", "perfectly across the board"],
-      "must_not_introduce": ["all configurations", "fully verified"],
-      "rationale": "Bound the validation to the quantities, range, and geometries actually compared. Name what was excluded so reviewers know the remaining gap."
+      "must_not_introduce": ["all configurations", "fully verified", "CNa", "Mach"],
+      "rationale": "Remove the unbounded claims. The input does not say which quantities, range, or tolerance were compared; ask the author for them after the revision instead of supplying them."
     },
     {
       "id": "en-commit-message-generic",
       "locale": "en",
       "surface": "commit message",
-      "mode": "rewrite",
+      "mode": "audit",
       "focus": ["surface_fit", "specificity"],
       "input": "Fix bug and improve handling of edge cases",
-      "recommended_revision": "fix(decoder): preserve non-text tool_result blocks instead of flattening to JSON",
+      "recommended_revision": "This message does not say which bug was fixed or which edge cases changed. Ask the author for the component, the incorrect behavior, and the correction; do not guess them.",
       "must_preserve": [],
       "must_remove": ["Fix bug", "improve handling of edge cases"],
-      "must_not_introduce": [],
-      "rationale": "Name the component, the incorrect behavior, and the correction. A commit message that only says 'fix bug' tells the reader nothing the diff does not already show."
+      "must_not_introduce": ["decoder", "tool_result"],
+      "rationale": "The input contains no specific fact to rewrite with. A specific message needs the component, the wrong behavior, and the correction, and only the author has them."
     },
     {
       "id": "en-review-comment-unsupported",
@@ -425,11 +425,11 @@
       "mode": "rewrite",
       "focus": ["semantics", "specificity"],
       "input": "This is a much more robust and elegant approach that will scale better going forward.",
-      "recommended_revision": "Moving the block relocation into `decode_tool_result` keeps the conversion in one place and removes the second pass over the message list.",
+      "recommended_revision": "This approach looks better to me. Could you say what makes it more robust, and whether a test or benchmark shows that it scales better?",
       "must_preserve": [],
       "must_remove": ["robust and elegant", "scale better going forward"],
-      "must_not_introduce": [],
-      "rationale": "Replace unsupported praise with the structural reason the change is an improvement."
+      "must_not_introduce": ["decode_tool_result", "second pass"],
+      "rationale": "The comment asserts robustness and scaling without evidence. Keep the reviewer's approval as a judgment and ask for the evidence; the input names no function or mechanism to cite."
     },
     {
       "id": "en-readme-promo-to-behavior",
@@ -438,11 +438,11 @@
       "mode": "rewrite",
       "focus": ["specificity"],
       "input": "PolyglotGuard is a powerful, next-generation solution that seamlessly protects your multilingual codebase across today's rapidly evolving ecosystem.",
-      "recommended_revision": "PolyglotGuard checks pull requests for translated strings that alter commands, links, or placeholders.",
+      "recommended_revision": "PolyglotGuard protects multilingual codebases.",
       "must_preserve": ["PolyglotGuard"],
       "must_remove": ["powerful", "next-generation", "seamlessly", "rapidly evolving ecosystem"],
-      "must_not_introduce": ["all languages", "zero false positives"],
-      "rationale": "Replace adjective stack with the check the tool actually performs. Verify the exact behavior against the repository before using it."
+      "must_not_introduce": ["all languages", "zero false positives", "pull request"],
+      "rationale": "Remove the adjective stack. The input never says what PolyglotGuard checks; ask the author for that behavior instead of inventing one."
     },
     {
       "id": "en-issue-assert-cause",
@@ -469,19 +469,6 @@
       "must_remove": ["Exhaustively validated", "all configurations"],
       "must_not_introduce": ["all platforms"],
       "rationale": "Name the environment actually tested and state what remains unchecked. 'Exhaustively validated' without listing configurations is unverifiable."
-    },
-    {
-      "id": "en-pr-lead-with-plain-problem",
-      "locale": "en",
-      "surface": "pull request",
-      "mode": "rewrite",
-      "focus": ["surface_fit", "coherence"],
-      "input": "## What\n\nReplays assistant reasoning under both OpenAI-compatible spellings instead of `reasoning` alone.\n\n`encode_openai_message_plaintext_reasoning` and the structured fallback in `encode_openai_message_structured_reasoning` now go through one helper that writes `reasoning` and `reasoning_content` with the same text. No public API change; `TargetCapabilities` is untouched.\n\n## Why\n\n#415 stopped request history from dropping reasoning, which was the original report in #449. It replays it as `message[\"reasoning\"]`, while the response encoder in the same file writes `reasoning_content`, so the two directions disagree on the name.\n\nReasoning-required upstreams look for `reasoning_content` specifically and treat it as present-or-absent rather than reading the alias. So the second turn still fails on those upstreams today even though the reasoning is replayed.",
-      "recommended_revision": "The second turn of a conversation fails on upstreams that require `reasoning_content`, because request history replays the previous assistant reasoning only as `reasoning`. This change sends the same text under both names.\n\n## What\n\nReplays assistant reasoning under both OpenAI-compatible spellings instead of `reasoning` alone.\n\n`encode_openai_message_plaintext_reasoning` and the structured fallback in `encode_openai_message_structured_reasoning` now go through one helper that writes `reasoning` and `reasoning_content` with the same text. No public API change; `TargetCapabilities` is untouched.\n\n## Why\n\n#415 stopped request history from dropping reasoning, which was the original report in #449. It replays it as `message[\"reasoning\"]`, while the response encoder in the same file writes `reasoning_content`, so the two directions disagree on the name.\n\nReasoning-required upstreams look for `reasoning_content` specifically and treat it as present-or-absent rather than reading the alias. So the second turn still fails on those upstreams today even though the reasoning is replayed.",
-      "must_preserve": ["`encode_openai_message_plaintext_reasoning`", "`reasoning_content`", "No public API change", "#415", "#449", "second turn"],
-      "must_remove": [],
-      "must_not_introduce": ["all providers", "every upstream", "always"],
-      "rationale": "The user-visible failure appears only in the last sentence, after two function names. Lead with that failure in plain words, then keep the identifiers and details unchanged. Adapted from the author's own pull request after a reviewer asked for a simpler explanation of the bug."
     },
     {
       "id": "en-keep-pr-identifier-states-behavior",
@@ -643,14 +630,14 @@
       "id": "en-review-snapshot-reproduction",
       "locale": "en",
       "surface": "pull request",
-      "mode": "rewrite",
+      "mode": "audit",
       "focus": ["surface_fit", "specificity", "snapshot"],
       "input": "Before and after snapshots show the expected JSON. No provider call occurs.",
-      "recommended_revision": "Before (commit `a1b2c3d`): [raw JSON]. After (commit `d4e5f60`): [raw JSON]. Both runs use `tests/fixtures/request.json` with `provider=disabled`; command: `pytest tests/test_trace.py -k snapshot`. No provider call occurs.",
-      "must_preserve": ["JSON", "No provider call occurs"],
+      "recommended_revision": "The reply asserts that the snapshots match without showing them. Ask the author for the two commits, the raw JSON, and the command that produced it, and post those instead of the summary; do not fill them in.",
+      "must_preserve": ["JSON"],
       "must_remove": ["show the expected JSON"],
       "must_not_introduce": ["all paths", "production provider"],
-      "rationale": "A snapshot claim needs two identifiable states, raw output, the shared input and configuration, and a reproduction command before it can help a reviewer."
+      "rationale": "A snapshot claim needs two identifiable states, raw output, and a reproduction command before it can help a reviewer. None of them are in the input, so the right result is a request for them, not invented values."
     }
   ]
 }

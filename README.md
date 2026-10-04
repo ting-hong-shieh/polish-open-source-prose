@@ -16,49 +16,34 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-50-0f766e?style=flat-square" alt="50 forward cases">
+  <img src="https://img.shields.io/badge/forward_cases-49-0f766e?style=flat-square" alt="49 forward cases">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 license">
 </p>
 
-> An agent skill for making public project prose less generic or AI-sounding without
-> treating a blacklist or detector score as a style guide. It protects the facts,
-> limits, commands, and project voice that open source depends on—and turns PR or issue
-> verification requests into reproducible review evidence. Runs on Claude Code and
-> Codex.
+> An agent skill for editing open-source prose without making it worse. It leaves text
+> that is already clear alone, keeps facts, commands, quotations, licenses, and the
+> author's voice exact, and does not fill gaps with facts nobody supplied. Includes a
+> Traditional Chinese (Taiwan) locale layer. Runs on Claude Code and Codex.
 
 <table>
   <tr>
     <td width="33%">
-      <strong>OSS facts stay intact</strong><br>
-      Protect facts, numbers, versions, conditions, negation, attribution, causality,
-      commands, links, quotations, and markup.
+      <strong>Clear text stays as written</strong><br>
+      A request to polish does not oblige an edit. Text that is already clear comes
+      back unchanged.
     </td>
     <td width="33%">
-      <strong>Review evidence is reproducible</strong><br>
-      Anchor before/after traces to commits, show raw output, and state what the
-      comparison does and does not cover.
+      <strong>Exact content stays exact</strong><br>
+      Numbers, conditions, negation, commands, links, quotations, licenses, and
+      deliberate voice are not rewritten.
     </td>
     <td width="33%">
-      <strong>Locales stay specific</strong><br>
-      Use regional terminology and false-positive guards instead of a universal
-      replacement list.
+      <strong>No invented facts</strong><br>
+      Missing details become questions for the author, not made-up metrics, commits,
+      or test results.
     </td>
   </tr>
 </table>
-
-## For PR and issue follow-ups
-
-When a reviewer asks for a trace, benchmark, or before/after comparison, use the skill
-to produce an evidence response with:
-
-- the exact base and head commits;
-- the same test or translation path, fixture, and configuration for both states;
-- raw output before interpretation; and
-- the environment, comparison rule, covered scope, excluded cases, and final-head CI
-  status.
-
-The skill does not invent test output or prove a patch correct. It helps turn the
-evidence available in the repository into a response a reviewer can reproduce.
 
 ## Quick start
 
@@ -125,157 +110,62 @@ Review this PR description for unsupported claims and lost qualifications.
 
 ## Before and after
 
-These examples come from the current
+These examples come from the
 [forward-case corpus](skills/polish-open-source-prose/tests/forward_cases.json).
-They show both kinds of decisions the skill makes: replacing vague prose with a
-verified behavior, and leaving clear technical text unchanged.
+They show the three decisions the skill makes most often.
 
-### Replace promotion with behavior
-
-**Surface:** README · **Mode:** rewrite
-
-Before:
-
-> PolyglotGuard is a powerful, next-generation solution that seamlessly protects your multilingual codebase across today's rapidly evolving ecosystem.
-
-After:
-
-> PolyglotGuard checks pull requests for translated strings that alter commands, links, or placeholders.
-
-Why: The revision removes unsupported promotion and keeps the observable check.
-
-### Remove hype without changing behavior in `zh-Hant-TW`
-
-**Surface:** README · **Locale:** `zh-Hant-TW` · **Mode:** rewrite
-
-Before:
-
-> PolyglotGuard 是一款革命性的工具，全面賦能開發團隊，讓每個 pull request 都更有品質。它會檢查翻譯是否改動命令、連結或預留位置。
-
-After:
-
-> PolyglotGuard 會在 pull request 中檢查翻譯是否改動命令、連結或預留位置。
-
-Why: The Taiwan-locale case keeps the product name, command-related terms, and
-behavior while removing generic claims; it does not translate technical identifiers
-mechanically.
-
-### Keep clear technical prose unchanged
+### Leave clear technical prose unchanged
 
 **Surface:** README · **Mode:** keep
 
+> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
+
+The paragraph names the configuration file, processing order, fallback, and negative
+guarantee. Rewriting it would risk losing a constraint without adding clarity, so the
+expected output is the input.
+
+### Keep the author's voice
+
+**Surface:** pull request · **Locale:** `zh-Hant-TW` · **Mode:** keep
+
+> 這個 bug 真的很鬧：只有週一、locale 是 `zh-Hant-TW` 時才會出現。我先補回歸測試。
+
+In evaluation runs without the skill, models rewrote 「真的很鬧」 as 「很難重現」
+or dropped the first person. The condition and the next step are already clear, so the expected output is
+the input.
+
+### Remove unsupported claims without inventing replacements
+
+**Surface:** pull request · **Mode:** rewrite
+
 Before:
 
-> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
+> This groundbreaking fix completely resolves the multimodal content loss that has plagued users. The decoder now seamlessly handles image and document blocks, delivering a robust and comprehensive solution for all tool-result scenarios.
 
 After:
 
-> The checker reads `.polyglotguard.yml`, then groups files by locale. Without a config file it falls back to built-in rules but does not create one automatically.
+> This fix addresses the multimodal content loss in tool results. The decoder now handles image and document blocks.
 
-Why: The paragraph names the configuration file, processing order, fallback, and
-negative guarantee. Rewriting it would risk losing a constraint without adding clarity.
+The input does not name the provider, the block format, or how blocks move between
+messages, so the revision does not either. If those details matter, the skill asks
+the author for them after the revision.
 
-These corpus examples are expected outputs, not claims that the skill will produce the
-same wording for every repository. Real-world results depend on the source code,
-tests, project terminology, and document surface. See [RocketPy #1141](https://github.com/RocketPy-Team/RocketPy/pull/1141),
-[RocketPy #1122](https://github.com/RocketPy-Team/RocketPy/pull/1122),
-[RocketPy #816](https://github.com/RocketPy-Team/RocketPy/issues/816), and
-[Switchyard #428](https://github.com/NVIDIA-NeMo/Switchyard/pull/428) for public
-case studies that require that project context.
-
-## Real-world collaboration case studies
-
-The corpus examples above are stable regression specifications. These case studies
-show a different part of the skill: helping a contributor communicate with maintainers
-and reviewers using the facts of a real project.
-
-### Respond to a request with a reproducible before/after snapshot
-
-**Sources:** [Switchyard PR #389](https://github.com/NVIDIA-NeMo/Switchyard/pull/389#issuecomment-5274177204)
-and [PR #397](https://github.com/NVIDIA-NeMo/Switchyard/pull/397#issuecomment-5282263627)
-
-**Before:** In each PR, a maintainer asked for an output or trace snapshot before and
-after the change so the behavior would be easier and faster to review.
-
-**After:** The contributor posted [#389's snapshot](https://github.com/NVIDIA-NeMo/Switchyard/pull/389#issuecomment-5274372233)
-29 minutes 46 seconds later and [#397's snapshot](https://github.com/NVIDIA-NeMo/Switchyard/pull/397#issuecomment-5282378945)
-9 minutes 59 seconds later. Each response names the base and head commits, states the
-in-process path exercised, rules out a provider call, and shows the raw JSON before
-interpretation.
-
-**Observed outcome:** #389 merged 21 hours 12 minutes after its snapshot (25 hours
-37 minutes after the PR opened). #397 was still awaiting review when this case study
-was recorded, so it is not presented as merge-speed evidence.
-
-**Collaboration value:** The reviewer can reproduce the requested comparison without
-deriving behavior from a prose summary.
-
-### Turn a broad feature request into a reviewable first step
-
-**Source:** [RocketPy issue #816](https://github.com/RocketPy-Team/RocketPy/issues/816)
-and [PR #1144](https://github.com/RocketPy-Team/RocketPy/pull/1144)
-
-**Before:** The request was to add tube fins similar to OpenRocket.
-
-**After:** The contribution proposal defined the first slice: a `TubeFins` surface,
-the supported geometry, a Ribner-based normal-force slope, a 20-degree angle-of-attack
-cap, and a fixed quarter-chord center of pressure for `Mach <= 0.5`. It also listed
-Mach-dependent center of pressure, component drag, cant, overlapping tubes, and yaw
-behavior as deferred work.
-
-**Collaboration value:** Maintainers can review a bounded implementation plan without
-having to infer which parts of the upstream model are being promised.
-
-### Answer a reviewer with evidence and a version boundary
-
-**Source:** [RocketPy PR #1122 comment](https://github.com/RocketPy-Team/RocketPy/pull/1122#issuecomment-5299852239)
-
-**Before:** A simple “the PR should proceed” would have implied that the latest head
-had been tested.
-
-**After:** The response named the verified commit (`9cc93a1`), stated the behavior that
-was checked, noted that the current head (`fce9756`) was not covered by that local
-verification, and called out the failing Documentation check before merge.
-
-**Collaboration value:** The reviewer gets a useful recommendation without an
-unsupported claim about the current branch.
-
-### Describe a security fix without exposing real credentials
-
-**Source:** [Switchyard PR #428](https://github.com/NVIDIA-NeMo/Switchyard/pull/428)
-
-**Before:** The change needed a PR description that gave reviewers enough context
-about the source of the client-visible error and the verification boundary.
-
-**After:** The description explains that transport and timeout source strings could
-include a credential-bearing upstream URL, states which HTTP classifications remain
-unchanged, and records regression tests using `CANARY_ADMIN_QUERY_KEY` only. It also
-states that no provider endpoint or real credential was used.
-
-**Collaboration value:** Reviewers can assess root cause, compatibility, and test
-coverage without asking the contributor to disclose sensitive data.
-
-These historical examples are context-dependent case studies, not guaranteed output
-strings. The Switchyard snapshots predate the first public revision of this skill;
-they show the collaboration outcome that the current reviewer-follow-up guidance now
-specifies, not a claim that the skill generated them. Review and merge timestamps also
-depend on reviewer availability, CI, patch scope, and project policy. They should
-inform future forward cases while the corpus remains the deterministic test surface.
+These are expected outputs from a fixed corpus, not a promise of identical wording on
+every repository.
 
 ## How it works
 
-1. **Establish the source of truth.** Inspect code, tests, configuration, and project
-   terminology before trusting promotional copy.
-2. **Protect semantic constraints.** Lock facts, qualifications, identifiers,
-   quotations, legal text, commands, links, and markup.
-3. **Diagnose concrete costs.** Revise vagueness, unsupported claims, missing actors,
-   broken logic, repeated canned structures, and surface or locale mismatches.
-4. **Run a semantic diff.** Compare subjects, numbers, versions, conditions, negation,
-   attribution, causality, and ordered steps before delivery.
+1. **Decide whether to edit at all.** Clear, specific text that fits its surface comes
+   back unchanged.
+2. **Protect what must stay exact.** Facts, qualifiers, identifiers, commands, links,
+   quotations, licenses, policy text, markup, and deliberate voice.
+3. **Do not add facts.** Remove or narrow unsupported claims, and ask for missing
+   details instead of filling them in.
+4. **Edit only where there is a concrete cost**, with the smallest change, and compare
+   the result with the source before delivery.
 
-The skill leaves clear, specific, voice-appropriate prose alone. Passive voice,
-parallel lists, fragments, questions, dashes, and polished sentences are not automatic
-defects.
+Passive voice, parallel lists, fragments, questions, dashes, and polished sentences
+are not automatic defects.
 
 ## What it protects
 
@@ -292,16 +182,12 @@ defects.
 
 | Locale | Status | Coverage |
 | --- | --- | --- |
-| English | Core guidance | Open-source editorial signals and surface rules |
-| Chinese | Core guidance | Chinese editing signals and semantic safeguards |
-| `zh-Hant-TW` | Dedicated locale pack | Taiwan terminology, punctuation, register, and forward cases |
-| Other locales | Foundation only | Shared fidelity workflow; native pack and review still required |
+| Any | Core rules | The fidelity and edit rules in `SKILL.md` |
+| `zh-Hant-TW` | Locale layer | Context-dependent terms, punctuation, legal text, false-positive guards, forward cases |
+| Other locales | Core rules only | A native locale pack and review are still required |
 
-The
-[locale pack contract](skills/polish-open-source-prose/references/locale-pack-contract.md)
-defines the evidence, terminology, false-positive, surface, and test requirements for
-adding a language-and-region target. It is also designed to become a policy layer for
-a future PolyglotGuard checker.
+The [locale pack contract](docs/locale-pack-contract.md) defines what a new
+language-and-region pack must contain and how it is tested.
 
 ## Boundaries
 
@@ -331,8 +217,8 @@ Run the skill checks directly:
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-The current corpus contains 43 forward specifications: 17 cases that should remain
-unchanged and 26 that should be revised or answered with provenance guidance.
+The current corpus contains 49 forward specifications: 19 cases that should remain
+unchanged and 30 that should be revised, audited, or answered with provenance guidance.
 Structural checks catch protected-token drift and corpus errors; native review is
 still required to judge real project prose.
 
@@ -345,7 +231,9 @@ still required to judge real project prose.
 │   ├── plugin.json
 │   └── marketplace.json
 ├── .codex-plugin/plugin.json
-├── docs/assets/
+├── docs/
+│   ├── assets/
+│   └── locale-pack-contract.md
 ├── scripts/validate_repo.py
 └── skills/
     └── polish-open-source-prose/

@@ -7,7 +7,7 @@
     {
       "name": "polish-open-source-prose",
       "source": "./",
-      "description": "Edit public open-source prose for clarity, fidelity, voice, and locale fit.",
+      "description": "Edit open-source prose without rewriting clear text, changing protected content, or inventing facts.",
       "version": "0.1.0",
       "keywords": [
         "open-source",

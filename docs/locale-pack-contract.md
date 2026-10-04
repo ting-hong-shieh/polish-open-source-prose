@@ -7,7 +7,7 @@ same contract without pretending that one universal phrase list works worldwide.
 
 ## File and locale identity
 
-- Store packs at `references/locales/<BCP-47>.md`.
+- Store packs at `skills/polish-open-source-prose/references/locales/<BCP-47>.md`.
 - Use a specific BCP 47 tag when regional differences affect the result, such as
   `zh-Hant-TW` rather than a generic `zh`.
 - State what evidence activates the pack and which nearby locales it must not replace.
@@ -18,19 +18,21 @@ same contract without pretending that one universal phrase list works worldwide.
 Every pack must contain:
 
 1. **Scope and activation** — target readers, script, region, and exclusions.
-2. **Editing order** — protected spans before locale normalization and style work.
-3. **Orthography and punctuation** — rules plus valid technical exceptions.
-4. **Contextual terminology** — source term, local candidates, and selection criteria.
-5. **Surface register** — at least documentation, contribution discussion, release
-   notes, UI or error messages, and policy or security prose.
-6. **False-positive guards** — native structures that a generic humanizer may wrongly
+2. **Orthography and punctuation** — rules plus valid technical exceptions.
+3. **Contextual terminology** — only terms whose correct choice depends on context:
+   source term, local candidates, and selection criteria.
+4. **Legal, security, and quoted text** — official names, UI labels, quotations, and
+   policy text that stay in their original form.
+5. **False-positive guards** — native structures that a generic humanizer may wrongly
    flatten.
-7. **Protected local forms** — official UI labels, names, quoted forms, search terms,
-   and code-adjacent text that must remain stable.
-8. **Delivery checks** — a short semantic and locale consistency checklist.
 
-Do not write a bare replacement dictionary. Each ambiguous term needs a context rule
-or a reason to leave it unchanged.
+Keep the pack to what differs by locale. Editing order, the decision to leave clear
+text unchanged, and the final semantic check live in `SKILL.md` and apply to every
+locale; do not restate them per pack.
+
+Do not write a bare replacement dictionary, and do not list terms a current model
+already chooses correctly. Each listed term needs a context rule or a reason to leave
+it unchanged.
 
 ## Evidence requirements
 

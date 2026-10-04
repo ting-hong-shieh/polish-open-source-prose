@@ -49,7 +49,7 @@ reviews:
     - path: "skills/polish-open-source-prose/references/locales/**"
       instructions: >-
         Review against the locale pack contract in
-        skills/polish-open-source-prose/references/locale-pack-contract.md. A locale
+        docs/locale-pack-contract.md. A locale
         pack needs a specific BCP 47 tag, contextual terminology rules rather than a
         bare replacement list, and false-positive guards for structures that are
         natural in the locale. Flag any rule that reads as a mechanical translation of

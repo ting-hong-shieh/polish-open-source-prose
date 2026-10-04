@@ -16,28 +16,27 @@
   <a href="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml"><img src="https://github.com/ting-hong-shieh/polish-open-source-prose/actions/workflows/validate.yml/badge.svg?branch=main" alt="驗證狀態"></a>
   <img src="docs/assets/logo-badge.svg" alt="Polish Open-Source Prose">
   <img src="https://img.shields.io/badge/locale-zh--Hant--TW-4338ca?style=flat-square" alt="zh-Hant-TW locale pack">
-  <img src="https://img.shields.io/badge/forward_cases-43-0f766e?style=flat-square" alt="43 個前向案例">
+  <img src="https://img.shields.io/badge/forward_cases-49-0f766e?style=flat-square" alt="49 個前向案例">
   <img src="https://img.shields.io/badge/license-Apache--2.0-2563eb?style=flat-square" alt="Apache-2.0 授權">
 </p>
 
-> 一套用來編輯 README、文件、release note、貢獻指南、PR、issue、程式碼註解、UI 文案、
-> 錯誤訊息與 prompt 的 agent skill；它不把禁詞表或偵測器分數當成文風準則。
-> 可在 Claude Code 與 Codex 上執行。
+> 一套讓 agent 修改開源專案文字時「不改壞」的 skill：已經清楚的文字不動，事實、
+> 命令、引文、授權與作者語氣保持原樣，也不替作者補上沒提供的事實。附台灣繁體中文
+> 編輯層。可在 Claude Code 與 Codex 上執行。
 
 <table>
   <tr>
     <td width="33%">
-      <strong>保留原意</strong><br>
-      保護事實、數字、版本、條件、否定、引用來源、因果、命令、連結、引文與
-      Markdown 結構。
+      <strong>清楚的文字不改</strong><br>
+      被要求潤稿不代表一定要改。已經清楚的文字原樣交回。
     </td>
     <td width="33%">
-      <strong>符合文件場景</strong><br>
-      README、教學、PR、release note、錯誤訊息與政策文件使用不同的編輯標準。
+      <strong>該精確的保持精確</strong><br>
+      數字、條件、否定、命令、連結、引文、授權與刻意的語氣都不改寫。
     </td>
     <td width="33%">
-      <strong>尊重地區語系</strong><br>
-      依語境處理地區詞彙與誤判，不用一份通用取代清單套用所有語言。
+      <strong>不捏造事實</strong><br>
+      缺少的細節列成問題請作者補充，不自行編出數據、commit 或測試結果。
     </td>
   </tr>
 </table>
@@ -105,16 +104,13 @@ $polish-open-source-prose
 
 ## 運作方式
 
-1. **確認事實來源。** 先檢查程式碼、測試、設定與專案詞彙，不直接相信宣傳文字。
-2. **鎖定語意限制。** 保護事實、限定詞、識別碼、引文、法律文字、命令、連結與
-   Markdown 結構。
-3. **診斷具體問題。** 處理含糊、無依據聲明、主體不明、邏輯中斷、機械式重複，
-   以及文件場景或地區語系不合。
-4. **比對修改前後。** 交付前逐項比較主詞、數字、版本、條件、否定、引用來源、
-   因果與操作順序。
+1. **先決定要不要改。** 已經清楚、具體、符合場景的文字原樣交回。
+2. **保護必須精確的內容。** 事實、限定詞、識別碼、命令、連結、引文、授權、政策
+   文字、Markdown 結構與刻意的語氣。
+3. **不補事實。** 刪掉或縮小沒有根據的主張；缺少的細節向作者提問，不自行填入。
+4. **只在有具體代價時修改**，用最小的改動，交付前逐項比對原文。
 
-如果文字已經清楚、具體，而且符合作者聲音，skill 會保留原文。被動句、排比、
-片段、設問、破折號或工整句型本身都不是問題。
+被動句、排比、片段、設問、破折號或工整句型本身都不是問題。
 
 ## 保護範圍
 
@@ -131,14 +127,12 @@ $polish-open-source-prose
 
 | 語系 | 狀態 | 範圍 |
 | --- | --- | --- |
-| 英文 | 共通規則 | 開源文字編輯訊號與文件場景 |
-| 中文 | 共通規則 | 中文編輯訊號與語意保真 |
-| `zh-Hant-TW` | 專用 locale pack | 台灣詞彙、標點、語域與前向案例 |
-| 其他語系 | 只有共通基礎 | 仍需母語 locale pack 與審查 |
+| 所有語系 | 共通規則 | `SKILL.md` 的保真與修改規則 |
+| `zh-Hant-TW` | 台灣編輯層 | 依語境選擇的詞彙、標點、法律文字、誤判防護與前向案例 |
+| 其他語系 | 只有共通規則 | 仍需母語 locale pack 與審查 |
 
-[Locale pack contract](skills/polish-open-source-prose/references/locale-pack-contract.md)
-規定新增語言與地區時需要的證據、詞彙、誤判防護、文件場景與測試。這份規格也
-預留給未來的 PolyglotGuard 檢查器使用。
+[Locale pack contract](docs/locale-pack-contract.md) 規定新增語言與地區時，
+locale pack 需要包含的內容與測試方式。
 
 ## 邊界
 
@@ -168,7 +162,8 @@ python3 scripts/validate_repo.py
 python3 skills/polish-open-source-prose/scripts/validate_skill.py
 ```
 
-目前有 43 個前向規格：17 個案例應保持不變，26 個案例應修改或提供來源證明建議。
+目前有 49 個前向規格：19 個案例應保持不變，30 個案例應修改、提出檢查意見或提供
+來源證明建議。
 結構檢查可以找出受保護內容漂移與案例格式錯誤，但真實專案文字仍需母語使用者
 審查。
 
@@ -181,7 +176,9 @@ python3 skills/polish-open-source-prose/scripts/validate_skill.py
 │   ├── plugin.json
 │   └── marketplace.json
 ├── .codex-plugin/plugin.json
-├── docs/assets/
+├── docs/
+│   ├── assets/
+│   └── locale-pack-contract.md
 ├── scripts/validate_repo.py
 └── skills/
     └── polish-open-source-prose/

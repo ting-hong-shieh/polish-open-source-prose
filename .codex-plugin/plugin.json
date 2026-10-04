@@ -1,7 +1,7 @@
 {
   "name": "polish-open-source-prose",
   "version": "0.1.0",
-  "description": "Edit public open-source prose for clarity, fidelity, voice, and locale fit.",
+  "description": "Edit open-source prose without rewriting clear text, changing protected content, or inventing facts.",
   "author": {
     "name": "Polish Open-Source Prose contributors"
   },
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Polish Open Source Prose",
     "shortDescription": "Edit open-source prose without losing facts or voice.",
-    "longDescription": "Audit, draft, and revise public project prose with semantic safeguards, surface-specific guidance, and a dedicated Traditional Chinese (Taiwan) locale pack.",
+    "longDescription": "Revise public project prose without rewriting text that is already clear, changing facts, commands, quotations, or the author's voice, or adding facts the author did not provide. Includes a Traditional Chinese (Taiwan) locale layer.",
     "developerName": "Polish Open-Source Prose contributors",
     "category": "Productivity",
     "capabilities": [

@@ -32,7 +32,7 @@ personal data, and unpublished product information.
 ## Add a locale pack
 
 Follow the
-[locale pack contract](skills/polish-open-source-prose/references/locale-pack-contract.md).
+[locale pack contract](docs/locale-pack-contract.md).
 A proposal needs:
 
 1. A specific BCP 47 locale tag and a clear account of nearby locales it does not
