@@ -174,7 +174,7 @@ def validate_files(errors: list[str]) -> None:
     scaffold_marker = "[TO" + "DO:"
     local_home_prefix = "/" + "Users" + "/"
     for path in ROOT.rglob("*"):
-        if not path.is_file() or ".git" in path.parts:
+        if not path.is_file() or ".git" in path.parts or ".venv" in path.parts:
             continue
         # Recorded model outputs are data and may contain unfilled placeholders.
         if path.is_relative_to(ROOT / "evals" / "results"):
