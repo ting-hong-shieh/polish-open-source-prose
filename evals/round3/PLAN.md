@@ -145,3 +145,29 @@ Known before the first run (recorded with Amendment 1):
   runs non-skill conditions (`compact_problems`, `skill_inline`, `three_sentences`) in an
   empty working directory, and the `v0.2.0` rerun in a working directory set up as in
   round 2.
+
+Found at scoring (2026-10-20):
+
+- **Parser changes.** `score_benchmark.py` reported 4 outputs parsed differently from the
+  legacy tag regex, not the 1 the runbook expected. One is the round-2 A1 Sonnet 5.5 v0.1.0
+  output the report already corrected. Two are round-3 Sonnet 5.5 outputs (`v0.2.0` run 1,
+  `a1-zh-keep-error-message`, a keep case; `v0.2.0` run 2, `a2-arrow-49771`) that mention
+  the `<revised>` tag in the explanation before the block; the line-anchored parser reads
+  the block correctly and the legacy regex would have started at the mention. One
+  (`skill_inline` run 2, `a1-zh-edit-test-scope`) differs only by a trailing newline inside
+  the tags, which `lines()` normalizes away, so its score is unchanged. The runbook's
+  "exactly one" assumed round 3 would not reproduce the mention pattern; it did. The parser
+  was not changed.
+
+Found at judging (2026-10-20):
+
+- **One Claude judge prompt completed by hand.** For `a2-arrow-50635` chunk 1 (20 outputs),
+  the Claude judge returned 19 rows in all four attempts: attempt 1 omitted the round-2
+  gpt-6.1-sol `no_skill` output, attempts 2–4 omitted the round-2 gpt-6-luna
+  `three_sentences` output. The 19 rows of attempt 1 are kept as returned, and the one
+  output it omitted was judged alone with the same prompt template and guidance; the 20 rows
+  are stored under the original key. Neither omitted output belongs to a primary contrast.
+  Across the four attempts, the 18 rows present in all of them agreed unanimously on
+  `invented` and `damaged` (18/18) and on `addressed` for 4/18 (attempts 2 and 4 matched
+  attempt 1 on 17 and 18 rows, attempt 3 on 4). Script and record:
+  `round3/fix_arrow50635.py`, `round3/arrow50635-fix.json` under the raw-run folder.
