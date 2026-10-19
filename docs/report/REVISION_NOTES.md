@@ -84,9 +84,11 @@ Take every number from `evals/results/round3-analysis.json` (primary, drift, ret
   finding.
 - **Post-hoc, label as exploratory.** The inline keep advantage comes almost entirely
   from the four Traditional Chinese keep cases, and its clean-fix deficit from English
-  edit cases. A plausible mechanism is that the inline prompt always includes the
-  zh-Hant-TW locale reference, while the Skill loads it only on demand; cite the
-  reference-read check if it was done, otherwise state it as a hypothesis. The
+  edit cases. One candidate explanation was checked and ruled out: the Skill runs read
+  the zh-Hant-TW locale reference in every Chinese case, in all seven configurations
+  (`round3-secondary.json`), so the difference is not that the Skill skipped the file.
+  The mechanism is unknown; say so, and do not offer an untested explanation as a
+  finding. The
   problem-definition sentence helped six of seven configurations on A1 (Sonnet 5.5 was
   slightly negative), so the heterogeneity Karpo & Chernodub report for GEC did not
   appear strongly here.
