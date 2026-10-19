@@ -64,6 +64,45 @@ preservation. This is the author's call.
 - If round 3 overturns an earlier interpretation (for example, the problem list closes the
   gap), say so plainly rather than softening it.
 
+### How the round-3 results read (2026-10-20)
+
+Take every number from `evals/results/round3-analysis.json` (primary, drift, retest) and
+`evals/results/round3-secondary.json` (post-hoc tables). The readings below follow
+`PLAN.md`; they are not numbers to copy.
+
+- **Q1 (content).** Adding the problem-definition sentence did not close the gap: against
+  `v0.2.0_r3` it loses on A1 clean-fix in every non-tied case, the only primary contrast
+  significant after Holm. Against `three_sentences_r3` it is directionally better on both
+  clean-fix outcomes but not significant. The original Discussion guessed that naming the
+  problems was the skill's active ingredient; round 3 does not support that. Say so, and
+  say that the rest of v0.2.0 (ask instead of inventing, the protected-element list, the
+  final check) matters beyond the problem list, without claiming which part.
+- **Q2 (delivery).** A2 clean-fix meets the pre-registered equivalence margin. A1 is
+  inconclusive under the plan: inline preserved more and corrected slightly less, with
+  bootstrap intervals that exclude zero but sign tests that are not significant. Report
+  this as a descriptive direction that fits the paper's trade-off framing, not as a
+  finding.
+- **Post-hoc, label as exploratory.** The inline keep advantage comes almost entirely
+  from the four Traditional Chinese keep cases, and its clean-fix deficit from English
+  edit cases. A plausible mechanism is that the inline prompt always includes the
+  zh-Hant-TW locale reference, while the Skill loads it only on demand; cite the
+  reference-read check if it was done, otherwise state it as a hypothesis. The
+  problem-definition sentence helped six of seven configurations on A1 (Sonnet 5.5 was
+  slightly negative), so the heterogeneity Karpo & Chernodub report for GEC did not
+  appear strongly here.
+- **Drift.** The reruns match their round-2 originals closely, so round-3 and round-2
+  tables can be read side by side. State this once in the method.
+- **Judge reliability.** Re-judging gave very high agreement on "addressed" and moderate
+  agreement on invented, damaged, and keep-case harm (lowest for the Sol judge on harm).
+  This is test-retest reliability, not validity: it shows the judges are consistent, not
+  that they are right. Human validation remains the main open limitation; the claim
+  strength the paper relies on (hedges and overclaims) is exactly what Chen et al.
+  (arXiv:2608.24419) find LLM judges least sensitive to.
+- **Run history to disclose.** Claude Code 2.1.293 instead of 2.1.286; gpt-6-luna
+  rate-limit retries; four parser changes, all correct parses; one Claude judge chunk on
+  A2 completed by judging a single output on its own; orchestration by a Claude Fable 5.1
+  session. All are in `PLAN.md` Deviations and the run folder's `versions.txt`.
+
 ## 3. Weaknesses a reviewer will raise
 
 Address each in the text where it applies; do not just add a caveat.
