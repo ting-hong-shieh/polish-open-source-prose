@@ -8,9 +8,21 @@ revision, not decisions: the author approves the outline before any text changes
 
 - **Edit the right source.** `docs/report/report.tex` in this repository is older than the
   preprint candidate: it still says "Three sentences", and it has no record-level audit,
-  no Appendix B, and no parser correction. Find the LaTeX source of the 2026-10-19
-  candidate and edit that. If it cannot be found, stop and ask; do not rebuild the
-  candidate from the old file.
+  no Appendix B, and no parser correction. Edit the 2026-10-19 source instead:
+  `Leave_Clear_Text_Alone_2026-10-19_arXiv_source.zip` (135,922 bytes, SHA-256
+  `4fa36342bcffa81128391c8d684ef035370cd17f421e827937cc22e8c506675a`), which holds
+  `main.tex`, `figures/`, and `tables/`. The author keeps it outside Git, under
+  `$POLISH_EVAL_DATA/Exports/polish-open-source-prose/manuscript/2026-10-19/`. Check the
+  hash before editing; if the file is missing or the hash differs, stop and ask. Do not
+  rebuild the candidate from the old file. Older drafts (2026-10-16, 2026-10-18) are history
+  only.
+- **The 2026-10-18 public patch overlaps this branch.** An earlier revision prepared
+  `Leave_Clear_Text_Alone_repository_public_patch_2026-10-18.zip` with the A1 parser
+  correction. This branch fixes the same parser in `evals/score_benchmark.py`. Do not apply
+  both; compare them and keep one.
+- **Other inputs from that revision**, in the same folder if the author copied them: a
+  prior-art review, a simulated peer review, and a submission checklist (all in
+  Traditional Chinese). They are AI reviews, not external peer review.
 - **Numbers come from files, never from memory.** Every number about round 3 comes from
   `evals/results/round3-analysis.json`. Every number already in the paper stays as it is
   unless a script reproduces a different value, and then the change is reported to the
