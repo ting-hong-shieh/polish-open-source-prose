@@ -79,7 +79,8 @@ Take every number from `evals/results/round3-analysis.json` (primary, drift, ret
   final check) matters beyond the problem list, without claiming which part.
 - **Q2 (delivery).** A2 clean-fix meets the pre-registered equivalence margin. A1 is
   inconclusive under the plan: inline preserved more and corrected slightly less, with
-  bootstrap intervals that exclude zero but sign tests that are not significant. Report
+  90% bootstrap intervals that exclude zero (the 95% interval for A1 keep touches zero)
+  but sign tests that are not significant. Report
   this as a descriptive direction that fits the paper's trade-off framing, not as a
   finding.
 - **Post-hoc, label as exploratory.** The inline keep advantage comes almost entirely
@@ -88,9 +89,9 @@ Take every number from `evals/results/round3-analysis.json` (primary, drift, ret
   the zh-Hant-TW locale reference in every Chinese case, in all seven configurations
   (`round3-secondary.json`), so the difference is not that the Skill skipped the file.
   The mechanism is unknown; say so, and do not offer an untested explanation as a
-  finding. The
-  problem-definition sentence helped six of seven configurations on A1 (Sonnet 5.5 was
-  slightly negative), so the heterogeneity Karpo & Chernodub report for GEC did not
+  finding. On A1 clean-fix the
+  problem-definition sentence raised the mean in five configurations, left Opus 5.5
+  unchanged, and lowered Sonnet 5.5 slightly, so the heterogeneity Karpo & Chernodub report for GEC did not
   appear strongly here.
 - **Drift.** The reruns match their round-2 originals closely, so round-3 and round-2
   tables can be read side by side. State this once in the method.
