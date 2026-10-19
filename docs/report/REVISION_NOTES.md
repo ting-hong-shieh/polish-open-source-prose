@@ -12,7 +12,8 @@ revision, not decisions: the author approves the outline before any text changes
   `Leave_Clear_Text_Alone_2026-10-19_arXiv_source.zip` (135,922 bytes, SHA-256
   `4fa36342bcffa81128391c8d684ef035370cd17f421e827937cc22e8c506675a`), which holds
   `main.tex`, `figures/`, and `tables/`. The author keeps it outside Git, under
-  `$POLISH_EVAL_DATA/Exports/polish-open-source-prose/manuscript/2026-10-19/`. Check the
+  `$POLISH_EVAL_DATA/Exports/polish-open-source-prose/` (next to
+  `eval-runs-2026-10-04/`). Check the
   hash before editing; if the file is missing or the hash differs, stop and ask. Do not
   rebuild the candidate from the old file. Older drafts (2026-10-16, 2026-10-18) are history
   only.
