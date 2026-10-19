@@ -1,0 +1,263 @@
+{
+ "status": "post-hoc exploratory; descriptive only, not part of the primary or secondary analyses in evals/round3/PLAN.md",
+ "source": "round-3 judgments and scored records; section 4 from the raw run logs under $POLISH_EVAL_DATA",
+ "retest": {
+  "claude": {
+   "outputs": 1918,
+   "harmful_kappa": 0.691,
+   "addressed_weighted_kappa": 0.957,
+   "invented_kappa": 0.765,
+   "damaged_kappa": 0.703,
+   "addressed_n": 1650,
+   "addressed_exact": 0.936,
+   "addressed_half": 0.064,
+   "addressed_one": 0.0
+  },
+  "codex": {
+   "outputs": 1918,
+   "harmful_kappa": 0.454,
+   "addressed_weighted_kappa": 0.967,
+   "invented_kappa": 0.855,
+   "damaged_kappa": 0.776,
+   "addressed_n": 1650,
+   "addressed_exact": 0.955,
+   "addressed_half": 0.045,
+   "addressed_one": 0.0
+  }
+ },
+ "by_locale": [
+  {
+   "outcome": "a1_keep",
+   "locale": "en",
+   "cases": 8,
+   "skill_inline": 0.964,
+   "v0.2.0_r3": 0.946,
+   "diff": 0.018,
+   "wins": 2,
+   "losses": 1
+  },
+  {
+   "outcome": "a1_keep",
+   "locale": "zh-Hant-TW",
+   "cases": 4,
+   "skill_inline": 0.929,
+   "v0.2.0_r3": 0.696,
+   "diff": 0.232,
+   "wins": 3,
+   "losses": 0
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "locale": "en",
+   "cases": 8,
+   "skill_inline": 0.634,
+   "v0.2.0_r3": 0.725,
+   "diff": -0.092,
+   "wins": 1,
+   "losses": 5
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "locale": "zh-Hant-TW",
+   "cases": 4,
+   "skill_inline": 0.839,
+   "v0.2.0_r3": 0.848,
+   "diff": -0.009,
+   "wins": 1,
+   "losses": 1
+  }
+ ],
+ "by_config": [
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "claude-opus-5-5@high",
+   "cases": 12,
+   "compact_problems": 0.542,
+   "three_sentences_r3": 0.542,
+   "diff": 0.0,
+   "wins": 4,
+   "losses": 2
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "claude-opus-4-6@high",
+   "cases": 12,
+   "compact_problems": 0.438,
+   "three_sentences_r3": 0.271,
+   "diff": 0.167,
+   "wins": 4,
+   "losses": 1
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "claude-sonnet-5-5@high",
+   "cases": 12,
+   "compact_problems": 0.458,
+   "three_sentences_r3": 0.5,
+   "diff": -0.042,
+   "wins": 3,
+   "losses": 3
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "gpt-6.1-sol@high",
+   "cases": 12,
+   "compact_problems": 0.354,
+   "three_sentences_r3": 0.25,
+   "diff": 0.104,
+   "wins": 4,
+   "losses": 2
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "gpt-6-astra@high",
+   "cases": 12,
+   "compact_problems": 0.375,
+   "three_sentences_r3": 0.25,
+   "diff": 0.125,
+   "wins": 4,
+   "losses": 2
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "gpt-6-astra@low",
+   "cases": 12,
+   "compact_problems": 0.5,
+   "three_sentences_r3": 0.25,
+   "diff": 0.25,
+   "wins": 4,
+   "losses": 1
+  },
+  {
+   "outcome": "a1_cleanfix",
+   "configuration": "gpt-6-luna@max",
+   "cases": 12,
+   "compact_problems": 0.521,
+   "three_sentences_r3": 0.333,
+   "diff": 0.188,
+   "wins": 4,
+   "losses": 1
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "claude-opus-5-5@high",
+   "cases": 21,
+   "compact_problems": 0.22,
+   "three_sentences_r3": 0.202,
+   "diff": 0.018,
+   "wins": 6,
+   "losses": 4
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "claude-opus-4-6@high",
+   "cases": 21,
+   "compact_problems": 0.095,
+   "three_sentences_r3": 0.06,
+   "diff": 0.036,
+   "wins": 3,
+   "losses": 1
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "claude-sonnet-5-5@high",
+   "cases": 21,
+   "compact_problems": 0.101,
+   "three_sentences_r3": 0.143,
+   "diff": -0.042,
+   "wins": 3,
+   "losses": 5
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "gpt-6.1-sol@high",
+   "cases": 21,
+   "compact_problems": 0.107,
+   "three_sentences_r3": 0.048,
+   "diff": 0.06,
+   "wins": 5,
+   "losses": 1
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "gpt-6-astra@high",
+   "cases": 21,
+   "compact_problems": 0.119,
+   "three_sentences_r3": 0.095,
+   "diff": 0.024,
+   "wins": 4,
+   "losses": 2
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "gpt-6-astra@low",
+   "cases": 21,
+   "compact_problems": 0.179,
+   "three_sentences_r3": 0.083,
+   "diff": 0.095,
+   "wins": 4,
+   "losses": 1
+  },
+  {
+   "outcome": "a2_cleanfix",
+   "configuration": "gpt-6-luna@max",
+   "cases": 21,
+   "compact_problems": 0.131,
+   "three_sentences_r3": 0.083,
+   "diff": 0.048,
+   "wins": 3,
+   "losses": 0
+  }
+ ],
+ "locale_reads_v020_r3": [
+  {
+   "configuration": "claude-opus-5-5@high",
+   "zh_keep_read": 8,
+   "zh_keep_runs": 8,
+   "zh_all_read": 16,
+   "zh_all_runs": 16
+  },
+  {
+   "configuration": "claude-opus-4-6@high",
+   "zh_keep_read": 8,
+   "zh_keep_runs": 8,
+   "zh_all_read": 16,
+   "zh_all_runs": 16
+  },
+  {
+   "configuration": "claude-sonnet-5-5@high",
+   "zh_keep_read": 8,
+   "zh_keep_runs": 8,
+   "zh_all_read": 16,
+   "zh_all_runs": 16
+  },
+  {
+   "configuration": "gpt-6.1-sol@high",
+   "zh_keep_read": 4,
+   "zh_keep_runs": 4,
+   "zh_all_read": 8,
+   "zh_all_runs": 8
+  },
+  {
+   "configuration": "gpt-6-astra@high",
+   "zh_keep_read": 4,
+   "zh_keep_runs": 4,
+   "zh_all_read": 8,
+   "zh_all_runs": 8
+  },
+  {
+   "configuration": "gpt-6-astra@low",
+   "zh_keep_read": 4,
+   "zh_keep_runs": 4,
+   "zh_all_read": 8,
+   "zh_all_runs": 8
+  },
+  {
+   "configuration": "gpt-6-luna@max",
+   "zh_keep_read": 4,
+   "zh_keep_runs": 4,
+   "zh_all_read": 8,
+   "zh_all_runs": 8
+  }
+ ]
+}
