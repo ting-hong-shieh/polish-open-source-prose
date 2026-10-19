@@ -20,6 +20,8 @@ the README. Large or private data lives outside Git; this file says where and wh
 | `evals/results/benchmark.json`, `judgments.json`, `analysis.json` | Scored outputs (development set and A1), judge labels, and aggregates | Yes |
 | `evals/results/judgments-a1-notes-hidden.json` | A first judging pass on A1 edits, before judges saw the editor's note | Yes |
 | `docs/report/` | The benchmark report (LaTeX source, figures, generated tables, PDF) | Yes |
+| `evals/round3/` | Round 3 plan, runbook, inline-prompt builder, prompt check, and analysis | Yes |
+| `evals/prompts/compact-problems.txt`, `skill-inline-v0.2.0.txt` | The two round-3 prefixes | Yes |
 | `$POLISH_EVAL_DATA/Processed/polish-open-source-prose/heldout-a2-cases.json` | The A2 case text | No |
 | `$POLISH_EVAL_DATA/Processed/polish-open-source-prose/benchmark-a2.json` | Scored A2 outputs | No |
 | `$POLISH_EVAL_DATA/Processed/polish-open-source-prose/judgments-a2.json` | Judge labels for A2, which can quote the A2 text | No |

@@ -12,6 +12,10 @@ high effort and without the skill. Results go to evals/results/judgments.json, e
 labels, which go next to the A2 cases under $POLISH_EVAL_DATA.
 
 Usage: POLISH_EVAL_DATA=/mnt/d/Data python3 evals/judge_outputs.py [--judge claude|codex|both]
+       [--sets main,a1,a2] [--tag NAME]
+--tag writes to judgments-NAME.json and judgments-a2-NAME.json instead, starting from an
+empty file, so a fresh judging pass (round 3 re-judges every held-out output) never mixes
+with or skips over the original labels.
 Codex runs inside bwrap with an empty home directory; only auth.json is mounted, read-only.
 """
 from __future__ import annotations
@@ -86,7 +90,7 @@ def read_a2_cases(path: Path) -> list[dict]:
     return json.loads(raw)["cases"]
 
 
-def load_items() -> tuple[list[dict], dict]:
+def load_items(sets: set[str]) -> tuple[list[dict], dict]:
     bench = json.loads((REPO / "evals/results/benchmark.json").read_text())["records"]
     a2_path = DATA / "Processed/polish-open-source-prose/benchmark-a2.json"
     a2 = json.loads(a2_path.read_text())["records"] if a2_path.exists() else []
@@ -98,6 +102,8 @@ def load_items() -> tuple[list[dict], dict]:
     cases = {"main": main, "a1": a1, "a2": a2cases}
     items = []
     for r in bench + a2:
+        if r["set"] not in sets:
+            continue
         case = cases[r["set"]][r["case"]]
         if case["mode"] == "provenance":
             continue
@@ -178,21 +184,25 @@ def parse(text: str) -> list[dict]:
     return json.loads(m.group(0)) if m else []
 
 
-def save(done: dict) -> None:
+def save(done: dict, out: Path, out_a2: Path) -> None:
     private = {k: v for k, v in done.items() if k.split(":", 1)[1].startswith("a2/")}
-    OUT.write_text(json.dumps({k: v for k, v in done.items() if k not in private}, ensure_ascii=False, indent=1) + "\n")
-    OUT_A2.write_text(json.dumps(private, ensure_ascii=False, indent=1) + "\n")
+    out.write_text(json.dumps({k: v for k, v in done.items() if k not in private}, ensure_ascii=False, indent=1) + "\n")
+    out_a2.write_text(json.dumps(private, ensure_ascii=False, indent=1) + "\n")
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--judge", default="both", choices=["claude", "codex", "both"])
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--sets", default="main,a1,a2", help="comma-separated case sets to judge")
+    ap.add_argument("--tag", default="", help="write to judgments-TAG.json and judgments-a2-TAG.json")
     o = ap.parse_args()
-    items, cases = load_items()
+    out = OUT.with_name(f"judgments-{o.tag}.json") if o.tag else OUT
+    out_a2 = OUT_A2.with_name(f"judgments-a2-{o.tag}.json") if o.tag else OUT_A2
+    items, cases = load_items(set(o.sets.split(",")))
     prompts = build_prompts(items, cases)
-    done = {**(json.loads(OUT.read_text()) if OUT.exists() else {}),
-            **(json.loads(OUT_A2.read_text()) if OUT_A2.exists() else {})}
+    done = {**(json.loads(out.read_text()) if out.exists() else {}),
+            **(json.loads(out_a2.read_text()) if out_a2.exists() else {})}
     judges = {"claude": call_claude, "codex": call_codex}
     todo = [(j, p) for j in (["claude", "codex"] if o.judge == "both" else [o.judge]) for p in prompts
             if f"{j}:{p['key']}" not in done]
@@ -218,7 +228,7 @@ def main() -> None:
             done[f"{judge}:{p['key']}"] = [{**{k: it[k] for k in ("set", "model", "effort", "condition", "run", "case", "kind")},
                                             **{k: v for k, v in by_label[it["label"]].items() if k != "label"}}
                                            for it in p["items"]]
-            save(done)
+            save(done, out, out_a2)
             print(f"ok {judge} {p['key']}", flush=True)
 
 

@@ -30,14 +30,33 @@ REPO = Path(__file__).resolve().parents[1]
 RUNS = Path(os.environ.get("POLISH_EVAL_DATA", "/mnt/d/Data")) / "Exports/polish-open-source-prose/eval-runs-2026-10-04"
 R2 = "round2"
 CONDITIONS = ["no_skill", "one_sentence", "three_sentences", "v0.1.0", "v0.2.0"]
+# Round 3 (see evals/round3/PLAN.md) adds two conditions on the held-out sets only, in the
+# same layout as round 2 under a separate root. They are scored whenever that root exists.
+R3 = "round3"
+R3_CONDITIONS = ["compact_problems", "skill_inline"]
+WITH_R3 = (RUNS / R3).is_dir()
 
 
-def claude_r2(set_dir: str, model: str) -> dict:
-    return {c: [f"{R2}/{set_dir}/claude/{model}/{c}/run{r}/{{id}}/result.txt" for r in (1, 2)] for c in CONDITIONS}
+def claude_r2(set_dir: str, model: str, conds: list[str] = CONDITIONS, root: str = R2) -> dict:
+    return {c: [f"{root}/{set_dir}/claude/{model}/{c}/run{r}/{{id}}/result.txt" for r in (1, 2)] for c in conds}
 
 
-def codex_r2(set_dir: str, tag: str) -> dict:
-    return {c: [f"{R2}/{set_dir}/codex/{tag}/{c}/{{id}}/output.txt"] for c in CONDITIONS}
+def codex_r2(set_dir: str, tag: str, conds: list[str] = CONDITIONS, root: str = R2) -> dict:
+    return {c: [f"{root}/{set_dir}/codex/{tag}/{c}/{{id}}/output.txt"] for c in conds}
+
+
+def heldout(set_dir: str, key: tuple) -> dict:
+    model, effort, platform = key
+    if platform == "claude":
+        out = claude_r2(set_dir, model)
+        if WITH_R3:
+            out.update(claude_r2(set_dir, model, R3_CONDITIONS, R3))
+        return out
+    tag = "gpt-6-astra@low" if effort == "low" else model
+    out = codex_r2(set_dir, tag)
+    if WITH_R3:
+        out.update(codex_r2(set_dir, tag, R3_CONDITIONS, R3))
+    return out
 
 
 # (model, effort, platform) -> condition -> list of path templates, one per run
@@ -62,12 +81,8 @@ MAIN = {
     ("gpt-6-astra", "low", "codex"): codex_r2("runs", "gpt-6-astra@low"),
     ("gpt-6-luna", "max", "codex"): codex_r2("runs", "gpt-6-luna"),
 }
-A2 = {key: {**(claude_r2("runs-a2", key[0]) if key[2] == "claude"
-               else codex_r2("runs-a2", "gpt-6-astra@low" if key[1] == "low" else key[0]))}
-      for key in MAIN}
-A1 = {key: {**(claude_r2("runs-a1", key[0]) if key[2] == "claude"
-               else codex_r2("runs-a1", "gpt-6-astra@low" if key[1] == "low" else key[0]))}
-      for key in MAIN}
+A2 = {key: heldout("runs-a2", key) for key in MAIN}
+A1 = {key: heldout("runs-a1", key) for key in MAIN}
 SETS = {"main": ("2a05713", "skills/polish-open-source-prose/tests/forward_cases.json", MAIN),
         "a1": ("fa993da", "evals/heldout/a1_cases.json", A1),
         "a2": (None, "Processed/polish-open-source-prose/heldout-a2-cases.json", A2)}
@@ -92,10 +107,20 @@ def lines(s: str) -> str:
     return "\n".join(l.rstrip() for l in nfc(s).strip().splitlines())
 
 
-def revised(raw: str, case: dict, platform: str) -> tuple[str, str]:
+LEGACY_TAGS = re.compile(r"<revised>\s*\n?(.*?)\n?\s*</revised>", re.S)
+# A tag on a line of its own. An editor that mentions "<revised>" inside its explanation
+# (one A1 Sonnet 5.5 v0.1.0 output did) must not be mistaken for the opening tag.
+LINE_TAGS = re.compile(r"^[ \t]*<revised>[ \t]*\n(.*?)\n?[ \t]*</revised>[ \t]*$", re.S | re.M)
+PARSER_CHANGES: list[str] = []
+
+
+def revised(raw: str, case: dict, platform: str, where: str = "") -> tuple[str, str]:
     """Split an output into the revised text and any note to the author outside the tags."""
     if platform == "claude" and case["mode"] != "provenance":
-        m = re.search(r"<revised>\s*\n?(.*?)\n?\s*</revised>", raw, re.S)
+        m = LINE_TAGS.search(raw) or LEGACY_TAGS.search(raw)
+        legacy = LEGACY_TAGS.search(raw)
+        if legacy and m and m.group(1) != legacy.group(1):
+            PARSER_CHANGES.append(where)
         if m:
             return m.group(1), (raw[:m.start()] + raw[m.end():]).strip()
     return raw, ""
@@ -131,7 +156,7 @@ def main() -> None:
                         if not f.exists():
                             missing.append(str(f.relative_to(RUNS)))
                             continue
-                        text, note = revised(f.read_text(), case, platform)
+                        text, note = revised(f.read_text(), case, platform, str(f.relative_to(RUNS)))
                         ok, unchanged = score(case, text)
                         kind = "keep" if case["mode"] == "keep" else "edit"
                         for g in (kind, f"{case['locale']}/{kind}"):
@@ -153,7 +178,11 @@ def main() -> None:
     out.write_text(json.dumps({"case_commits": {"main": "2a05713", "a1": "fa993da",
                                                 "a2": "private; see evals/heldout/a2_manifest.json"},
                                "summary": summary, "records": public}, ensure_ascii=False, indent=1) + "\n")
-    print(f"{len(records)} records; {len(missing)} missing outputs")
+    print(f"{len(records)} records; {len(missing)} missing outputs; round 3 {'included' if WITH_R3 else 'not found'}")
+    # Expected: exactly one, the A1 Sonnet 5.5 v0.1.0 output described in the report.
+    print(f"{len(PARSER_CHANGES)} outputs parsed differently from the legacy tag regex")
+    for w in PARSER_CHANGES:
+        print("  parser change:", w)
     for m in missing[:10]:
         print("  missing:", m)
 
