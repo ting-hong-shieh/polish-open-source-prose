@@ -5,12 +5,14 @@ Reads the scored outputs (evals/results/benchmark.json and, when present, the pr
 records) and the round-3 judgments (judgments-round3.json and judgments-a2-round3.json),
 then reports:
 
-1. the nine primary contrasts, with exact sign tests and Holm adjustment across the nine;
-2. the equivalence check for skill_inline against v0.2.0 (paired case-bootstrap 90%
-   interval of the difference against a margin of 0.10);
-3. descriptive outcomes per condition and judge for all seven conditions;
-4. test-retest agreement between the original labels and the round-3 labels on outputs
-   of the five original conditions.
+1. the nine primary contrasts, each between conditions run in round 3, with exact sign
+   tests and Holm adjustment across the nine;
+2. the equivalence check for skill_inline against the v0.2.0 rerun (paired case-bootstrap
+   90% interval of the difference against a margin of 0.10);
+3. drift: each rerun condition against its round-2 original (secondary, unadjusted);
+4. descriptive outcomes per condition and judge for all nine conditions;
+5. test-retest agreement between the original labels and the round-3 labels on outputs
+   of the five round-2 conditions.
 
 Aggregation follows the report: runs are averaged within a model configuration, the seven
 configurations get equal weight, and judged scores average the two judges for tests.
@@ -20,7 +22,8 @@ Usage: POLISH_EVAL_DATA=/mnt/d/Data python3 evals/round3/analyze_round3.py
 Smoke test on the original data (no round-3 runs needed), which should reproduce the
 report's A1 numbers for the compact instruction and v0.2.0:
   python3 evals/round3/analyze_round3.py --tag "" \\
-      --alias compact_problems=three_sentences,skill_inline=v0.2.0 --out /tmp/smoke.json
+      --alias compact_problems=three_sentences,skill_inline=v0.2.0,three_sentences_r3=three_sentences,v0.2.0_r3=v0.2.0 \
+      --out /tmp/smoke.json
 """
 from __future__ import annotations
 
@@ -38,16 +41,21 @@ DATA = Path(os.environ.get("POLISH_EVAL_DATA", "/mnt/d/Data"))
 PROCESSED = DATA / "Processed/polish-open-source-prose"
 RESULTS = REPO / "evals/results"
 
-CONDS = ["no_skill", "one_sentence", "three_sentences", "v0.1.0", "v0.2.0", "compact_problems", "skill_inline"]
+CONDS = ["no_skill", "one_sentence", "three_sentences", "v0.1.0", "v0.2.0",
+         "compact_problems", "skill_inline", "three_sentences_r3", "v0.2.0_r3"]
 ORIGINAL = CONDS[:5]
 MODELS = [("claude-opus-5-5", "high"), ("claude-opus-4-6", "high"), ("claude-sonnet-5-5", "high"),
           ("gpt-6.1-sol", "high"), ("gpt-6-astra", "high"), ("gpt-6-astra", "low"), ("gpt-6-luna", "max")]
 JUDGES = ["claude", "codex"]
 # (label, condition, comparator, outcome); outcome is "a1_keep", "a1_cleanfix", or "a2_cleanfix".
 PRIMARY = [(f"{a} vs {b}: {o}", a, b, o)
-           for a, b in (("compact_problems", "three_sentences"), ("compact_problems", "v0.2.0"),
-                        ("skill_inline", "v0.2.0"))
+           for a, b in (("compact_problems", "three_sentences_r3"), ("compact_problems", "v0.2.0_r3"),
+                        ("skill_inline", "v0.2.0_r3"))
            for o in ("a1_keep", "a1_cleanfix", "a2_cleanfix")]
+# Secondary: how far a rerun moved from its round-2 original (time, harness version, models).
+DRIFT = [(f"{a} vs {b}: {o}", a, b, o)
+         for a, b in (("three_sentences_r3", "three_sentences"), ("v0.2.0_r3", "v0.2.0"))
+         for o in ("a1_keep", "a1_cleanfix", "a2_cleanfix")]
 MARGIN = 0.10
 BOOT = 5000
 SEED = 20261019
@@ -184,12 +192,12 @@ def paired_boot(x: dict[str, float], y: dict[str, float], rng: random.Random) ->
     return mean(diffs), [q(0.05), q(0.95)], [q(0.025), q(0.975)]
 
 
-def primary(rows: list[dict]) -> list[dict]:
+def contrasts(rows: list[dict], family: list[tuple], adjust: bool) -> list[dict]:
     rng = random.Random(SEED)
     means = {o: case_means(rows, *OUTCOMES[o][:2], OUTCOMES[o][2]) for o in OUTCOMES if any(
         r["set"] == OUTCOMES[o][0] for r in rows)}
     res = []
-    for label, a, b, o in PRIMARY:
+    for label, a, b, o in family:
         if o not in means or a not in means[o] or b not in means[o]:
             res.append({"contrast": label, "status": "not available"})
             continue
@@ -201,11 +209,11 @@ def primary(rows: list[dict]) -> list[dict]:
                     "mean_b": round(mean(y.values()), 3), "diff": round(d, 3), "wins": w, "losses": l,
                     "p": sign_test(w, l), "ci90": [round(v, 3) for v in ci90], "ci95": [round(v, 3) for v in ci95]})
     avail = [r for r in res if "p" in r]
-    for r, ph in zip(avail, holm([r["p"] for r in avail])):
-        r["p_holm"] = ph
-        r["p"] = r["p"]
+    if adjust:
+        for r, ph in zip(avail, holm([r["p"] for r in avail])):
+            r["p_holm"] = ph
     for r in avail:
-        if r["contrast"].startswith("skill_inline vs v0.2.0"):
+        if r["contrast"].startswith("skill_inline vs v0.2.0_r3"):
             lo, hi = r["ci90"]
             r["equivalent_within_margin"] = -MARGIN < lo and hi < MARGIN
     return res
@@ -268,18 +276,21 @@ def main() -> None:
     judg = load_judgments(o.tag)
     rows = per_output(records, judg)
     result = {"plan": "evals/round3/PLAN.md", "judgments": o.tag or "original", "alias": alias,
-              "primary": primary(rows), "descriptive": describe(rows)}
+              "primary": contrasts(rows, PRIMARY, adjust=True),
+              "drift": contrasts(rows, DRIFT, adjust=False), "descriptive": describe(rows)}
     if o.tag:
         result["retest_vs_original"] = retest(judg, load_judgments(""))
     Path(o.out).write_text(json.dumps(result, indent=1) + "\n")
-    print(f"{'contrast':45} {'n':>3} {'a':>6} {'b':>6} {'diff':>6}  W:L    p      Holm   90% CI")
-    for r in result["primary"]:
-        if "p" not in r:
-            print(f"{r['contrast']:45} not available")
-            continue
-        eq = "  equivalent" if r.get("equivalent_within_margin") else ""
-        print(f"{r['contrast']:45} {r['cases']:>3} {r['mean_a']:6.3f} {r['mean_b']:6.3f} {r['diff']:+6.3f}  "
-              f"{r['wins']}:{r['losses']:<3} {r['p']:.4f} {r['p_holm']:.4f} {r['ci90']}{eq}")
+    for name in ("primary", "drift"):
+        print(f"\n{name}\n{'contrast':48} {'n':>3} {'a':>6} {'b':>6} {'diff':>6}  W:L    p      Holm   90% CI")
+        for r in result[name]:
+            if "p" not in r:
+                print(f"{r['contrast']:48} not available")
+                continue
+            eq = "  equivalent" if r.get("equivalent_within_margin") else ""
+            ph = f"{r['p_holm']:.4f}" if "p_holm" in r else "  -   "
+            print(f"{r['contrast']:48} {r['cases']:>3} {r['mean_a']:6.3f} {r['mean_b']:6.3f} {r['diff']:+6.3f}  "
+                  f"{r['wins']}:{r['losses']:<3} {r['p']:.4f} {ph} {r['ci90']}{eq}")
     print(f"wrote {o.out}")
 
 

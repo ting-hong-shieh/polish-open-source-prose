@@ -30,19 +30,25 @@ REPO = Path(__file__).resolve().parents[1]
 RUNS = Path(os.environ.get("POLISH_EVAL_DATA", "/mnt/d/Data")) / "Exports/polish-open-source-prose/eval-runs-2026-10-04"
 R2 = "round2"
 CONDITIONS = ["no_skill", "one_sentence", "three_sentences", "v0.1.0", "v0.2.0"]
-# Round 3 (see evals/round3/PLAN.md) adds two conditions on the held-out sets only, in the
-# same layout as round 2 under a separate root. They are scored whenever that root exists.
+# Round 3 (see evals/round3/PLAN.md) runs on the held-out sets only, in the same layout as
+# round 2 under a separate root, and is scored whenever that root exists. It adds two
+# conditions and reruns two round-2 conditions as same-batch comparators. Directory names
+# follow the runners; the reruns get their own condition labels so they never mix with the
+# round-2 outputs of the same condition.
 R3 = "round3"
-R3_CONDITIONS = ["compact_problems", "skill_inline"]
+R3_CONDITIONS = {"compact_problems": "compact_problems", "skill_inline": "skill_inline",
+                 "three_sentences_r3": "three_sentences", "v0.2.0_r3": "v0.2.0"}  # label -> directory
 WITH_R3 = (RUNS / R3).is_dir()
 
 
-def claude_r2(set_dir: str, model: str, conds: list[str] = CONDITIONS, root: str = R2) -> dict:
-    return {c: [f"{root}/{set_dir}/claude/{model}/{c}/run{r}/{{id}}/result.txt" for r in (1, 2)] for c in conds}
+def claude_r2(set_dir: str, model: str, conds=CONDITIONS, root: str = R2) -> dict:
+    dirs = conds if isinstance(conds, dict) else {c: c for c in conds}
+    return {c: [f"{root}/{set_dir}/claude/{model}/{d}/run{r}/{{id}}/result.txt" for r in (1, 2)] for c, d in dirs.items()}
 
 
-def codex_r2(set_dir: str, tag: str, conds: list[str] = CONDITIONS, root: str = R2) -> dict:
-    return {c: [f"{root}/{set_dir}/codex/{tag}/{c}/{{id}}/output.txt"] for c in conds}
+def codex_r2(set_dir: str, tag: str, conds=CONDITIONS, root: str = R2) -> dict:
+    dirs = conds if isinstance(conds, dict) else {c: c for c in conds}
+    return {c: [f"{root}/{set_dir}/codex/{tag}/{d}/{{id}}/output.txt"] for c, d in dirs.items()}
 
 
 def heldout(set_dir: str, key: tuple) -> dict:
