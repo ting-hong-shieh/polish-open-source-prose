@@ -182,13 +182,23 @@ Return only a JSON array, one object per output, in the same order:
 **Batching.** Outputs of one case (72 in the pilot: 3 evidence × 3 instructions × 4
 models × 2 runs) are shuffled under 8-character hash labels (hash input now includes the
 evidence level) and sent in batches of 20; for the three cases over 1,000 diff lines,
-batches of 5. Per judge: 18 × 4 + 3 × 15 = 117 prompts; three judges, 351 calls. Prompt
-size: about 20k tokens for a typical batch, about 45k for a large-diff batch (the
-4,480-line diffs are about 40k tokens). Roughly 3.5M input tokens per judge, 10–11M for
-three; Codex runs on the subscription credential, so this is a quota, not a dollar
-figure. Whether Codex `exec` accepts a 45k-token prompt on stdin is one of the things
-the pilot tests; if it does not, the diff is written to `/tmp/work/diff.patch` in the
-judge sandbox and the prompt tells the judge to read it (recorded as a deviation).
+batches of 5. Per judge: 18 × 4 + 3 × 15 = 117 prompts; three judges, 351 calls.
+
+Prompt sizes, measured from the built files (`judge_pilot.py --template`): about 6k
+chars (1.5k tokens) plus outputs for a typical case, so a 20-output batch is roughly
+20k tokens; but the two 4,480-line diffs are 470k chars each (airflow 71403: about
+118k tokens; the lines are long), and datafusion 24167 is in between. A 5-output batch
+on those two cases is therefore about 120k tokens, and their 15 batches each come to
+about 1.8M tokens per judge per case: the two cases alone are about 3.6M tokens per
+judge, more than the other nineteen together (about 1.5M). Three judges: roughly 15M
+input tokens, not the 10–11M first estimated. Codex runs on the subscription
+credential, so this is a quota, not a dollar figure.
+
+The judge sends the whole diff on stdin first; if a call on a large-diff case fails
+(no or unparsable output), the retry writes `diff.patch` into the judge sandbox and
+tells the judge to read it, and the judgment records `diff_as_file`. The token usage
+of every call (input, cached, output, reasoning) is appended to
+`$PILOT_ROOT/judge-usage.jsonl`, and the study's weekly quota is estimated from it.
 
 **Parsing and retries** as in round 3: a batch is accepted only when every label comes
 back once; otherwise retried up to four times, and a still-missing output is judged
