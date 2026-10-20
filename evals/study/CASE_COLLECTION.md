@@ -69,12 +69,20 @@ means a random sample of that population, not of all pull requests.
    the edit count per pull request; the edits themselves are fetched later only for
    sampled cases.
 4. **Classify.** Two passes:
+   - a pre-filter (2026-10-21): drop comments whose author is a bot (`[bot]` accounts
+     and the known project bots listed in `classify_comments.py`) and comments written
+     by the pull request's own author (login from `pulls.jsonl`); the reviewer's
+     critique is what we want, not the author's reply or self-report;
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
      "evidence", "claim", "misleading", "please update the description", …) to cut
-     the volume;
+     the volume. Terms that match automated footers or bot names rather than
+     critiques (`claude`, `copilot`, …) are left out: in the trial 40% of survivors
+     matched only those and yielded no positives;
    - an LLM pass on the survivors with one question: does this comment criticize the
      pull request's title or description text (not only the code)? Output yes/no and
-     the quoted sentence. Use one model, fixed prompt, committed before running.
+     the quoted sentence. One model, fixed prompt, committed before running: Claude
+     Haiku 5.5 through Claude Code (chosen 2026-10-21 after a 100-comment trial against
+     GPT-6 Astra, κ = 0.85 between the two; about USD 0.0007 per call).
    - The author spot-checks a random 50 positives and 50 negatives and reports
      precision and recall of the classifier. These numbers go in the paper.
 5. **Sample.** From the positives, a random sample (seed fixed in advance), stratified
