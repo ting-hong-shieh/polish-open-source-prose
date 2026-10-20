@@ -98,6 +98,11 @@ means a random sample of that population, not of all pull requests.
      in `classify_comments.py`), comments written by the pull request's own author
      (login from `pulls.jsonl`), and comments with no author login (deleted accounts);
      the reviewer's critique is what we want, not the author's reply or self-report.
+     On a backport that a bot opened (miss-islington, github-actions), the authors of
+     the pull requests its title references (`#N`, `GH-N`) count as its authors too
+     (added 2026-10-21: the 12-repository pass let 4 such comments through; a
+     referenced pull request outside the window is missed). Comments by the study's
+     author, and comments on the study author's pull requests, are dropped here as well.
      Counts are reported per repository at each stage (all comments, after the
      pre-filter, after keywords, positives);
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
@@ -136,6 +141,9 @@ means a random sample of that population, not of all pull requests.
      lines); excluding them by a rule keeps every editor and judge looking at the whole
      diff. The share excluded is reported for the pool (using the pull request's final
      size, before the draw) and for the drawn cases (using the diff at the timestamp).
+     Twelve-repository pool, 2026-10-21 (`pr_sizes.py`, final sizes): 223 of 2,699 pull
+     requests with a classifier positive (8.3%) and 1,647 of 41,080 landed pull
+     requests (4.0%) exceed the limit.
      When a drawn edit case turns out to exceed the limit at its timestamp, it is
      replaced by the next case in the seeded order of the same repository.
 6. **Per case**, collect what round 4 collects: pre-critique title/description, the
