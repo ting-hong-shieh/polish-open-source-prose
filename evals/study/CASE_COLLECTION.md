@@ -11,13 +11,33 @@ means a random sample of that population, not of all pull requests.
 
 ## Procedure
 
-1. **Repositories.** 12–20 large, active open-source repositories across languages and
-   ecosystems, chosen before looking at any comment (for example: the four already
-   used, plus kubernetes/kubernetes, rust-lang/rust, pandas-dev/pandas, numpy/numpy,
-   pytorch/pytorch, nodejs/node, golang/go, home-assistant/core, grafana/grafana,
-   apache/spark, elastic/elasticsearch, django/django). Record the final list and why.
+1. **Repositories, by rule (2026-10-21; supersedes the hand-picked list below).** The
+   list is generated, not chosen, and a large pool is pulled first; samples are drawn
+   from the pool later.
+   1. Fix 6–8 domains (for example: systems and infrastructure, data systems, web
+      back ends, ML frameworks, developer tools, scientific computing, languages and
+      runtimes, front-end frameworks). For each domain, take the 40 repositories with
+      the most stars from the GitHub search API, and record the exact query string and
+      the date of the query (`evals/study/select_repositories.py`).
+   2. Keep a repository only if it had at least 500 pull requests created between
+      2025-10-01 and 2026-09-30, at most 25,000, and has a pull request template
+      (`.github/PULL_REQUEST_TEMPLATE*` or `PULL_REQUEST_TEMPLATE*` in the root or
+      `docs/`) and a contributing guide (`CONTRIBUTING*` in the root, `.github/`, or
+      `docs/`).
+   3. From each domain keep the 4 survivors with the most pull requests in the window:
+      25–30 repositories in all. A repository that qualifies in two domains counts in
+      the first domain it appears in.
+   4. The twelve repositories already pulled (list below) are reused where they appear
+      on the generated list; those that do not appear are kept as raw data but are not
+      part of the pool.
+   5. Pull requests opened by the author of this study (ting-hong-shieh) are excluded.
+   6. After the author confirms the list, all pull requests and comments of every
+      repository on it are pulled as raw data (one process, one token), in a recorded
+      order with the time each repository took. Sample sizes are decided afterwards
+      (edit 80–120, keep 40).
 
-   **Final list (2026-10-20), fixed before reading any comment:** apache/airflow,
+   **Hand-picked list (2026-10-20), fixed before reading any comment; kept for the
+   record and as the first part of the raw data:** apache/airflow,
    apache/datafusion, apache/arrow, python/cpython, kubernetes/kubernetes, rust-lang/rust,
    pandas-dev/pandas, numpy/numpy, nodejs/node, prometheus/prometheus, apache/spark,
    django/django. Pull request counts in the window (search API, 2026-10-20): airflow
@@ -32,7 +52,9 @@ means a random sample of that population, not of all pull requests.
    comments on GitHub; the replacement keeps a Go project in the list.
 2. **Period.** A fixed window, for example 2026-01-01 to 2026-09-30.
 
-   **Fixed window:** 2026-01-01 to 2026-09-30, by pull request creation date.
+   **Fixed window:** 2025-10-01 to 2026-09-30, by pull request creation date (the
+   first twelve repositories were pulled for 2026-01-01 to 2026-09-30 and are extended
+   back to 2025-10-01 in the full pull).
 3. **Pull everything.** All review comments and issue comments on pull requests in
    the window (GraphQL), with the pull request's title/description edit history. Save
    raw under `$POLISH_EVAL_DATA/Raw/`. Report the count before any filtering.
