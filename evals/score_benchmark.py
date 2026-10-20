@@ -98,8 +98,16 @@ A2_RECORDS = Path(os.environ.get("POLISH_EVAL_DATA", "/mnt/d/Data")) / "Processe
 
 def read_a2_cases(path: Path) -> list[dict]:
     """Load the private A2 cases, refusing a file whose SHA-256 differs from the committed manifest."""
+    # Rounds 2-3 ran on version 1 of the case file. After the 2026-10-20 correction (four inputs
+    # rebuilt; see the manifest's "corrected" entry) version 1 lives beside version 2 as
+    # heldout-a2-cases.v1.json, and these round-2/3 scripts keep reading version 1.
+    manifest = json.loads((REPO / "evals/heldout/a2_manifest.json").read_text())
+    v1 = path.with_name("heldout-a2-cases.v1.json")
+    if "sha256_v1" in manifest and v1.exists():
+        path, expected = v1, manifest["sha256_v1"]
+    else:
+        expected = manifest["sha256"]
     raw = path.read_bytes()
-    expected = json.loads((REPO / "evals/heldout/a2_manifest.json").read_text())["sha256"]
     if hashlib.sha256(raw).hexdigest() != expected:
         raise SystemExit(f"{path} does not match the SHA-256 in evals/heldout/a2_manifest.json")
     return json.loads(raw)["cases"]

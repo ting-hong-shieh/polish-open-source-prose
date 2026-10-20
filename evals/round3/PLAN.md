@@ -159,6 +159,20 @@ Found at scoring (2026-10-20):
   "exactly one" assumed round 3 would not reproduce the mention pattern; it did. The parser
   was not changed.
 
+Found after round 3 (2026-10-20), affecting rounds 2 and 3 alike:
+
+- **Four A2 inputs were not the version the reviewer saw.** The A2 case file (version 1,
+  SHA-256 in `a2_manifest.json` at the time) took each description as it stood before the
+  *first* prose-related comment in the thread; the comment later selected as the case's
+  `critique_quote` was, in four cases, a later comment made after the author (or, for
+  arrow 50377, a maintainer) had edited the description. In those four cases
+  (`a2-arrow-49771`, `a2-arrow-50377`, `a2-cpython-143246`, `a2-cpython-150425`) the
+  editors in rounds 2 and 3 revised a version the quoted reviewer had not seen, and the
+  judges graded against a critique of a different version. The other seventeen inputs
+  match the snapshot at the quoted comment. Round-2 and round-3 results are reported as
+  run; version 2 of the case file (`evals/study/fix_a2_snapshots.py`) corrects the four
+  inputs for later rounds.
+
 Found at judging (2026-10-20):
 
 - **One Claude judge prompt completed by hand.** For `a2-arrow-50635` chunk 1 (20 outputs),

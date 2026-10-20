@@ -1,7 +1,7 @@
 {
  "description": "Private held-out set A2: real pull request titles and descriptions as they stood before a reviewer criticized their prose. Text is kept outside Git; this file fixes the set by URL and hash before any model ran on it.",
  "cases_file": "$POLISH_EVAL_DATA/Processed/polish-open-source-prose/heldout-a2-cases.json",
- "sha256": "b8aab5f62879d315648c63be12263ae6640b486d5f5bee98c2cc632c32c441ae",
+ "sha256": "5d6268c39ce72a90c6b1610a682acd53947a801a13b02d3a851a64e1c3513be5",
  "cases": [
   {
    "id": "a2-airflow-60733",
@@ -129,5 +129,16 @@
    "critique_kind": "other",
    "judgeable_from_text": false
   }
- ]
+ ],
+ "sha256_v1": "b8aab5f62879d315648c63be12263ae6640b486d5f5bee98c2cc632c32c441ae",
+ "corrected": {
+  "date": "2026-10-20",
+  "reason": "The input of each case is the title and description as they stood just before the reviewer comment quoted in critique_quote. Version 1 had taken the description before the first prose-matching comment in the thread; for four cases the quoted comment came later, after the description had been edited, so the editor and judges saw a version the reviewer had not. Rounds 2 and 3 ran on version 1. Version 2 corrects those four inputs; the other seventeen are unchanged. Each case now records snapshot_at, the comment timestamp.",
+  "cases": [
+   "a2-arrow-49771",
+   "a2-arrow-50377",
+   "a2-cpython-143246",
+   "a2-cpython-150425"
+  ]
+ }
 }

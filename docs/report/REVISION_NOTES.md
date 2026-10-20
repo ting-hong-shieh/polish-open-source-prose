@@ -152,6 +152,19 @@ in the evaluation section plus an appendix.
   facts, but 0.25 is the maximum over all A2 cases. Either compute the value for that
   subset or reword.
 
+## 5a. Four A2 inputs were not the version the reviewer saw (found 2026-10-20)
+
+`evals/study/check_a2_snapshots.py` compares each A2 input with the title and
+description as they stood just before the quoted reviewer comment. Four of 21 cases
+differ (arrow 49771, arrow 50377, cpython 143246, cpython 150425): the case builder had
+used the description before the first prose-related comment in the thread, and the
+quoted comment came later, after an edit. Rounds 2 and 3 ran on those inputs. The paper
+must say this where A2 is described and in Threats: for four cases the editor revised,
+and the judges graded against a critique of, a version of the description the reviewer
+had not seen; the A2 results are reported as run; the case file is corrected (version 2,
+new manifest hash) for the study. Do not recompute round-2/3 numbers on the corrected
+file; that would be a new run.
+
 ## 6. Hedging
 
 Nearly every result is followed by its own disclaimer ("This is not evidence of

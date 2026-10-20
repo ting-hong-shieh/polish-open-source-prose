@@ -7,7 +7,10 @@ The A2 inputs were built by evals/heldout/extract_real_pairs.py as the body befo
 and may be a different, later comment. This script recomputes the snapshot at the quoted
 comment's timestamp (the comment time from a2-commit-feasibility.json) from the saved
 threads' userContentEdits (full body text per edit) and RenamedTitleEvent items, and
-compares it with the case input.
+compares it with the case input. It also checks that the timestamp is the same one the
+evidence files use (review.md's "Posted" line) and that every line the reviewer quotes
+from the description (Markdown `>` quotes) occurs in the snapshot; a case where it does
+not is flagged.
 
 Writes a report with the differences (third-party text, outside Git) to
 $POLISH_EVAL_DATA/Processed/polish-open-source-prose/a2-snapshot-check/ and prints a
@@ -47,6 +50,16 @@ def title_at(pr: dict, when: str) -> tuple[str, str]:
     return pr["title"], "current title (no rename after the comment)"
 
 
+def quoted_lines(comment: str) -> list[str]:
+    out = []
+    for line in comment.splitlines():
+        if line.startswith(">"):
+            q = line.lstrip("> ").strip()
+            if len(q) >= 12:
+                out.append(q)
+    return out
+
+
 def main() -> None:
     cases = pc.read_cases()
     feas = {r["url"]: r for r in json.loads((pc.PROC / "a2-commit-feasibility/a2-commit-feasibility.json").read_text())}
@@ -61,21 +74,33 @@ def main() -> None:
         expected = pc.normalized(f"{title}\n\n{body.strip()}")
         actual = pc.normalized(case["input"])
         same = expected == actual
+        posted = pc.review_header(cid).get("Posted")
+        aligned = posted == when
+        quotes = quoted_lines(pc.review_body(cid))
+        flat = " ".join(expected.split())
+        missing = [q for q in quotes if " ".join(q.split()) not in flat]
         n_edits = pr["userContentEdits"]["totalCount"]
         edits_before = sum(1 for e in pr["userContentEdits"]["nodes"] if e["editedAt"] < when)
-        rows.append((cid, same, when, n_edits, edits_before, body_src, title_src))
+        rows.append((cid, same, when, n_edits, edits_before, body_src, title_src, aligned, len(quotes), missing))
         report.append(f"## {cid}\n\n- comment at {when}; {n_edits} body edits, {edits_before} before the comment\n"
-                      f"- expected body: {body_src}; expected title: {title_src}\n- match: {same}\n")
+                      f"- expected body: {body_src}; expected title: {title_src}\n- match: {same}\n"
+                      f"- evidence files use the same timestamp: {aligned}\n"
+                      f"- reviewer quotes from the description: {len(quotes)}; not found in snapshot: {len(missing)}\n"
+                      + "".join(f"  - missing: {q[:160]}\n" for q in missing))
         if not same:
             diff = difflib.unified_diff(actual.splitlines(), expected.splitlines(), "case input", "snapshot at comment",
                                         lineterm="", n=1)
             report.append("```diff\n" + "\n".join(diff) + "\n```\n")
     (OUT / "report.md").write_text("\n".join(report))
     (OUT / "summary.json").write_text(json.dumps([dict(zip(("id", "match", "comment_at", "edits", "edits_before",
-                                                                 "body_source", "title_source"), r)) for r in rows], indent=1))
-    print(f"{sum(r[1] for r in rows)}/{len(rows)} cases match the snapshot at the quoted comment")
+                                                                 "body_source", "title_source", "evidence_aligned",
+                                                                 "quotes", "quotes_missing"), r)) for r in rows], indent=1))
+    print(f"{sum(r[1] for r in rows)}/{len(rows)} cases match the snapshot at the quoted comment; "
+          f"{sum(r[7] for r in rows)}/{len(rows)} evidence files on the same timestamp; "
+          f"{sum(1 for r in rows if r[9])} cases with a reviewer quote missing from the snapshot")
     for r in rows:
-        print(f"  {'ok  ' if r[1] else 'DIFF'} {r[0]:<24} edits {r[4]}/{r[3]} before comment; body: {r[5]}; title: {r[6]}")
+        flag = "ok  " if r[1] and r[7] and not r[9] else "FLAG"
+        print(f"  {flag} {r[0]:<24} match={r[1]} aligned={r[7]} quotes={r[8]} missing={len(r[9])}; body: {r[5]}")
 
 
 if __name__ == "__main__":

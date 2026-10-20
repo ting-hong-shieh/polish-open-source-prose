@@ -61,6 +61,17 @@ means a random sample of that population, not of all pull requests.
 6. **Per case**, collect what round 4 collects: pre-critique title/description, the
    reviewer comment verbatim, the diff at the comment's timestamp, CI conclusions, and
    the author's later revision. Record cases where the head commit cannot be recovered.
+
+   **Rule (2026-10-20):** one timestamp per case, the selected reviewer comment's, fixes
+   everything: the title and description are the last version edited before it (body
+   edit history and title renames), the diff is the pull request head at that time, and
+   the CI conclusions are that head's. The A2 set had four cases whose description came
+   from an earlier comment than the one later selected (`check_a2_snapshots.py`); the
+   same check runs on every new case before freezing.
+
+   **Automatic check:** every line the reviewer quotes from the description (Markdown
+   `>` quotes in the comment) must occur in the snapshot; a case where it does not is
+   flagged and reviewed by hand before it enters the set.
 7. **Freeze** the sampled set by URL and SHA-256 before any editing model runs on it,
    as for A2.
 
