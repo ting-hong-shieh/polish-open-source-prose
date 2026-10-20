@@ -61,7 +61,8 @@ def check(d: Path, bad: list[str]) -> dict:
         if any(name in listing for name in ("diff.patch", "ci.md", "review.md")) or m["read_diff"] or m["read_review"] or m["read_ci"]:
             bad.append(f"{d}: E0 run had evidence files")
     if evidence == "E_code":
-        if "review.md" in listing or m["read_review"] or "reviewer" in prompt.lower():
+        # The description itself may contain the word "reviewer"; check for the review text.
+        if "review.md" in listing or m["read_review"] or pc.review_body(m["case"]) in prompt:
             bad.append(f"{d}: E_code run saw the review")
     return m
 
