@@ -48,13 +48,26 @@ a person"; it is the description step of that workflow.
 All cases are real, English, public pull requests. See `CASE_COLLECTION.md` for the
 sampling procedure. Target sizes:
 
-- **Keep set, ~30**: descriptions that received no text critique and were merged.
+- **Keep set, 40**: descriptions that received no text critique and were merged.
   Expected correct behavior: leave unchanged, or at least do no harm.
 - **Edit set, ~80**: descriptions a reviewer criticized for their text (not only the
   code), sampled at random from the classified pool, stratified by repository. Each case
   carries: the pre-critique title and description; the reviewer's comment verbatim; the
   diff and CI check conclusions at the comment's timestamp; the author's later revision
   (reference only, not an answer key).
+
+**Sampling frame (2026-10-21).** The 28 repositories selected by repository rule v3
+(`CASE_COLLECTION.md` step 1) together with the twelve repositories pulled first. The
+twelve were chosen by hand on 2026-10-20, before any comment was read; this is stated in
+the paper. Three repositories are on both lists (apache/airflow, django/django,
+rust-lang/rust), so the frame has 37 repositories. One exclusion rule applies to all of
+them alike: a repository is excluded if more than 25% of its pull requests created in the
+window were imported from an internal review system (for example Phabricator exports
+marked "Differential Revision", as in pytorch/executorch, or a Gerrit mirror, as in
+golang/go), because their review does not happen on GitHub. Every repository is checked
+and the result recorded. The eight domains are descriptive labels only and play no part
+in sampling. Sampling is stratified by repository with a cap per repository
+(`CASE_COLLECTION.md` step 5).
 
 **Diff size rule.** Pull requests whose diff at the comment's timestamp exceeds 1,500
 lines (added plus removed, from the patch) are excluded from both sets before sampling,
@@ -90,7 +103,7 @@ them first.
 | `none` | task prompt alone |
 | `compact` | the four-sentence instruction, prepended |
 | `skill` | polish-open-source-prose v0.2.0, loaded through the Claude Code Skill mechanism and forced, as in rounds 2–3 |
-| `compact_check` | the compact instruction plus one sentence: "Before returning, check the description against the diff and the CI results in the working directory." (`evals/prompts/compact-check.txt`). Runs under `E_code` and `E1` only. Included only if the pilot probe shows that the sentence changes the diff-read rate or the unchanged rate; the decision is recorded here before freezing. |
+| `compact_check` | the compact instruction plus one sentence: "Before returning, check the description against the diff and the CI results in the working directory." (`evals/prompts/compact-check.txt`). Runs under `E_code` and `E1` only, on the edit set. **Included** (2026-10-21): in the pilot probe the diff-read rate under `E_code` rose from 0.50, 0.64, and 1.00 with `compact` to 1.00 for all three of Haiku, Sonnet, and Opus. |
 
 The instruction conditions stand for standing configuration (a CLAUDE.md or AGENTS.md
 line, or an installed skill), not for text a person types per task.
@@ -101,6 +114,18 @@ Fable 5.1 ran in the pilot and behaved like Opus 5.5 at 2.8× the cost; it is no
 main study because of cost and because its availability has been interrupted before,
 which would hinder replication. Its pilot outputs are reported in an appendix as
 exploratory.
+
+**Execution environment (2026-10-21).** Every run uses a dedicated Claude Code
+configuration directory (`CLAUDE_CONFIG_DIR`) that holds no CLAUDE.md, no user skills, and
+no plugins (the build's three built-in plugins are disabled), with auto-memory and hooks
+off, signed in to the author's subscription account. Runs start from a minimal process
+environment (home, path, locale, and the configuration directory only) with
+`--permission-mode default`. The build's own bundled skills are left as shipped; they are
+listed only in the `skill` condition, where slash commands are enabled. Before the main
+runs, one dry run's stream-json and `/context` output confirm that no user memory file,
+user skill, plugin, or auto-memory path is in context; both are saved with the runs. The
+pilot and rounds 2–3 ran with the author's own configuration (their global CLAUDE.md,
+settings, user skills, and synced plugins); this is recorded as a deviation there.
 
 **One harness, one prompt.** Every run uses the same English task prompt and the same
 output format (`<revised>` tags, note allowed outside). This removes the round-2/3
@@ -118,8 +143,10 @@ differ from the round-2/3 task prompt, so `E0` here is not directly comparable w
 earlier rounds; that is accepted, since the earlier rounds are appendix material.
 
 **Size** (three configurations, two runs): edit 80 × 3 evidence × 3 instructions × 6 =
-4,320; keep 40 × 2 × 3 × 6 = 1,440; plus `compact_check` if included, 80 × 2 × 6 = 960;
-about 5,800–6,700 outputs. Pilot-based estimate with the diff-size rule: USD 350–500.
+4,320; keep 40 × 2 × 3 × 6 = 1,440; `compact_check` 80 × 2 × 6 = 960; the effort analysis
+(§6) adds 120 cases × 2 configurations × 2 instructions = 480 runs at the default effort;
+7,200 outputs in all. The cost estimate is recomputed from the pilot and probe costs at
+freezing.
 
 **Rerun rule.** A run is deleted and rerun only on a harness failure: non-zero exit, no
 output, or no parsable `<revised>` block. Nothing about the content of an output is a
@@ -158,11 +185,17 @@ and correction on one axis.
 
 ### Judges
 
-GPT-6 Astra (high) and GPT-6.1 Sol (high) through Codex CLI, with GPT-6 Luna as a third
-if the pilot shows it stable. None is a tested model. Outputs for one case are shuffled
-under random labels and judged in batches; batches shrink to 5 for diffs over 1,000
-lines. All judges are from one vendor; this is stated as a limitation, and a
-cross-vendor judge (Gemini) is the first addition if reviewers or the pilot call for it.
+GPT-6 Astra (high) and GPT-6.1 Sol (high) through Codex CLI are the main judges. A third,
+cross-vendor judge is Gemini, through the Gemini API: Gemini 3.1 Pro or Gemini 3.8 Flash,
+whichever agrees better with Astra on a seeded, stratified sample of 100 pilot outputs
+(κ on complete clean fix, then on the five labels), decided and recorded here before
+freezing. GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs
+its scale differed from the other two (addressed 0.5 for 37% of outputs against 24–25%,
+damaged 14% against 22%), and its κ with them on complete clean fix was 0.43–0.46. Astra
+and Sol agreed closely (κ 0.865 on complete clean fix; all five labels equal on 1,142 of
+1,368 outputs), so they count as two judges from one vendor, and the Gemini judge is the
+cross-vendor check. None is a tested model. Outputs for one case are shuffled under
+random labels and judged in batches; batches shrink to 5 for diffs over 1,000 lines.
 
 ### Human check
 
@@ -188,9 +221,18 @@ power under the per-case variability seen in round 3.
 3. `E1 − E0`, damaged rate (does fixing cost accuracy?);
 4. under `E1`, `skill − none`, complete clean fix (does the skill still matter?).
 
-If `compact_check` is included, one contrast is added to this family (five in all):
-`compact_check − compact` on the complete-clean-fix rate under `E_code`, with the
-diff-read rate reported beside it.
+`compact_check` is included, so one contrast is added to this family (five in all):
+5. `compact_check − compact` on the complete-clean-fix rate under `E_code`, with the
+   diff-read rate reported beside it.
+
+**Effort analysis (secondary, 2026-10-21).** Haiku and Sonnet under `E_code` with `none`
+and `compact`, at the build's default reasoning effort (medium in Claude Code 2.1.293,
+passed explicitly) and at high, one run per case, keep and edit sets. The high-effort
+runs are run 1 of the same arms in the main study; the default-effort runs are added.
+Outcomes: diff-read rate (both sets), unchanged rate (keep set), complete clean fix
+(edit set, judged). Contrast: default − high per configuration and instruction, with
+paired case-bootstrap 95% intervals. It is reported as a secondary analysis outside the
+Holm families. The pilot probe (low and medium effort) stays in the appendix.
 
 **Restraint family (Holm-adjusted, three contrasts, keep set):** `compact − none` and
 `skill − none` on the unchanged rate under `E0`; `E_code − E0` on the unchanged rate
@@ -223,10 +265,10 @@ was read, by reviewer-critique type, by the author's flag, edit ratios, cost and
 - Claims are scoped to "when an agent is asked to revise a pull request description",
   with standing instructions as configuration, in Claude Code with Claude models.
   Rounds 2–3 supply cross-harness evidence for the restraint pattern in an appendix.
-- Reasoning effort is high throughout; the effort probe (appendix) indicates how far the
-  diff-read rate falls at default settings.
-- All judges are from one vendor; the author's blind check is the only validity
-  evidence.
+- Reasoning effort is high in the main comparisons; the effort analysis (§6) reports
+  Haiku and Sonnet at the default setting.
+- Two judges are from one vendor and agree closely; the third is from another vendor.
+  The author's blind check is the only validity evidence.
 
 ## 8. Order of work
 
@@ -257,7 +299,8 @@ was read, by reviewer-critique type, by the author's flag, edit ratios, cost and
 
 The skill under test was written with Claude; the plan, scripts, and prompts were
 drafted by Claude sessions under the author's direction; the editing models are Claude
-models; the judges are OpenAI models; the cases are real text sampled by a fixed
+models; the judges are two OpenAI models and one Google model; the cases are real text
+sampled by a fixed
 procedure and flagged by the author; the human check is the author's own blind rating.
 All of this is stated in the paper.
 
@@ -276,6 +319,24 @@ All of this is stated in the paper.
   the low diff-read rate of Haiku and Sonnet under `compact` × `E_code` is reported as a
   result and the task prompt is not changed for it; the effort probe's size is 168 runs
   (the earlier figure, 84, covers one effort level only).
+- 2026-10-21, author's decisions after the probes and the pilot judging:
+  - sampling frame: rule v3's 28 repositories ∪ the twelve pulled first (37; the twelve
+    were picked before any comment was read); a repository is excluded when more than
+    25% of its pull requests in the window were imported from an internal review
+    system; domains are labels only; sampling stratified by repository with a cap per
+    repository;
+  - `compact_check` included under `E_code` and `E1` (probe: diff-read rate 1.00 for all
+    three configurations);
+  - judges: Astra and Sol as the main judges, a Gemini judge (3.1 Pro or 3.8 Flash,
+    chosen by agreement with Astra on 100 pilot outputs) as the cross-vendor third;
+    Luna dropped;
+  - AI-written review comments and templated comments are excluded from the case pool
+    (`CASE_COLLECTION.md` step 4);
+  - runs use a dedicated configuration directory without the author's CLAUDE.md,
+    plugins, user skills, or auto-memory (§4, Execution environment);
+  - the effort comparison becomes a secondary analysis at default and high effort
+    (§6); size now 7,200 outputs;
+  - keep set target corrected from "~30" to 40 in §3, matching the earlier entry.
 
 ## Deviations
 

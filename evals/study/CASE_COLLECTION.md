@@ -35,14 +35,24 @@ means a random sample of that population, not of all pull requests.
       the first domain it appears in. A domain with fewer than 4 survivors is reported
       as it is, not refilled.
    4. The twelve repositories already pulled (list below) are reused where they appear
-      on the generated list; those that do not appear are kept as raw data but are not
-      part of the pool.
+      on the generated list. **Sampling frame (author's decision, 2026-10-21; replaces
+      the earlier rule that dropped the twelve not on the list):** v3's 28 repositories
+      ∪ the twelve, 37 repositories, since airflow, django, and rust are on both. The
+      twelve were chosen by hand before any comment was read. The eight domains are
+      descriptive labels only; they play no part in sampling.
+   4a. **Internal review imports (2026-10-21).** One rule for all 37: a repository is
+      excluded if more than 25% of its pull requests created in the window were
+      imported from an internal review system, so that their review did not happen on
+      GitHub (pytorch/executorch: Phabricator exports marked "Differential Revision";
+      golang/go: a Gerrit mirror). Every repository is checked with
+      `evals/study/check_internal_review.py` (body markers counted over the window) and
+      the result is recorded in `repo-selection/internal-review-check.json`.
    5. Pull requests opened by the author of this study (ting-hong-shieh) are excluded,
       and so are repositories the author owns.
    6. After the author confirms the list, all pull requests and comments of every
       repository on it are pulled as raw data (one process, one token), in a recorded
-      order with the time each repository took. Sample sizes are decided afterwards
-      (edit 80–120, keep 40).
+      order with the time each repository took; the twelve pulled first are extended
+      back to 2025-10-01. Sample sizes are decided afterwards (edit 80–120, keep 40).
 
    **Rule versions.** v1 used single-topic queries and put applications in framework
    domains (flutter, angular and expo in web back ends; next.js in languages). v2
@@ -103,6 +113,23 @@ means a random sample of that population, not of all pull requests.
      (added 2026-10-21: the 12-repository pass let 4 such comments through; a
      referenced pull request outside the window is missed). Comments by the study's
      author, and comments on the study author's pull requests, are dropped here as well.
+     Two more exclusions (author's decision, 2026-10-21):
+     - **AI-written reviews.** A comment carrying an HTML-comment marker written by an AI
+       review tool is dropped, even when it is posted under a person's account. The
+       marker list in `classify_comments.py` (`AI_REVIEW`) was fixed from a survey of
+       every HTML-comment marker in the twelve-repository pull: apache/spark's review
+       tooling (`ai-code-review`, `ai-auto-review-authorized`, `spark_dev_review_*`,
+       `spark-dev-review-delivery`) and Codex review summaries and withdrawals. The
+       survey is rerun on the full pull before classification; a new marker is added with
+       its date.
+     - **Templated comments.** A comment is dropped when the same account posted the same
+       text at least five times in the pulled data (same after lower-casing, collapsing
+       whitespace, and writing every @mention as "@" and every run of digits as "0").
+     Twelve-repository pool (2026-10-21): the AI-review rule drops 1,975 comments and the
+     template rule 8,526; of the 10,200 keyword survivors they remove 700 and 236, and of
+     the 3,523 classifier positives 350 (all apache/spark) and 42 (kubernetes 26, airflow
+     16), leaving 3,131 positives. Counts per repository are in
+     `classifier-full-12/prefilter-r3/stage-counts.json`.
      Counts are reported per repository at each stage (all comments, after the
      pre-filter, after keywords, positives);
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
@@ -126,8 +153,12 @@ means a random sample of that population, not of all pull requests.
    by repository so no single project dominates: 80–120 edit candidates, of which about
    80 are kept after the author's flags, plus 40 keep cases, drawn from the merged pull
    requests of the same repositories and window that have no comment classified as a
-   critique. Exclusions, applied to the pool before the draw and reported with counts
-   per repository:
+   critique. **Allocation (2026-10-21):** each repository's share is proportional to its
+   eligible candidates, capped at 10% of the set (at most 8 of 80 edit cases and 4 of 40
+   keep cases per repository); what the cap removes is redistributed in proportion among
+   the repositories under the cap; within a repository, pull requests are drawn in
+   seeded random order, at most one case per pull request. Exclusions, applied to the
+   pool before the draw and reported with counts per repository:
    - **Study author.** Pull requests opened by the author of this study
      (ting-hong-shieh), and comments the author wrote, are excluded.
    - **Bots and the pull request's author.** Only comments that passed the pre-filter

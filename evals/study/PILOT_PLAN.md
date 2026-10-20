@@ -171,6 +171,13 @@ preregistered round, not by extending this one.
   kept runs are listed in `pilot-reruns.json` and carry `attempt: 5` and the flag
   `rerun_verifier_false_positive` in the scored records (decision of 2026-10-21; the main
   study's rerun rule in `STUDY_PLAN.md` allows deletion only for harness failures).
+- Found 2026-10-21, after the run. The pilot's Claude Code runs used the author's own
+  configuration, as rounds 2–3 did: the global `~/.claude/CLAUDE.md` (attribution and
+  AI-disclosure rules, storage rules), user settings, synced plugins, auto-memory, and, in
+  the skill condition, the author's user skills in the skill list (none was invoked; the
+  forced v0.2.0 skill was the only one used). The exposure was the same in every arm.
+  Details and the evidence are under `evals/round3/PLAN.md` Deviations; the main study
+  uses a dedicated configuration directory.
 - 2026-10-21. To shorten the wall time, a second driver (`drive.py --models
   claude-fable-5-1,claude-opus-5-5`) ran alongside `run_pilot.sh`; runs are claimed
   atomically by directory, so no run was executed twice for that reason.

@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import hashlib
 import json
 import os
 import random
@@ -102,6 +103,34 @@ Answer with one JSON object and nothing else:
 
 
 STUDY_AUTHOR = "ting-hong-shieh"
+# AI-written reviews posted under a person's account (2026-10-21, author's decision): comments
+# carrying an HTML-comment marker that an AI review tool writes. The list was fixed from a survey
+# of every HTML-comment marker in the 12-repository pull (apache/spark's review tooling, Codex
+# review summaries and withdrawals); the same survey is rerun on the full pull before
+# classification and any new marker is added here with the date.
+AI_REVIEW = re.compile(r"<!--\s*(ai-code-review|ai-auto-review|spark[_-]dev[_-]review|codex-pull-request-review|"
+                       r"codex-non-openai-review)", re.I)
+# Templated comments (2026-10-21, author's decision): the same account posted the same text at
+# least TEMPLATE_MIN times across the pulled data. "Same text" after lower-casing, collapsing
+# whitespace, writing every @mention as "@", and every run of digits as "0".
+TEMPLATE_MIN = 5
+TEMPLATED: set[tuple[str, str]] = set()
+
+
+def template_key(author: str, body: str) -> tuple[str, str]:
+    t = re.sub(r"@[\w-]+", "@", body.lower())
+    t = re.sub(r"\d+", "0", t)
+    return author.lower(), hashlib.sha1(" ".join(t.split()).encode()).hexdigest()
+
+
+def count_templates(raw_dirs: list[Path]) -> Counter:
+    """First pass over every repository: how often each (account, normalized text) occurs."""
+    counts: Counter = Counter()
+    for d in raw_dirs:
+        for c in load(d)[1]:
+            if c["author"] and c["body"].strip():
+                counts[template_key(c["author"], c["body"])] += 1
+    return counts
 REF = re.compile(r"(?:#|\bGH-)(\d+)\b", re.I)
 
 
@@ -161,10 +190,14 @@ def drop_reason(c: dict) -> str | None:
         return "bot"
     if c["author"].lower() == STUDY_AUTHOR or (c["pr_author"] or "").lower() == STUDY_AUTHOR:
         return "study_author"
+    if AI_REVIEW.search(c["body"]):
+        return "ai_review"
     if len(c["body"]) < 20:
         return "short"
     if any(c["author"].lower() == a.lower() for a in c.get("pr_authors") or [c["pr_author"]] if a):
         return "pr_author"
+    if template_key(c["author"], c["body"]) in TEMPLATED:
+        return "templated"
     return None
 
 
@@ -535,9 +568,10 @@ def main() -> None:
     survivors = []
     rows = []
     stages = {}
-    for d in sorted(RAW.iterdir()):
-        if not (d / "counts.json").exists():
-            continue
+    raw_dirs = [d for d in sorted(RAW.iterdir()) if (d / "counts.json").exists()]
+    TEMPLATED.update(k for k, n in count_templates(raw_dirs).items() if n >= TEMPLATE_MIN)
+    print(f"templated (account, text) pairs with >= {TEMPLATE_MIN} copies: {len(TEMPLATED)}")
+    for d in raw_dirs:
         prs, items = load(d)
         reasons = Counter(drop_reason(c) for c in items)
         passed = [c for c in items if prefilter(c)]

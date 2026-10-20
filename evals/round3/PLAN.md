@@ -173,6 +173,28 @@ Found after round 3 (2026-10-20), affecting rounds 2 and 3 alike:
   run; version 2 of the case file (`evals/study/fix_a2_snapshots.py`) corrects the four
   inputs for later rounds.
 
+Found 2026-10-21, affecting rounds 2 and 3 alike (and the round-4 pilot):
+
+- **Claude Code ran with the author's own configuration.** No Claude run set an isolated
+  configuration (`CLAUDE_CONFIG_DIR`, `--setting-sources`, or `--bare`), so every run
+  loaded the author's global `~/.claude/CLAUDE.md`, user settings, synced plugins
+  (cowork-plugin-management in both rounds, heptabase as well in round 3; the init event
+  of each run lists them), and auto-memory (an empty per-run directory). The CLAUDE.md was
+  last changed on 2026-09-05, so both rounds saw the same text. It holds two kinds of
+  rules: contribution attribution and AI disclosure (do not add tool attribution to pull
+  requests; never remove a disclosure a project requires), and storage and project
+  layout. The first kind bears on descriptions that contain an AI-disclosure section
+  (9 of the 21 A2 inputs). The exposure was the same in every Claude condition, so
+  contrasts between Claude conditions are not confounded by it, but absolute rates may
+  differ from an unconfigured installation. In the pilot's skill condition the author's
+  user skills were listed too and no run invoked any of them; rounds 2–3 were not checked
+  for that. The round-3 Codex editors and every Codex judge ran with a per-run
+  `CODEX_HOME` and an empty home directory, so they did not see the author's AGENTS.md;
+  the round-2 Codex runs were not checked. A copy of the CLAUDE.md and settings, and the
+  `/context` output that lists the memory file, are kept outside Git
+  (`Processed/polish-open-source-prose/pilot-config-snapshot/`). The main study runs
+  with a dedicated configuration directory (`evals/study/STUDY_PLAN.md` §4).
+
 Found at judging (2026-10-20):
 
 - **One Claude judge prompt completed by hand.** For `a2-arrow-50635` chunk 1 (20 outputs),
