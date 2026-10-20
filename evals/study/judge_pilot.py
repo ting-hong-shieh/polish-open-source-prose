@@ -5,11 +5,12 @@ Judges: GPT-6 Astra, GPT-6.1 Sol, GPT-6 Luna, all at high effort, through `codex
 read-only bwrap sandbox (as the round-3 Sol judge). For each case, every output is shuffled
 under a hash label and judged in batches of 20 (5 for cases whose diff exceeds 1,000 lines).
 The judge always sees the original, the reviewer's comment, the CI summary, and the whole
-diff, whatever the editor saw. The whole diff goes inline on stdin first; if a call for a
-large-diff case fails (no output or unparsable output), the retry puts the diff in a file
-in the sandbox and tells the judge to read it instead (recorded per call in the usage log
-and in the judgment key's "diff_as_file" field). --file-threshold forces the file route
-above a prompt size, for testing.
+diff, whatever the editor saw. The diff goes inline on stdin: whole when the prompt stays
+under --truncate-over characters (250,000, about 75k tokens), otherwise truncated by
+truncate_diff.py (per-file summary, headers kept, 300 chars per line, 120 body lines per
+file); the judgment records "diff_truncated". If a call still fails (no output or
+unparsable output), the retry puts the diff in a file in the sandbox and tells the judge
+to read it instead ("diff_as_file"). --file-threshold forces the file route, for testing.
 
 Token usage per call (from the Codex event stream) goes to $PILOT_ROOT/judge-usage.jsonl.
 Labels go to $POLISH_EVAL_DATA/Processed/polish-open-source-prose/pilot-judgments.json
@@ -37,6 +38,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pilot_common as pc  # noqa: E402
+from truncate_diff import truncate  # noqa: E402
 
 CODEX = os.environ.get("CODEX_BIN", str(pc.EXPORTS / "eval-runs-2026-10-04/round3/bin/codex"))
 BWRAP = os.environ.get("BWRAP_BIN", "/usr/local/bin/bwrap")
@@ -93,7 +95,7 @@ def render_output(r: dict) -> str:
             + (f'\n<note>\n{r["note"]}\n</note>' if r["note"] else "") + "\n</output>")
 
 
-def build_prompts(records: list[dict], cases: dict, file_threshold: int | None) -> list[dict]:
+def build_prompts(records: list[dict], cases: dict, file_threshold: int | None, truncate_over: int = 250_000) -> list[dict]:
     groups: dict[str, list] = {}
     for r in records:
         groups.setdefault(r["case"], []).append(r)
@@ -111,10 +113,15 @@ def build_prompts(records: list[dict], cases: dict, file_threshold: int | None) 
                 r["label"] = label_for(r)
             outs = "\n\n".join(render_output(r) for r in batch)
             inline = PROMPT.format(**static, diff_block=DIFF_INLINE.format(diff=diff), outputs=outs)
+            truncated = len(inline) > truncate_over
+            if truncated:
+                inline = PROMPT.format(**static, diff_block=DIFF_INLINE.format(diff=truncate(diff, 300, 120, 120_000)),
+                                       outputs=outs)
             as_file = PROMPT.format(**static, diff_block=DIFF_FILE, outputs=outs)
             forced = file_threshold is not None and len(inline) > file_threshold
             prompts.append({"key": f"{cid}/{i // chunk}", "case": cid, "items": batch, "prompt": inline,
-                            "prompt_file_mode": as_file, "large": large, "diff": diff, "diff_as_file": forced})
+                            "prompt_file_mode": as_file, "large": large, "diff": diff, "diff_as_file": forced,
+                            "diff_truncated": truncated})
     return prompts
 
 
@@ -165,8 +172,10 @@ def main() -> None:
     ap.add_argument("--file-threshold", type=int, default=None, help="force the diff into a file above this many prompt chars")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--template", help="print the full prompt for this case with one placeholder output")
-    ap.add_argument("--exclude-diff-chars", type=int, default=100_000,
-                    help="pilot: leave out cases whose diff.patch exceeds this many characters (recorded)")
+    ap.add_argument("--exclude-diff-chars", type=int, default=None,
+                    help="leave out cases whose diff.patch exceeds this many characters (recorded)")
+    ap.add_argument("--truncate-over", type=int, default=250_000,
+                    help="prompt chars above which the diff is truncated (PILOT_DESIGN §4 trial)")
     o = ap.parse_args()
     cases = pc.read_cases()
     if o.template:
@@ -175,16 +184,18 @@ def main() -> None:
         print(build_prompts([fake], cases, o.file_threshold)[0]["prompt"])
         return
     records = json.loads(RECORDS.read_text())["records"]
-    excluded = sorted({r["case"] for r in records if len(pc.diff_text(r["case"])) > o.exclude_diff_chars})
+    excluded = sorted({r["case"] for r in records
+                       if o.exclude_diff_chars is not None and len(pc.diff_text(r["case"])) > o.exclude_diff_chars})
     if excluded:
         print(f"excluded from judging (diff over {o.exclude_diff_chars:,} chars): {', '.join(excluded)}")
         (pc.PILOT / "judge-excluded.json").write_text(json.dumps({"exclude_diff_chars": o.exclude_diff_chars,
                                                                  "cases": excluded}, indent=1) + "\n")
         records = [r for r in records if r["case"] not in excluded]
-    prompts = build_prompts(records, cases, o.file_threshold)
+    prompts = build_prompts(records, cases, o.file_threshold, o.truncate_over)
     sizes = [len(p["prompt"]) for p in prompts]
     print(f"{len(records)} outputs in {len(prompts)} prompts per judge; chars: max {max(sizes):,}, "
           f"mean {sum(sizes) // len(sizes):,}; {sum(p['large'] for p in prompts)} prompts on large-diff cases; "
+          f"{sum(p['diff_truncated'] for p in prompts)} with the diff truncated; "
           f"{sum(p['diff_as_file'] for p in prompts)} forced to the file route")
     if o.dry_run:
         return
@@ -219,7 +230,7 @@ def main() -> None:
                 print(f"FAILED {judge} {p['key']}", flush=True)
                 continue
             done[f"{judge}:{p['key']}"] = [{**{k: it[k] for k in ("model", "evidence", "instruction", "run", "case")},
-                                            "diff_as_file": p["diff_as_file"],
+                                            "diff_as_file": p["diff_as_file"], "diff_truncated": p["diff_truncated"],
                                             **{k: v for k, v in by_label[it["label"]].items() if k != "label"}}
                                            for it in p["items"]]
             OUT.write_text(json.dumps(done, ensure_ascii=False, indent=1) + "\n")

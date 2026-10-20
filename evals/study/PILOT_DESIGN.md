@@ -223,9 +223,9 @@ tokenize at about 2.4 characters per token, not 4: a five-output prompt with the
 4-characters-per-token figure for prose is about right there). Codex runs on the
 subscription credential, so this is a quota, not a dollar figure.
 
-In the pilot, cases whose diff exceeds 100,000 characters (the two 4,480-line diffs) are
-left out of the judge batches and listed in `judge-excluded.json`; a truncation rule for
-them is designed and tried before the study freezes. The judge sends the whole diff on
+In the pilot (author's decision after the trial below), the judge sends the whole diff
+inline when the prompt stays under 250,000 characters and the truncated diff above that
+(airflow 71403 only); the study fixes the rule before freezing. The judge sends the diff on
 stdin first; if a call on a large-diff case fails
 (no or unparsable output), the retry writes `diff.patch` into the judge sandbox and
 tells the judge to read it, and the judgment records `diff_as_file`. The token usage
@@ -258,8 +258,7 @@ per file, the rest replaced by one `… [N more lines omitted]` line; (5) a 120k
 cap on the whole, after which files are listed by name only. Applied: airflow 71403
 465k → 98k chars (about 24.5k tokens); cpython 150425 187k → 75k (about 19k);
 datafusion 24167 unchanged in substance (49k → 50k, the summary added). The truncated
-diffs are beside the originals as `diff.truncated.patch`. The pilot excludes the two
-largest cases from judging.
+diffs are beside the originals as `diff.truncated.patch`.
 
 **Trial (2026-10-20, `try_truncation.py`).** Five round-3 outputs per case (skill and
 compact reruns, mixed models), judged by Sol and Astra three ways: whole diff inline on
