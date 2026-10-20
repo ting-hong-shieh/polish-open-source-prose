@@ -18,12 +18,15 @@ reviewer commented, and the CI conclusions for that commit.
 - **Q1, evidence.** With the review and the code available, how much more of the
   reviewer's point gets fixed, and does fixing it come with more invented facts or
   damaged text?
-- **Q2, instructions under evidence.** Once the evidence is there, does the skill still
+- **Q2, code without the review.** Given the code but not the review, does the editor
+  find and fix the mismatch on its own? This is the rounds-2/3 task with the missing
+  evidence supplied, and it answers the report's own limitation that editors "do not
+  receive the external evidence that many reviewers ask for".
+- **Q3, instructions under evidence.** Once the evidence is there, does the skill still
   differ from a short instruction or from no instruction?
 
-Round 4 does not answer the rounds-2/3 question (can the editor find the problem
-before a reviewer does); it answers the follow-up (can it fix the problem once told).
-The paper reports both as different tasks.
+The paper reports the three evidence levels as three tasks: polish blind (E0), polish
+with the code (E_code), revise after review (E1).
 
 ## Cases
 
@@ -44,12 +47,17 @@ reported separately. The flags are committed with the plan.
 
 ## Arms
 
-Two evidence levels × four instruction conditions = 8 arms.
+Three evidence levels × four instruction conditions = 12 arms.
 
 | Evidence | What the editor receives |
 | --- | --- |
 | `E0` text only | the round-2/3 task prompt, unchanged (same-batch rerun) |
-| `E1` review + code | the same task prompt, plus one paragraph giving the reviewer's comment and the CI conclusions verbatim, and saying that `diff.patch` in the working directory holds the change |
+| `E_code` code, no review | the same task prompt, plus one neutral paragraph saying that `diff.patch` in the working directory holds the change and giving the CI conclusions; it does not mention a reviewer and does not ask the editor to check anything (`evals/prompts/round4-code-paragraph.txt`) |
+| `E1` review + code | the same task prompt, plus one paragraph giving the reviewer's comment and the CI conclusions verbatim, and saying that `diff.patch` in the working directory holds the change (`evals/prompts/round4-evidence-paragraph.txt`) |
+
+The `E_code` paragraph is deliberately minimal. Any wording that tells the editor to
+compare the description with the code would turn `E_code` into a hint condition; the
+wording is fixed here and its influence is a disclosed limitation.
 
 | Instruction | As in round 3 |
 | --- | --- |
@@ -65,12 +73,17 @@ round-3 layout unchanged. The E1 paragraph is the same for every instruction con
 and is committed with the plan (`evals/prompts/round4-evidence-paragraph.txt`).
 
 Seven configurations as before; Claude configurations run twice, Codex once:
-21 × 8 × 10 = 1,680 outputs. The E0 arms exist from round 3 (and round 2 for
+21 × 12 × 10 = 2,520 outputs. The E0 arms exist from round 3 (and round 2 for
 `no_skill`); they are rerun so that every contrast is within one batch, as in round 3.
+
+**Did the editor read the diff?** For `E_code` and `E1`, each run records whether
+`diff.patch` was opened (Claude `meta.json` reads; Codex events). Nothing forces the
+read. The read rate is a result in its own right, and every `E_code` and `E1` outcome
+is also reported split by read / not read.
 
 ## Judging
 
-A fresh pass over all 1,680 outputs by both judges (Opus 5.5, GPT-6.1 Sol), labels
+A fresh pass over all 2,520 outputs by both judges (Opus 5.5, GPT-6.1 Sol), labels
 masked and shuffled per case as before. Whatever the editor saw, the judge always sees:
 
 - the original title and description;
@@ -97,14 +110,16 @@ Power: from round-3 A2 intervals the per-case SD of a paired difference is about
 0.12; with 21 cases a difference of about 0.08–0.10 is detectable at 80% power. The
 expected effect is larger than that if evidence helps at all.
 
-**Secondary (reported, Holm-adjusted as one family of six):**
-1. `E1 − E0` on invented rate and on damaged rate (does fixing cost accuracy?);
-2. under `E1`: `v0.2.0` vs `no_skill`, `v0.2.0` vs `three_sentences`,
-   `skill_inline` vs `v0.2.0` on clean-fix;
-3. `E1 − E0` on the unchanged rate.
+**Secondary (one family of four, Holm-adjusted), all on clean-fix pooled over the
+four instruction conditions unless stated:**
+1. `E_code − E0` (does the code alone help?);
+2. `E1 − E_code` (what does the review add beyond the code?);
+3. `E1 − E0` on the damaged rate (does fixing cost accuracy?);
+4. under `E1`: `v0.2.0` vs `no_skill` on clean-fix (does the skill still matter?).
 
-Descriptive: everything per instruction condition, per judge, per harness, and split by
-the author's flag; whether the editor read `diff.patch`; cost and tokens.
+Descriptive only: the remaining instruction contrasts under `E1` and `E_code`,
+invented and unchanged rates, per judge, per harness, split by the author's flag, split
+by whether `diff.patch` was read, cost and tokens.
 
 ## How results will be read
 
@@ -115,7 +130,13 @@ the author's flag; whether the editor read `diff.patch`; cost and tokens.
   correction at a cost; report the trade-off.
 - A small or non-significant primary effect: even told and shown, the editors do not
   fix the description; the problem is correction itself.
-- If the secondary instruction contrasts under `E1` are all near zero: with evidence,
+- `E_code` close to `E0` with a low diff read rate: given the code, the editors do not
+  look at it unless told there is a problem; report this as a finding about
+  self-checking, not as a failure of the design.
+- `E_code` close to `E0` with a high read rate: the editors read the code and still do
+  not notice the mismatch; the correction problem is not only missing evidence.
+- `E_code` well above `E0`: the rounds-2/3 ceiling was mostly the missing code.
+- If the `v0.2.0` vs `no_skill` contrast under `E1` is near zero: with evidence,
   instructions stop mattering for correction; report whether they still matter for
   restraint (unchanged, damaged).
 

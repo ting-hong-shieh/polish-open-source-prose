@@ -1,0 +1,5 @@
+The diff of this change is in the file diff.patch in the current directory. The CI checks on this commit concluded as follows:
+
+<ci>
+{ci}
+</ci>
