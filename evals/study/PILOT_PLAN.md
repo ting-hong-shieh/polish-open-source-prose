@@ -1,6 +1,11 @@
-# Round 4: revising a criticized description with the review and the code in hand
+# Pilot (round 4): revising a criticized description with the review and the code in hand
 
-Draft. To be frozen (committed and tagged `round4-frozen`) before any round-4 model run.
+This is now the **pipeline pilot** for `STUDY_PLAN.md`. Where the two differ, the study
+plan wins: configurations are the four Claude models in Claude Code (no Codex editors),
+instruction conditions are none / compact / skill (inline and compact+problems are not
+run), judges are the OpenAI models, and the labels are those of STUDY_PLAN.md §5. The
+pilot's numbers test the mechanics and estimate cost; they do not enter the study's
+primary analysis. Frozen as `pilot-frozen` before any pilot run.
 Any change after the first run goes under "Deviations" with the date and the reason.
 
 ## Question
