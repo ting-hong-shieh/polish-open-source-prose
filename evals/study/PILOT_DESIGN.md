@@ -31,8 +31,17 @@ just before the quoted reviewer comment, and compares them with the case input. 
 thread, and the comment later chosen as `critique_quote` was a later one; the author
 (or, for arrow 50377, a maintainer) had edited the description in between. Rounds 2
 and 3 ran on the same hash-fixed case file, so those four inputs were the same there.
-The fix (a corrected case file with a new manifest hash, and a disclosure for rounds
-2–3) is the author's decision; the pilot does not start before it.
+Fixed the same day: `fix_a2_snapshots.py` wrote version 2 of the case file with the
+four inputs rebuilt at the quoted comment's time (arrow 49771: 1,047 → 520 chars; arrow
+50377: 2,595 → 1,054; cpython 143246: 2,539 → 2,523; cpython 150425: 1,317 → 3,574),
+`snapshot_at` on every case, and a new manifest hash with the date and reason; version
+1 stays beside it and the round-2/3 scripts keep reading it. The check now also
+confirms that `review.md`, `diff.patch`, and `ci.md` use the same timestamp (21/21)
+and that every line the reviewer quotes from the description occurs in the snapshot
+(Markdown marks and issue links normalized). Three cases stay flagged by that check
+because the reviewer quoted something other than the description: airflow 71315 quotes
+the author's reply, airflow 72068 and 73288 quote the AI-assisted review template;
+reviewed by hand, no action.
 
 Decisions: (a) PILOT_PLAN says "four cases whose diff exceeds 1,000 lines"; it is three
 by patch lines. (b) Whether `ci.md` stays as the full table in the working directory
@@ -204,12 +213,15 @@ batches of 5. Per judge: 18 × 4 + 3 × 15 = 117 prompts; three judges, 351 call
 
 Prompt sizes, measured from the built files (`judge_pilot.py --template`): about 6k
 chars (1.5k tokens) plus outputs for a typical case, so a 20-output batch is roughly
-20k tokens; but airflow 71403's diff is 465k chars (about 118k tokens; its lines run
-to 386 characters and uv.lock alone is 1,549 changed lines), cpython 150425's is 187k
-chars (about 47k tokens), and datafusion 24167's 49k chars (about 12k tokens). Whole,
-the 15 five-output batches of 71403 would be about 1.8M tokens per judge and those of
-150425 about 0.7M, against about 1.5M for the other nineteen cases together. Codex
-runs on the subscription credential, so this is a quota, not a dollar figure.
+20k tokens; but airflow 71403's diff is 465k chars (its lines run to 386 characters
+and uv.lock alone is 1,549 changed lines), cpython 150425's is 187k chars, and
+datafusion 24167's 49k chars. Measured with the judges (trial below), code diffs
+tokenize at about 2.4 characters per token, not 4: a five-output prompt with the whole
+71403 diff is about 207k input tokens, with the whole 150425 diff about 74k. Whole, the
+15 five-output batches of 71403 would be about 3.1M tokens per judge and those of
+150425 about 1.1M, against roughly 2.5M for the other nineteen cases together (the
+4-characters-per-token figure for prose is about right there). Codex runs on the
+subscription credential, so this is a quota, not a dollar figure.
 
 In the pilot, cases whose diff exceeds 100,000 characters (the two 4,480-line diffs) are
 left out of the judge batches and listed in `judge-excluded.json`; a truncation rule for
@@ -246,9 +258,36 @@ per file, the rest replaced by one `… [N more lines omitted]` line; (5) a 120k
 cap on the whole, after which files are listed by name only. Applied: airflow 71403
 465k → 98k chars (about 24.5k tokens); cpython 150425 187k → 75k (about 19k);
 datafusion 24167 unchanged in substance (49k → 50k, the summary added). The truncated
-diffs are beside the originals as `diff.truncated.patch`. Whether the judge grades as
-well on the truncated diff as on the whole one is to be tried on these cases before
-freezing; the pilot excludes the two largest from judging.
+diffs are beside the originals as `diff.truncated.patch`. The pilot excludes the two
+largest cases from judging.
+
+**Trial (2026-10-20, `try_truncation.py`).** Five round-3 outputs per case (skill and
+compact reruns, mixed models), judged by Sol and Astra three ways: whole diff inline on
+stdin, truncated diff inline, whole diff as a file in the sandbox. Every call returned
+all five labels; Codex `exec` accepted the 490k-character stdin prompt. Input tokens per
+call:
+
+| Case | Whole inline | Truncated inline | Whole as file |
+| --- | --- | --- | --- |
+| airflow 71403 | 206,791 (Sol) / 209,998 (Astra) | 44,279 / 47,486 | 137,872 / 171,070 |
+| cpython 150425 | 72,319 / 75,526 | 39,031 / 42,238 | 288,614 / 182,468 |
+
+The file route is the most expensive: the judge reads the file in pieces and the
+pieces re-enter the context. Labels: on 71403 all three variants agree with each other
+on every label for both judges. On 150425 every label except `code_consistent` agrees
+across variants; `code_consistent` flipped for all five outputs in one direction for
+Sol (true with the whole diff, false with the truncated one) and the other for Astra
+(false inline, true from the file), and the two judges disagree on it with the whole
+diff inline. A caveat on that case: the five outputs were round-3 revisions of the
+version-1 input, whose title named "JIT" fast paths, while the judge saw the version-2
+original and a diff about specialized fast paths; the judges were deciding whether a
+revision of a text they had not been shown contradicts the diff. The label is unstable
+on that case, not demonstrably wrong in any variant.
+
+Recommendation for the study: send the whole diff inline when the prompt stays under
+about 250k characters (roughly 75k tokens; covers 150425), apply the truncation rule
+above that (71403), and do not use the file route. To be fixed in STUDY_PLAN before
+freezing, with `code_consistent` on large diffs reported as a known unstable label.
 
 ## 5. Analysis for the pilot
 

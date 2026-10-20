@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import difflib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -48,6 +49,13 @@ def title_at(pr: dict, when: str) -> tuple[str, str]:
     if after:
         return after[0]["previousTitle"], f"previousTitle of rename at {after[0]['createdAt']}"
     return pr["title"], "current title (no rename after the comment)"
+
+
+def plain(text: str) -> str:
+    """Collapse whitespace, drop Markdown marks a reviewer may omit when quoting, and write
+    issue and pull request links the short way GitHub renders them (#123)."""
+    text = re.sub(r"https://github\.com/[\w.-]+/[\w.-]+/(?:issues|pull)/(\d+)", r"#\1", text)
+    return " ".join(text.replace("`", "").replace("**", "").replace("_", " ").split())
 
 
 def quoted_lines(comment: str) -> list[str]:
@@ -77,8 +85,8 @@ def main() -> None:
         posted = pc.review_header(cid).get("Posted")
         aligned = posted == when
         quotes = quoted_lines(pc.review_body(cid))
-        flat = " ".join(expected.split())
-        missing = [q for q in quotes if " ".join(q.split()) not in flat]
+        flat = plain(expected)
+        missing = [q for q in quotes if plain(q) not in flat]
         n_edits = pr["userContentEdits"]["totalCount"]
         edits_before = sum(1 for e in pr["userContentEdits"]["nodes"] if e["editedAt"] < when)
         rows.append((cid, same, when, n_edits, edits_before, body_src, title_src, aligned, len(quotes), missing))
