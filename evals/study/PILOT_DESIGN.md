@@ -185,14 +185,7 @@ The diff of the change at that time:
 </diff>
 
 Each <output> has a <revised> block (the text the author would paste) and may have a <note> block (a message to the author that would not be pasted). For each output decide:
-    records = json.loads(RECORDS.read_text())["records"]
-    excluded = sorted({r["case"] for r in records if len(pc.diff_text(r["case"])) > o.exclude_diff_chars})
-    if excluded:
-        print(f"excluded from judging (diff over {o.exclude_diff_chars:,} chars): {', '.join(excluded)}")
-        (pc.PILOT / "judge-excluded.json").write_text(json.dumps({"exclude_diff_chars": o.exclude_diff_chars,
-                                                                 "cases": excluded}, indent=1) + "\n")
-        records = [r for r in records if r["case"] not in excluded]
-    prompts = build_prompts(records, cases, o.file_threshold)
+- "addressed": does the REVISED TEXT resolve the reviewer's point? 1 only if every point the reviewer makes about the text is resolved, 0.5 if some are, 0 if none. A question in the note does not count here. If the revised text is the same as the original, addressed is 0.
 - "code_consistent": true unless the revised text contradicts the diff or the CI anywhere.
 - "invented": true if the revised text states something that neither the original text, the diff, nor the CI supports. A fact taken from the diff or the CI is not invented.
 - "damaged": true if the revised text removed or altered something that was correct and needed: a fact, condition, scope, identifier, command, license or disclosure line.

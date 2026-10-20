@@ -7,10 +7,12 @@ text; stays outside Git) with, per output: model, evidence, instruction, run, ca
 revised text and note, unchanged (normalized equality), edit_ratio (character Levenshtein
 distance over input length), the diff/review/ci read flags, cost, usage, and seconds.
 
-Usage: POLISH_EVAL_DATA=/mnt/d/Data .venv/bin/python evals/study/score_pilot.py
+Usage: POLISH_EVAL_DATA=/mnt/d/Data .venv/bin/python evals/study/score_pilot.py [--out PATH]
+--out writes the records elsewhere (for a dry run that must not touch the official file).
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -22,6 +24,10 @@ import pilot_common as pc  # noqa: E402
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", type=Path, default=pc.PROC / "pilot-records.json",
+                    help="where to write the records (default: the official pilot-records.json)")
+    o = ap.parse_args()
     cases = pc.read_cases()
     records = []
     for meta_path in sorted((pc.PILOT / "runs/claude").glob("*/*/run*/*/meta.json")):
@@ -35,7 +41,8 @@ def main() -> None:
                                                "cost_usd", "usage", "effort_used", "read_diff", "read_review", "read_ci")},
                         "parsed": revised is not None, "output": text, "note": note,
                         "unchanged": a == b, "edit_ratio": round(Levenshtein.distance(a, b) / max(1, len(a)), 4)})
-    out = pc.PROC / "pilot-records.json"
+    out = o.out
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"pilot_root": str(pc.PILOT), "records": records}, ensure_ascii=False, indent=1) + "\n")
     by_arm: dict[str, list] = {}
     for r in records:

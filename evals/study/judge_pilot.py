@@ -17,7 +17,8 @@ Labels go to $POLISH_EVAL_DATA/Processed/polish-open-source-prose/pilot-judgment
 (they can quote third-party text; outside Git).
 
 Usage: POLISH_EVAL_DATA=/mnt/d/Data .venv/bin/python evals/study/judge_pilot.py
-         [--judges astra,sol,luna] [--workers 2] [--dry-run] [--template CASE_ID]
+         [--judges astra,sol,luna] [--workers 2] [--dry-run] [--template CASE_ID] [--records PATH]
+--records reads another records file (for a dry run on a scratch copy of pilot-records.json).
 --dry-run builds the prompts and prints counts and sizes without calling any model.
 --template prints the full prompt for one case with a placeholder output, for review.
 """
@@ -172,6 +173,8 @@ def main() -> None:
     ap.add_argument("--file-threshold", type=int, default=None, help="force the diff into a file above this many prompt chars")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--template", help="print the full prompt for this case with one placeholder output")
+    ap.add_argument("--records", type=Path, default=RECORDS,
+                    help="records file from score_pilot.py (default: the official pilot-records.json)")
     ap.add_argument("--exclude-diff-chars", type=int, default=None,
                     help="leave out cases whose diff.patch exceeds this many characters (recorded)")
     ap.add_argument("--truncate-over", type=int, default=250_000,
@@ -183,7 +186,7 @@ def main() -> None:
                 "output": "[revised title and description]", "note": "[note to the author, if any]"}
         print(build_prompts([fake], cases, o.file_threshold)[0]["prompt"])
         return
-    records = json.loads(RECORDS.read_text())["records"]
+    records = json.loads(o.records.read_text())["records"]
     excluded = sorted({r["case"] for r in records
                        if o.exclude_diff_chars is not None and len(pc.diff_text(r["case"])) > o.exclude_diff_chars})
     if excluded:
