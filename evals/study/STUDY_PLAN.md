@@ -56,6 +56,12 @@ sampling procedure. Target sizes:
   diff and CI check conclusions at the comment's timestamp; the author's later revision
   (reference only, not an answer key).
 
+**Diff size rule.** Pull requests whose diff at the comment's timestamp exceeds 1,500
+lines (added plus removed, from the patch) are excluded from both sets before sampling,
+and the number excluded is reported. The pilot showed that a few very large diffs
+dominate cost and judge load; excluding them by a rule keeps every editor and judge
+looking at the whole diff. No diff is truncated for the editor.
+
 Before freezing, the author reads every edit case's reviewer comment and records two
 flags: `text_critique` (the comment criticizes the description or title, not only the
 code: yes / no / uncertain) and, when yes, `fixable_from` (`code`: the diff plus CI are
@@ -84,19 +90,41 @@ them first.
 | `none` | task prompt alone |
 | `compact` | the four-sentence instruction, prepended |
 | `skill` | polish-open-source-prose v0.2.0, loaded through the Claude Code Skill mechanism and forced, as in rounds 2–3 |
+| `compact_check` | the compact instruction plus one sentence: "Before returning, check the description against the diff and the CI results in the working directory." (`evals/prompts/compact-check.txt`). Runs under `E_code` and `E1` only. Included only if the pilot probe shows that the sentence changes the diff-read rate or the unchanged rate; the decision is recorded here before freezing. |
 
-**Configurations**: Claude Haiku 5.5, Sonnet 5.5, Opus 5.5, and Fable 5.1 in Claude Code,
-same build for every run, reasoning effort high (or the model's default where high is
-unavailable; recorded). Fable stays only if the pilot shows normal behavior and
-acceptable cost. Two runs per case, condition, and configuration.
+The instruction conditions stand for standing configuration (a CLAUDE.md or AGENTS.md
+line, or an installed skill), not for text a person types per task.
+
+**Configurations**: Claude Haiku 5.5, Sonnet 5.5, and Opus 5.5 in Claude Code, same build
+for every run, reasoning effort high. Two runs per case, condition, and configuration.
+Fable 5.1 ran in the pilot and behaved like Opus 5.5 at 2.8× the cost; it is not in the
+main study because of cost and because its availability has been interrupted before,
+which would hinder replication. Its pilot outputs are reported in an appendix as
+exploratory.
 
 **One harness, one prompt.** Every run uses the same English task prompt and the same
 output format (`<revised>` tags, note allowed outside). This removes the round-2/3
 asymmetry. Whether the editor opened `diff.patch` is read from the run logs.
 
-**Size**: edit 80 × 3 × 3 × 4 × 2 = 5,760; keep 30 × 2 × 3 × 4 × 2 = 1,440; about 7,200
-outputs. Budget estimate: USD 300–500 depending on Fable pricing; confirmed after the
-pilot.
+**Task prompts are phrased as a developer would phrase them**, not as an editing
+exercise (`evals/prompts/study-task-*.txt`, committed before freezing):
+- `E0` and `E_code`: the developer asks for the description to be cleaned up before the
+  pull request is posted; under `E_code` the prompt adds, neutrally, where the diff and
+  CI results are.
+- `E1`: the developer passes on the reviewer's comment and asks for the title and
+  description to be updated in response.
+The `<revised>` tags are a measurement device and are disclosed as such. These prompts
+differ from the round-2/3 task prompt, so `E0` here is not directly comparable with the
+earlier rounds; that is accepted, since the earlier rounds are appendix material.
+
+**Size** (three configurations, two runs): edit 80 × 3 evidence × 3 instructions × 6 =
+4,320; keep 40 × 2 × 3 × 6 = 1,440; plus `compact_check` if included, 80 × 2 × 6 = 960;
+about 5,800–6,700 outputs. Pilot-based estimate with the diff-size rule: USD 350–500.
+
+**Rerun rule.** A run is deleted and rerun only on a harness failure: non-zero exit, no
+output, or no parsable `<revised>` block. Nothing about the content of an output is a
+reason to delete it; content checks only add flags. Reruns and their attempt numbers are
+recorded per run.
 
 ## 5. Scoring
 
@@ -160,6 +188,10 @@ power under the per-case variability seen in round 3.
 3. `E1 − E0`, damaged rate (does fixing cost accuracy?);
 4. under `E1`, `skill − none`, complete clean fix (does the skill still matter?).
 
+If `compact_check` is included, one contrast is added to this family (five in all):
+`compact_check − compact` on the complete-clean-fix rate under `E_code`, with the
+diff-read rate reported beside it.
+
 **Restraint family (Holm-adjusted, three contrasts, keep set):** `compact − none` and
 `skill − none` on the unchanged rate under `E0`; `E_code − E0` on the unchanged rate
 pooled over instructions (does seeing the code make the editor touch fine text?).
@@ -183,12 +215,31 @@ was read, by reviewer-critique type, by the author's flag, edit ratios, cost and
 - Keep set: `E_code` lowering the unchanged rate means that showing the code invites
   edits to text that was fine; whether those edits are harmful decides how to read it.
 
+## 7b. Scope and known limits (to state in the paper)
+
+- The task isolates one step, revising an existing description. The most realistic
+  agent workflow writes the description from the diff in the first place; that
+  generation task is out of scope and named as future work.
+- Claims are scoped to "when an agent is asked to revise a pull request description",
+  with standing instructions as configuration, in Claude Code with Claude models.
+  Rounds 2–3 supply cross-harness evidence for the restraint pattern in an appendix.
+- Reasoning effort is high throughout; the effort probe (appendix) indicates how far the
+  diff-read rate falls at default settings.
+- All judges are from one vendor; the author's blind check is the only validity
+  evidence.
+
 ## 8. Order of work
 
 1. **Pilot** (`PILOT_PLAN.md`): the 21 A2 cases, all evidence levels and instruction
    conditions, four configurations, three candidate judges. Purpose: verify the new
    mechanics (evidence files, diff-read logging, judging with diffs, Fable behavior,
    judge stability), estimate cost. Pilot results do not enter the primary analysis.
+   Two pilot probes decide two pre-freeze choices: (a) `compact_check` on `E_code`, three
+   configurations, two runs (126 runs): included in the study if it moves the diff-read
+   or unchanged rate; (b) reasoning effort default and low for Haiku and Sonnet on
+   `E_code` under `none` and `compact`, one run (84 runs): appendix only, to show how
+   diligence changes at the settings people actually use. After these two probes no
+   further conditions are added.
 2. **Collection** in parallel (`CASE_COLLECTION.md`); author spot-checks the classifier
    and flags the sampled cases.
 3. **Freeze**: sampled sets by hash, this plan, prompts, judge prompt, seeds; tag
@@ -209,6 +260,11 @@ All of this is stated in the paper.
 
 - 2026-10-20: first draft, replacing the round-4 plan.
 - 2026-10-20: flag split into `text_critique` and `fixable_from`; pilot flags recorded in `flags.json`.
+- 2026-10-21, after the pilot runs: Fable dropped from the main study; diff-size
+  sampling rule (≤ 1,500 lines) instead of truncation; rerun rule limited to harness
+  failures; `compact_check` added as a conditional fourth instruction condition with a
+  pilot probe; effort probe for the appendix; task prompts rephrased as developer
+  requests; keep set 40; scope section 7b added.
 
 ## Deviations
 

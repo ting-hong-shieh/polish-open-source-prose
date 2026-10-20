@@ -1,0 +1,17 @@
+A reviewer left this comment on my pull request:
+
+<review>
+{review}
+</review>
+
+Update the title and description to address it. The diff is in diff.patch in the current directory, and the CI results on this commit were:
+
+<ci>
+{ci}
+</ci>
+
+<description>
+{text}
+</description>
+
+Return the title on the first line and the description after it, inside <revised> tags. Anything you want to tell me goes outside the tags.

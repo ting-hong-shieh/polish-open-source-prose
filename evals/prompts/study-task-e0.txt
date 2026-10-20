@@ -1,0 +1,7 @@
+I'm about to post this pull request. Clean up the title and description before I do.
+
+<description>
+{text}
+</description>
+
+Return the title on the first line and the description after it, inside <revised> tags. Anything you want to tell me goes outside the tags.
