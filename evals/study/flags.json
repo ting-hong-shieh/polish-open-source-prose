@@ -1,26 +1,116 @@
 {
- "description": "Author's flag per A2 case for round 4 (PLAN.md, Cases): true if the reviewer comment criticizes the description or title, not only the code, and the diff plus CI are enough to act on it. Filled by the author from the reading sheet; committed before the round-4 freeze.",
+ "description": "Author's flags per A2 case (STUDY_PLAN.md §3, PILOT_PLAN.md Cases). text_critique: does the reviewer comment criticize the description or title, not only the code (yes / no / uncertain). fixable_from: with text_critique yes, is the diff plus CI enough to act on it ('code'), or does acting need a fact the review supplies that the diff and CI do not ('partial'). Readings drafted by Claude from the reading sheet and confirmed by the author on 2026-10-20; the author's confirmation is the flag.",
+ "summary": {
+  "text_critique_yes": 17,
+  "fixable_from_code": 10,
+  "fixable_partial": 7,
+  "no_or_uncertain": 4
+ },
  "flags": {
-  "a2-airflow-60733": null,
-  "a2-airflow-67823": null,
-  "a2-airflow-70096": null,
-  "a2-airflow-71315": null,
-  "a2-airflow-71403": null,
-  "a2-airflow-71460": null,
-  "a2-airflow-71734": null,
-  "a2-airflow-72068": null,
-  "a2-airflow-72157": null,
-  "a2-airflow-73185": null,
-  "a2-airflow-73288": null,
-  "a2-arrow-49171": null,
-  "a2-arrow-49771": null,
-  "a2-arrow-50377": null,
-  "a2-arrow-50635": null,
-  "a2-arrow-51133": null,
-  "a2-arrow-51237": null,
-  "a2-datafusion-24167": null,
-  "a2-datafusion-25109": null,
-  "a2-cpython-143246": null,
-  "a2-cpython-150425": null
+  "a2-airflow-60733": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "description claims Any->Client; code already had Client; diff shows the real change"
+  },
+  "a2-airflow-67823": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "title says task group view; PR is the graph structure endpoint; reviewer asks to fix title and description"
+  },
+  "a2-airflow-70096": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "title 'retry' misleads; diff shows validation then regeneration"
+  },
+  "a2-airflow-71315": {
+   "text_critique": "yes",
+   "fixable_from": "partial",
+   "reason": "title fixable from diff; missing AI-use statement cannot be settled from evidence"
+  },
+  "a2-airflow-71403": {
+   "text_critique": "yes",
+   "fixable_from": "partial",
+   "reason": "reviewer cannot see the why; large diff; motivation may need the author"
+  },
+  "a2-airflow-71460": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "reviewer asks for plain-language before/after; derivable from diff"
+  },
+  "a2-airflow-71734": {
+   "text_critique": "yes",
+   "fixable_from": "partial",
+   "reason": "title/description overstate; the main-branch behavior is outside the diff, given in the review"
+  },
+  "a2-airflow-72068": {
+   "text_critique": "no",
+   "fixable_from": null,
+   "reason": "missing regression test and a side effect: code, not text"
+  },
+  "a2-airflow-72157": {
+   "text_critique": "yes",
+   "fixable_from": "partial",
+   "reason": "description says 3.2, correct is 3.1.0; the version is in git history, given in the review"
+  },
+  "a2-airflow-73185": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "title unclear; reviewer suggests one"
+  },
+  "a2-airflow-73288": {
+   "text_critique": "no",
+   "fixable_from": null,
+   "reason": "content approved; not merged because other review threads are open"
+  },
+  "a2-arrow-49171": {
+   "text_critique": "yes",
+   "fixable_from": "partial",
+   "reason": "'deprecated over 6 years ago' is wrong; the date is in history, given in the review"
+  },
+  "a2-arrow-49771": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "description too vague; small diff"
+  },
+  "a2-arrow-50377": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "testing section meaningless; CI shows two macOS failures"
+  },
+  "a2-arrow-50635": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "'Critical Fix' label questioned; diff shows the fix"
+  },
+  "a2-arrow-51133": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "title duplicated and truncated; description thin"
+  },
+  "a2-arrow-51237": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "'not a critical fix, update the description'"
+  },
+  "a2-datafusion-24167": {
+   "text_critique": "yes",
+   "fixable_from": "partial",
+   "reason": "claims existing roundtrip tests cover it; existing tests are outside the diff, named in the review"
+  },
+  "a2-datafusion-25109": {
+   "text_critique": "yes",
+   "fixable_from": "code",
+   "reason": "'clean up the description, there is slop'"
+  },
+  "a2-cpython-143246": {
+   "text_critique": "uncertain",
+   "fixable_from": null,
+   "reason": "security framing already edited away before the comment; asks whether LLM-generated"
+  },
+  "a2-cpython-150425": {
+   "text_critique": "uncertain",
+   "fixable_from": null,
+   "reason": "asks for benchmarks the author must supply; no complaint about wording"
+  }
  }
 }

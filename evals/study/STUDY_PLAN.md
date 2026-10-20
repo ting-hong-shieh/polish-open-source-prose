@@ -56,9 +56,13 @@ sampling procedure. Target sizes:
   diff and CI check conclusions at the comment's timestamp; the author's later revision
   (reference only, not an answer key).
 
-Before freezing, the author reads every edit case's reviewer comment and records one flag:
-the comment criticizes the description or title, and the diff plus CI are enough to act
-on it. Cases failing the flag stay in the set and are reported separately.
+Before freezing, the author reads every edit case's reviewer comment and records two
+flags: `text_critique` (the comment criticizes the description or title, not only the
+code: yes / no / uncertain) and, when yes, `fixable_from` (`code`: the diff plus CI are
+enough to act on it; `partial`: acting needs a fact the review supplies that the diff
+and CI do not). Cases with `text_critique` no or uncertain stay in the set and are
+reported separately. The `partial` group is where `E_code` and `E1` are expected to
+differ most, and is reported as its own split.
 
 The 21 existing A2 cases join the edit set if they pass the same flag; the pilot runs on
 them first.
@@ -204,6 +208,7 @@ All of this is stated in the paper.
 ## Changes before freezing
 
 - 2026-10-20: first draft, replacing the round-4 plan.
+- 2026-10-20: flag split into `text_critique` and `fixable_from`; pilot flags recorded in `flags.json`.
 
 ## Deviations
 
