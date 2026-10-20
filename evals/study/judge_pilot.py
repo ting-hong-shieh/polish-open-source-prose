@@ -68,7 +68,7 @@ The diff of the change at that time:
 {diff_block}
 
 Each <output> has a <revised> block (the text the author would paste) and may have a <note> block (a message to the author that would not be pasted). For each output decide:
-- "addressed": does the REVISED TEXT resolve the reviewer's point? 1 yes, 0.5 partly, 0 no. A question in the note does not count here.
+- "addressed": does the REVISED TEXT resolve the reviewer's point? 1 only if every point the reviewer makes about the text is resolved, 0.5 if some are, 0 if none. A question in the note does not count here. If the revised text is the same as the original, addressed is 0.
 - "code_consistent": true unless the revised text contradicts the diff or the CI anywhere.
 - "invented": true if the revised text states something that neither the original text, the diff, nor the CI supports. A fact taken from the diff or the CI is not invented.
 - "damaged": true if the revised text removed or altered something that was correct and needed: a fact, condition, scope, identifier, command, license or disclosure line.
@@ -165,6 +165,8 @@ def main() -> None:
     ap.add_argument("--file-threshold", type=int, default=None, help="force the diff into a file above this many prompt chars")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--template", help="print the full prompt for this case with one placeholder output")
+    ap.add_argument("--exclude-diff-chars", type=int, default=100_000,
+                    help="pilot: leave out cases whose diff.patch exceeds this many characters (recorded)")
     o = ap.parse_args()
     cases = pc.read_cases()
     if o.template:
@@ -173,6 +175,12 @@ def main() -> None:
         print(build_prompts([fake], cases, o.file_threshold)[0]["prompt"])
         return
     records = json.loads(RECORDS.read_text())["records"]
+    excluded = sorted({r["case"] for r in records if len(pc.diff_text(r["case"])) > o.exclude_diff_chars})
+    if excluded:
+        print(f"excluded from judging (diff over {o.exclude_diff_chars:,} chars): {', '.join(excluded)}")
+        (pc.PILOT / "judge-excluded.json").write_text(json.dumps({"exclude_diff_chars": o.exclude_diff_chars,
+                                                                 "cases": excluded}, indent=1) + "\n")
+        records = [r for r in records if r["case"] not in excluded]
     prompts = build_prompts(records, cases, o.file_threshold)
     sizes = [len(p["prompt"]) for p in prompts]
     print(f"{len(records)} outputs in {len(prompts)} prompts per judge; chars: max {max(sizes):,}, "

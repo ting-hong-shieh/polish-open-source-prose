@@ -64,14 +64,16 @@ Answer with one JSON object and nothing else:
 
 
 def load(repo_dir: Path):
-    prs = {json.loads(l)["number"]: json.loads(l) for l in (repo_dir / "pulls.jsonl").read_text().splitlines()}
+    prs = {json.loads(l)["number"]: json.loads(l) for l in (repo_dir / "pulls.jsonl").read_text().split("\n") if l}
     items = []
     for kind in ("issue_comments", "review_comments"):
-        for line in (repo_dir / f"{kind}.jsonl").read_text().splitlines():
+        for line in (repo_dir / f"{kind}.jsonl").read_text().split("\n"):
+            if not line:
+                continue
             c = json.loads(line)
             if c["pr_number"] not in prs:
                 continue  # comment on a PR created outside the window
-            items.append({"repo": repo_dir.name.replace("__", "/"), "kind": kind[:-1], "id": c["id"], "url": c["html_url"],
+            items.append({"repo": repo_dir.name.replace("__", "/"), "kind": kind[:-1], "id": c.get("id", c["html_url"]), "url": c["html_url"],
                           "pr": c["pr_number"], "title": prs[c["pr_number"]]["title"], "author": c["user"],
                           "association": c["author_association"], "created_at": c["created_at"], "body": c["body"] or ""})
     for n, pr in prs.items():

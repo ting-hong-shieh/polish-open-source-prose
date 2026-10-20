@@ -59,11 +59,17 @@ query($owner:String!,$name:String!,$after:String){
 
 
 def gh(*args: str) -> str:
+    """Run gh api and return its stdout, which must parse as JSON; truncated or empty output
+    (seen once as an "unterminated string" from a 60 MB pull) counts as a transient failure."""
     attempt = 0
     while True:
         p = subprocess.run(["gh", "api", *args], capture_output=True, text=True)
         if p.returncode == 0:
-            return p.stdout
+            try:
+                json.loads(p.stdout)
+                return p.stdout
+            except json.JSONDecodeError as exc:
+                p.stderr = f"truncated json: {exc}"
         err = p.stderr.lower()
         if "rate limit" in err or "ratelimit" in err:
             # Sleep until the GraphQL window resets, then go on; no retry cap for this case.
@@ -77,7 +83,8 @@ def gh(*args: str) -> str:
             continue
         attempt += 1
         if attempt <= 8 and any(k in err for k in ("secondary", "502", "503", "504", "timeout", "unexpected end",
-                                                     "connection", "eof", "abuse", "something went wrong")):
+                                                     "connection", "eof", "abuse", "something went wrong",
+                                                     "truncated json")):
             wait = 90 * attempt
             print(f"  retry in {wait}s: {p.stderr.strip()[:120]}", file=sys.stderr, flush=True)
             time.sleep(wait)
@@ -86,9 +93,16 @@ def gh(*args: str) -> str:
 
 
 def pull_requests(owner: str, name: str, start: str, end: str, out: Path) -> int:
-    """Walk pull requests newest first; keep those created in [start, end]; stop below start."""
-    n, after = 0, None
-    with out.open("w") as f:
+    """Walk pull requests newest first; keep those created in [start, end]; stop below start.
+    Pages are appended as they arrive and the cursor is saved, so a restart resumes."""
+    cursor_file = out.with_suffix(".cursor")
+    after, n = None, 0
+    if cursor_file.exists() and out.exists():
+        after = cursor_file.read_text().strip() or None
+        n = sum(1 for _ in out.open())
+    else:
+        out.write_text("")
+    with out.open("a") as f:
         while True:
             args = ["graphql", "-f", f"query={PR_QUERY}", "-F", f"owner={owner}", "-F", f"name={name}"]
             if after:
@@ -104,9 +118,12 @@ def pull_requests(owner: str, name: str, start: str, end: str, out: Path) -> int
                     break
                 f.write(json.dumps(pr, ensure_ascii=False) + "\n")
                 n += 1
+            f.flush()
             if below or not page["pageInfo"]["hasNextPage"]:
                 break
             after = page["pageInfo"]["endCursor"]
+            cursor_file.write_text(after)
+    cursor_file.unlink(missing_ok=True)
     return n
 
 
@@ -208,7 +225,7 @@ def main() -> None:
             print(repo, n, "PRs", round(time.time() - t0), "s", flush=True)
         if o.stage in ("comments", "all") and (d / "pulls.done").exists() and not (d / "counts.json").exists():
             t0 = time.time()
-            prs = [json.loads(line) for line in (d / "pulls.jsonl").read_text().splitlines()]
+            prs = [json.loads(line) for line in (d / "pulls.jsonl").read_text().split("\n") if line]
             counts = {"repo": repo, "window": [o.start, o.end], "pull_requests": len(prs)}
             counts["issue_comments"] = issue_comments(owner, name, prs, d / "issue_comments.jsonl")
             print(repo, counts["issue_comments"], "issue comments", flush=True)

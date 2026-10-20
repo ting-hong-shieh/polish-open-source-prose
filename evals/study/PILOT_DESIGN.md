@@ -23,9 +23,20 @@ decisions it needs.
 author's reading sheet) sit beside them. `evals/study/flags.json` is the committed
 template with 21 null flags.
 
+**Snapshot check (2026-10-20).** `check_a2_snapshots.py` recomputes, from each pull
+request's body edit history and title renames, the title and description as they stood
+just before the quoted reviewer comment, and compares them with the case input. 17 of
+21 match. Four do not: arrow 49771, arrow 50377, cpython 143246, cpython 150425. Cause:
+`extract_real_pairs.py` took the body before the *first* prose-matching comment in the
+thread, and the comment later chosen as `critique_quote` was a later one; the author
+(or, for arrow 50377, a maintainer) had edited the description in between. Rounds 2
+and 3 ran on the same hash-fixed case file, so those four inputs were the same there.
+The fix (a corrected case file with a new manifest hash, and a disclosure for rounds
+2–3) is the author's decision; the pilot does not start before it.
+
 Decisions: (a) PILOT_PLAN says "four cases whose diff exceeds 1,000 lines"; it is three
 by patch lines. (b) Whether `ci.md` stays as the full table in the working directory
-while the prompt carries a summary (proposed below).
+while the prompt carries a summary (proposed below). (c) The four mismatched inputs.
 
 ## 2. Task prompt (draft)
 
@@ -165,7 +176,14 @@ The diff of the change at that time:
 </diff>
 
 Each <output> has a <revised> block (the text the author would paste) and may have a <note> block (a message to the author that would not be pasted). For each output decide:
-- "addressed": does the REVISED TEXT resolve the reviewer's point? 1 yes, 0.5 partly, 0 no. A question in the note does not count here.
+    records = json.loads(RECORDS.read_text())["records"]
+    excluded = sorted({r["case"] for r in records if len(pc.diff_text(r["case"])) > o.exclude_diff_chars})
+    if excluded:
+        print(f"excluded from judging (diff over {o.exclude_diff_chars:,} chars): {', '.join(excluded)}")
+        (pc.PILOT / "judge-excluded.json").write_text(json.dumps({"exclude_diff_chars": o.exclude_diff_chars,
+                                                                 "cases": excluded}, indent=1) + "\n")
+        records = [r for r in records if r["case"] not in excluded]
+    prompts = build_prompts(records, cases, o.file_threshold)
 - "code_consistent": true unless the revised text contradicts the diff or the CI anywhere.
 - "invented": true if the revised text states something that neither the original text, the diff, nor the CI supports. A fact taken from the diff or the CI is not invented.
 - "damaged": true if the revised text removed or altered something that was correct and needed: a fact, condition, scope, identifier, command, license or disclosure line.
@@ -186,15 +204,17 @@ batches of 5. Per judge: 18 × 4 + 3 × 15 = 117 prompts; three judges, 351 call
 
 Prompt sizes, measured from the built files (`judge_pilot.py --template`): about 6k
 chars (1.5k tokens) plus outputs for a typical case, so a 20-output batch is roughly
-20k tokens; but the two 4,480-line diffs are 470k chars each (airflow 71403: about
-118k tokens; the lines are long), and datafusion 24167 is in between. A 5-output batch
-on those two cases is therefore about 120k tokens, and their 15 batches each come to
-about 1.8M tokens per judge per case: the two cases alone are about 3.6M tokens per
-judge, more than the other nineteen together (about 1.5M). Three judges: roughly 15M
-input tokens, not the 10–11M first estimated. Codex runs on the subscription
-credential, so this is a quota, not a dollar figure.
+20k tokens; but airflow 71403's diff is 465k chars (about 118k tokens; its lines run
+to 386 characters and uv.lock alone is 1,549 changed lines), cpython 150425's is 187k
+chars (about 47k tokens), and datafusion 24167's 49k chars (about 12k tokens). Whole,
+the 15 five-output batches of 71403 would be about 1.8M tokens per judge and those of
+150425 about 0.7M, against about 1.5M for the other nineteen cases together. Codex
+runs on the subscription credential, so this is a quota, not a dollar figure.
 
-The judge sends the whole diff on stdin first; if a call on a large-diff case fails
+In the pilot, cases whose diff exceeds 100,000 characters (the two 4,480-line diffs) are
+left out of the judge batches and listed in `judge-excluded.json`; a truncation rule for
+them is designed and tried before the study freezes. The judge sends the whole diff on
+stdin first; if a call on a large-diff case fails
 (no or unparsable output), the retry writes `diff.patch` into the judge sandbox and
 tells the judge to read it, and the judgment records `diff_as_file`. The token usage
 of every call (input, cached, output, reasoning) is appended to
@@ -216,6 +236,19 @@ Decisions: (a) the prompt text above; (b) Luna's effort; (c) the judge batch siz
 (20 and 5); (d) whether the must-not list stays uniform (STUDY_PLAN) or the pilot
 also keeps the per-case `must_not` from the drafted A2 rubric (not recommended: the
 study's new cases will not have one).
+
+### Truncation rule for large diffs (draft, to fix before the study freezes)
+
+`truncate_diff.py`: (1) a per-file summary first, one line per file with added and
+deleted counts, so every file is visible; (2) every `diff --git` header and hunk header
+kept; (3) lines cut at 300 characters with ` …[+N chars]`; (4) at most 120 body lines
+per file, the rest replaced by one `… [N more lines omitted]` line; (5) a 120k-character
+cap on the whole, after which files are listed by name only. Applied: airflow 71403
+465k → 98k chars (about 24.5k tokens); cpython 150425 187k → 75k (about 19k);
+datafusion 24167 unchanged in substance (49k → 50k, the summary added). The truncated
+diffs are beside the originals as `diff.truncated.patch`. Whether the judge grades as
+well on the truncated diff as on the whole one is to be tried on these cases before
+freezing; the pilot excludes the two largest from judging.
 
 ## 5. Analysis for the pilot
 
