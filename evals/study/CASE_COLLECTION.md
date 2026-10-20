@@ -13,28 +13,52 @@ means a random sample of that population, not of all pull requests.
 
 1. **Repositories, by rule (2026-10-21; supersedes the hand-picked list below).** The
    list is generated, not chosen, and a large pool is pulled first; samples are drawn
-   from the pool later.
-   1. Fix 6–8 domains (for example: systems and infrastructure, data systems, web
+   from the pool later. Script: `evals/study/select_repositories.py`; outputs under
+   `$POLISH_EVAL_DATA/Processed/polish-open-source-prose/repo-selection/<version>/`.
+   1. Eight fixed domains, in this order: systems and infrastructure, data systems, web
       back ends, ML frameworks, developer tools, scientific computing, languages and
-      runtimes, front-end frameworks). For each domain, take the 40 repositories with
-      the most stars from the GitHub search API, and record the exact query string and
-      the date of the query (`evals/study/select_repositories.py`).
+      runtimes, front-end frameworks. Each domain has area topics (a field or
+      technology) and kind topics (what the repository is: framework, library,
+      compiler, database, ...). Every search query is one area topic and one kind
+      topic, for all pairs, and excludes `self-hosted` and `awesome-list` plus a few
+      per-domain topics (listed in the script); the GitHub search API rejects OR, so
+      each pair is its own query. A domain's candidates are the union of its queries'
+      results, cut to the 40 with the most stars. The exact query strings and the time
+      of each query are recorded.
    2. Keep a repository only if it had at least 500 pull requests created between
       2025-10-01 and 2026-09-30, at most 25,000, and has a pull request template
       (`.github/PULL_REQUEST_TEMPLATE*` or `PULL_REQUEST_TEMPLATE*` in the root or
       `docs/`) and a contributing guide (`CONTRIBUTING*` in the root, `.github/`, or
       `docs/`).
    3. From each domain keep the 4 survivors with the most pull requests in the window:
-      25–30 repositories in all. A repository that qualifies in two domains counts in
-      the first domain it appears in.
+      at most 32 repositories. A repository that qualifies in two domains counts in
+      the first domain it appears in. A domain with fewer than 4 survivors is reported
+      as it is, not refilled.
    4. The twelve repositories already pulled (list below) are reused where they appear
       on the generated list; those that do not appear are kept as raw data but are not
       part of the pool.
-   5. Pull requests opened by the author of this study (ting-hong-shieh) are excluded.
+   5. Pull requests opened by the author of this study (ting-hong-shieh) are excluded,
+      and so are repositories the author owns.
    6. After the author confirms the list, all pull requests and comments of every
       repository on it are pulled as raw data (one process, one token), in a recorded
       order with the time each repository took. Sample sizes are decided afterwards
       (edit 80–120, keep 40).
+
+   **Rule versions.** v1 used single-topic queries and put applications in framework
+   domains (flutter, angular and expo in web back ends; next.js in languages). v2
+   dropped archived repositories and added `-topic:` exclusions, but its star-sorted
+   single-topic queries still let in popular applications tagged with a technology
+   they use (immich and coolify through `svelte`, gitea through `vue`, orca through
+   `runtime`, volcano through `hpc`, backstage through `infrastructure`, streamlit
+   through `machine-learning`). v3 adds the area-and-kind pairing of step 1.1; its
+   rule was written to `v3/RULE.md` (2026-10-20T20:15Z) before any v3 query and it
+   was run once. The outputs of all three are kept (`run1/`, `v2/`, `v3/`). v3
+   selected 28 repositories with 133,201 pull requests in the window: ML frameworks
+   has 3 and scientific computing 1, because few repositories in those fields carry
+   a kind topic, and large projects that tag no kind topic (kubernetes, node, vscode,
+   transformers, scikit-learn, scipy) are no longer on the list. Of the twelve
+   already pulled, airflow, rust and django remain. The v3 list awaits the author's
+   confirmation.
 
    **Hand-picked list (2026-10-20), fixed before reading any comment; kept for the
    record and as the first part of the raw data:** apache/airflow,
