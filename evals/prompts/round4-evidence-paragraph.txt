@@ -1,0 +1,13 @@
+A reviewer left this comment on the pull request:
+
+<review>
+{review}
+</review>
+
+The diff of the change as it stood at that time is in the file diff.patch in the current directory. The CI checks on that commit concluded as follows:
+
+<ci>
+{ci}
+</ci>
+
+Revise the pull request title and description in response to the review. Describe only what the diff and CI support.
