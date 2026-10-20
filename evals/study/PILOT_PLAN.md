@@ -100,8 +100,9 @@ masked and shuffled per case as before. Whatever the editor saw, the judge alway
 - the revised text and any note to the author.
 
 Judge questions are unchanged: addressed (0 / 0.5 / 1) against the reviewer's comment,
-invented, damaged. For the four cases whose diff exceeds 1,000 lines, the judge batch is
-5 outputs instead of 20, and the diff is passed whole.
+invented, damaged. For the three cases whose diff exceeds 1,000 lines (by patch lines:
+datafusion 24167, cpython 150425, airflow 71403), the judge batch is 5 outputs instead
+of 20, and the diff is passed whole.
 
 ## Primary analysis
 
@@ -150,6 +151,12 @@ by whether `diff.patch` was read, cost and tokens.
 Pre-emptive detection (the rounds-2/3 task), more cases, and human validation at scale.
 Whether to collect more real cases is decided after this round, as a separate
 preregistered round, not by extending this one.
+
+## Changes before freezing
+
+- 2026-10-20: "four cases whose diff exceeds 1,000 lines" corrected to three; the first
+  feasibility report had counted two cases of 488 and 560 lines as over 1,000.
+- 2026-10-20: decisions for the pilot recorded in `PILOT_DESIGN.md` ("Decisions taken").
 
 ## Deviations
 

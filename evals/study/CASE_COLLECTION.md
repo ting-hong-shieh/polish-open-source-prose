@@ -16,10 +16,36 @@ means a random sample of that population, not of all pull requests.
    used, plus kubernetes/kubernetes, rust-lang/rust, pandas-dev/pandas, numpy/numpy,
    pytorch/pytorch, nodejs/node, golang/go, home-assistant/core, grafana/grafana,
    apache/spark, elastic/elasticsearch, django/django). Record the final list and why.
+
+   **Final list (2026-10-20), fixed before reading any comment:** apache/airflow,
+   apache/datafusion, apache/arrow, python/cpython, kubernetes/kubernetes, rust-lang/rust,
+   pandas-dev/pandas, numpy/numpy, nodejs/node, prometheus/prometheus, apache/spark,
+   django/django. Pull request counts in the window (search API, 2026-10-20): airflow
+   11,867; cpython 10,324; rust 9,688; spark 5,339; kubernetes 4,967; datafusion 4,382;
+   nodejs 3,955; pandas 3,582; numpy 1,861; prometheus 1,758; django 1,560; arrow 1,424;
+   about 60,700 in all. Four candidates from the example list were left out for volume
+   alone, before any comment was read: pytorch/pytorch (22,193), home-assistant/core
+   (15,530), elastic/elasticsearch (14,826), grafana/grafana (14,654) together exceed the
+   twelve kept; they can be added as a separate pull if the sample needs them. golang/go
+   (600) was on the first list and replaced by prometheus/prometheus after one test pull
+   showed that its pull requests are mirrored to Gerrit for review and carry only bot
+   comments on GitHub; the replacement keeps a Go project in the list.
 2. **Period.** A fixed window, for example 2026-01-01 to 2026-09-30.
+
+   **Fixed window:** 2026-01-01 to 2026-09-30, by pull request creation date.
 3. **Pull everything.** All review comments and issue comments on pull requests in
    the window (GraphQL), with the pull request's title/description edit history. Save
    raw under `$POLISH_EVAL_DATA/Raw/`. Report the count before any filtering.
+
+   Script: `evals/study/collect_pr_comments.py`. Pull requests come from the GraphQL
+   `pullRequests` connection (newest first, stopped below the window) with review
+   summaries and per-request comment and thread counts; comments are then fetched per
+   pull request in batched GraphQL queries sized by those counts. A first version used
+   the repository-wide REST comment listings and was dropped: their `since` parameter
+   filters by update time, so pages fill with old comments that bots re-edited and the
+   cursor stalls (apache/airflow stopped at 2026-03-12). The edit history is stored as
+   the edit count per pull request; the edits themselves are fetched later only for
+   sampled cases.
 4. **Classify.** Two passes:
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
      "evidence", "claim", "misleading", "please update the description", …) to cut

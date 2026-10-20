@@ -1,0 +1,26 @@
+{
+ "description": "Author's flag per A2 case for round 4 (PLAN.md, Cases): true if the reviewer comment criticizes the description or title, not only the code, and the diff plus CI are enough to act on it. Filled by the author from the reading sheet; committed before the round-4 freeze.",
+ "flags": {
+  "a2-airflow-60733": null,
+  "a2-airflow-67823": null,
+  "a2-airflow-70096": null,
+  "a2-airflow-71315": null,
+  "a2-airflow-71403": null,
+  "a2-airflow-71460": null,
+  "a2-airflow-71734": null,
+  "a2-airflow-72068": null,
+  "a2-airflow-72157": null,
+  "a2-airflow-73185": null,
+  "a2-airflow-73288": null,
+  "a2-arrow-49171": null,
+  "a2-arrow-49771": null,
+  "a2-arrow-50377": null,
+  "a2-arrow-50635": null,
+  "a2-arrow-51133": null,
+  "a2-arrow-51237": null,
+  "a2-datafusion-24167": null,
+  "a2-datafusion-25109": null,
+  "a2-cpython-143246": null,
+  "a2-cpython-150425": null
+ }
+}
