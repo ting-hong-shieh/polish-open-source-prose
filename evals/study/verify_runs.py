@@ -34,6 +34,8 @@ def check(d: Path, bad: list[str]) -> dict:
             continue
         if e.get("type") == "assistant":
             skill_uses += sum(1 for b in e["message"]["content"] if b["type"] == "tool_use" and b["name"] == "Skill")
+    if m.get("effort_requested", "high") != pc.EFFORT or m.get("effort_used") != pc.EFFORT:
+        bad.append(f"{d}: effort {m.get('effort_requested')}/{m.get('effort_used')}, expected {pc.EFFORT}")
     if m["rc"] != 0:
         bad.append(f"{d}: rc={m['rc']}")
     if not (d / "result.txt").read_text().strip():
@@ -52,7 +54,9 @@ def check(d: Path, bad: list[str]) -> dict:
     else:
         if m["polish_skills_listed"] or skill_uses or any(k in s for k in CLAUDE_MARKERS):
             bad.append(f"{d}: SKILL LOADED in {instruction} arm")
-        if (instruction == "compact") != prompt.startswith(pc.COMPACT):
+        compact = prompt.startswith(pc.COMPACT + "\n\n")
+        check_ = prompt.startswith(pc.COMPACT_CHECK + "\n\n")
+        if (instruction == "compact") != compact or (instruction == "compact_check") != check_:
             bad.append(f"{d}: compact prefix mismatch")
     for ev, words in EVIDENCE_WORDS.items():
         if (evidence == ev) != (words in prompt):

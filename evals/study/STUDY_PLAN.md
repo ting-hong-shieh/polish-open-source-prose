@@ -239,7 +239,12 @@ was read, by reviewer-critique type, by the author's flag, edit ratios, cost and
    or unchanged rate; (b) reasoning effort default and low for Haiku and Sonnet on
    `E_code` under `none` and `compact`, one run (84 runs): appendix only, to show how
    diligence changes at the settings people actually use. After these two probes no
-   further conditions are added.
+   further conditions are added. Both probes use the pilot's prompts (round-3 task
+   prompt with the pilot's evidence paragraph), so that they compare with the pilot's
+   `E_code` runs of the same arms; probe (b) is 21 cases × 2 configurations × 2
+   instructions × 2 effort levels = 168 runs (the default level in Claude Code 2.1.293
+   is medium for both models, passed explicitly as `--effort medium`). Neither probe is
+   judged; they report the diff-read and unchanged rates only.
 2. **Collection** in parallel (`CASE_COLLECTION.md`); author spot-checks the classifier
    and flags the sampled cases.
 3. **Freeze**: sampled sets by hash, this plan, prompts, judge prompt, seeds; tag
@@ -265,6 +270,12 @@ All of this is stated in the paper.
   failures; `compact_check` added as a conditional fourth instruction condition with a
   pilot probe; effort probe for the appendix; task prompts rephrased as developer
   requests; keep set 40; scope section 7b added.
+- 2026-10-21, author's decisions on the pilot: Fable's pilot outputs go to an appendix
+  as exploratory; the diff-size rule is written into `CASE_COLLECTION.md` step 5 with
+  the share excluded from the pool; the 72 pilot runs kept from attempt 5 carry a flag;
+  the low diff-read rate of Haiku and Sonnet under `compact` × `E_code` is reported as a
+  result and the task prompt is not changed for it; the effort probe's size is 168 runs
+  (the earlier figure, 84, covers one effort level only).
 
 ## Deviations
 

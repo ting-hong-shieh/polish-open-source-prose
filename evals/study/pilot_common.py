@@ -27,9 +27,13 @@ CLAUDE_VERSION = os.environ.get("CLAUDE_VERSION", "2.1.293")
 MODELS = ["claude-haiku-5-5", "claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-1"]
 EVIDENCE_LEVELS = ["E0", "E_code", "E1"]
 INSTRUCTIONS = ["none", "compact", "skill"]
+# Pilot probes (STUDY_PLAN §8.1): compact plus one checking sentence; and reasoning effort.
+PROBE_INSTRUCTIONS = ["compact_check"]
+EFFORT = os.environ.get("PILOT_EFFORT", "high")
 RUNS = ["1", "2"]
 SLASH = "/polish-open-source-prose-v020 "
 COMPACT = (REPO / "evals/prompts/three-sentences.txt").read_text().strip()
+COMPACT_CHECK = (REPO / "evals/prompts/compact-check.txt").read_text().strip()
 CODE_PARAGRAPH = (REPO / "evals/prompts/round4-code-paragraph.txt").read_text().strip()
 EVIDENCE_PARAGRAPH = (REPO / "evals/prompts/round4-evidence-paragraph.txt").read_text().strip()
 # Cases whose diff.patch exceeds 1,000 lines get judge batches of 5 (PILOT_PLAN, Judging).
@@ -117,10 +121,46 @@ def full_prompt(case: dict, evidence: str, instruction: str) -> str:
     blocks = []
     if instruction == "compact":
         blocks.append(COMPACT)
+    elif instruction == "compact_check":
+        blocks.append(COMPACT_CHECK)
     para = evidence_paragraph(evidence, case["id"])
     if para:
         blocks.append(para)
     blocks.append(task_prompt(case))
+    text = "\n\n".join(blocks)
+    return SLASH + text if instruction == "skill" else text
+
+
+# Main-study task prompts (STUDY_PLAN §4): phrased as a developer's request.
+STUDY_TASKS = {ev: (REPO / f"evals/prompts/study-task-{name}.txt").read_text().strip()
+               for ev, name in (("E0", "e0"), ("E_code", "ecode"), ("E1", "e1"))}
+STUDY_INSTRUCTIONS = ["none", "compact", "skill", "compact_check"]
+
+
+def fill(template: str, **values: str) -> str:
+    """Replace {name} placeholders in one pass, so text inserted for one placeholder is
+    never scanned for another."""
+    return re.sub(r"\{(" + "|".join(values) + r")\}", lambda m: values[m.group(1)], template)
+
+
+def study_prompt(case: dict, evidence: str, instruction: str) -> str:
+    """Instruction (standing configuration) → developer-phrased task prompt for the evidence
+    level. The slash command goes in front for the skill condition."""
+    if instruction == "compact_check" and evidence == "E0":
+        raise ValueError("compact_check runs under E_code and E1 only")
+    values = {"text": case["input"]}
+    if evidence in ("E_code", "E1"):
+        values["ci"] = ci_summary(case["id"])
+    if evidence == "E1":
+        values["review"] = review_body(case["id"])
+    blocks = []
+    if instruction == "compact":
+        blocks.append(COMPACT)
+    elif instruction == "compact_check":
+        blocks.append(COMPACT_CHECK)
+    elif instruction not in ("none", "skill"):
+        raise ValueError(instruction)
+    blocks.append(fill(STUDY_TASKS[evidence], **values))
     text = "\n\n".join(blocks)
     return SLASH + text if instruction == "skill" else text
 

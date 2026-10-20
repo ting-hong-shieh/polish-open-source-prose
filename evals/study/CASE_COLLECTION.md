@@ -1,8 +1,8 @@
-# Collecting more real cases (for a later round, not round 4)
+# Collecting real cases for the main study
 
-Round 4 runs on the existing 21 A2 cases. In parallel, and without touching round 4, we
-build a larger candidate pool so that a later round can sample real cases randomly
-instead of by keyword. Nothing here involves running an editing model.
+The pilot ran on the existing 21 A2 cases. In parallel we build a larger candidate pool
+so that the main study (`STUDY_PLAN.md`) samples real cases randomly instead of by
+keyword. Nothing here involves running an editing model.
 
 ## Population
 
@@ -69,10 +69,13 @@ means a random sample of that population, not of all pull requests.
    the edit count per pull request; the edits themselves are fetched later only for
    sampled cases.
 4. **Classify.** Two passes:
-   - a pre-filter (2026-10-21): drop comments whose author is a bot (`[bot]` accounts
-     and the known project bots listed in `classify_comments.py`) and comments written
-     by the pull request's own author (login from `pulls.jsonl`); the reviewer's
-     critique is what we want, not the author's reply or self-report;
+   - a pre-filter (2026-10-21), applied before anything else reads the comments: drop
+     comments whose author is a bot (`[bot]` accounts and the known project bots listed
+     in `classify_comments.py`), comments written by the pull request's own author
+     (login from `pulls.jsonl`), and comments with no author login (deleted accounts);
+     the reviewer's critique is what we want, not the author's reply or self-report.
+     Counts are reported per repository at each stage (all comments, after the
+     pre-filter, after keywords, positives);
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
      "evidence", "claim", "misleading", "please update the description", …) to cut
      the volume. Terms that match automated footers or bot names rather than
@@ -84,10 +87,33 @@ means a random sample of that population, not of all pull requests.
      Haiku 5.5 through Claude Code (chosen 2026-10-21 after a 100-comment trial against
      GPT-6 Astra, κ = 0.85 between the two; about USD 0.0007 per call).
    - The author spot-checks a random 50 positives and 50 negatives and reports
-     precision and recall of the classifier. These numbers go in the paper.
+     precision and recall of the classifier. These numbers go in the paper. Order
+     (2026-10-21): the full pass runs first on the twelve repositories already pulled;
+     a Claude session checks 30 random positives from it for bots or pull request
+     authors that slipped through the pre-filter, and the pre-filter is fixed if any
+     did; the author's spot check is drawn after the full pass over the whole confirmed
+     list (`classify_comments.py --spot-check 50 --seed S`, seed recorded).
 5. **Sample.** From the positives, a random sample (seed fixed in advance), stratified
-   by repository so no single project dominates. Target 60–100, plus 20–40 uncriticized
-   merged pull requests from the same repositories and window as keep cases.
+   by repository so no single project dominates: 80–120 edit candidates, of which about
+   80 are kept after the author's flags, plus 40 keep cases, drawn from the merged pull
+   requests of the same repositories and window that have no comment classified as a
+   critique. Exclusions, applied to the pool before the draw and reported with counts
+   per repository:
+   - **Study author.** Pull requests opened by the author of this study
+     (ting-hong-shieh), and comments the author wrote, are excluded.
+   - **Bots and the pull request's author.** Only comments that passed the pre-filter
+     of step 4 can make a pull request an edit case; a critique by a bot or by the
+     pull request's own author does not count.
+   - **Diff size (2026-10-21).** A pull request whose diff exceeds 1,500 lines (added
+     plus removed, counted from the patch) is excluded from both sets: for edit
+     candidates, the diff at the selected comment's timestamp; for keep candidates,
+     the merged diff. No diff is truncated for the editor. The pilot showed that a few
+     very large diffs dominate cost and judge load (two A2 diffs of about 4,480 patch
+     lines); excluding them by a rule keeps every editor and judge looking at the whole
+     diff. The share excluded is reported for the pool (using the pull request's final
+     size, before the draw) and for the drawn cases (using the diff at the timestamp).
+     When a drawn edit case turns out to exceed the limit at its timestamp, it is
+     replaced by the next case in the seeded order of the same repository.
 6. **Per case**, collect what round 4 collects: pre-critique title/description, the
    reviewer comment verbatim, the diff at the comment's timestamp, CI conclusions, and
    the author's later revision. Record cases where the head commit cannot be recovered.
@@ -107,9 +133,10 @@ means a random sample of that population, not of all pull requests.
 
 ## What to report back before sampling
 
-Counts per repository: pull requests in the window, comments pulled, keyword
-survivors, LLM positives, spot-check precision/recall. The author decides the sample
-size and whether to proceed from those numbers.
+Counts per repository: pull requests in the window, comments pulled, comments after
+the pre-filter, keyword survivors, LLM positives, pull requests excluded by the diff-size
+rule, spot-check precision/recall. The author decides the sample size and whether to
+proceed from those numbers.
 
 ## Costs
 

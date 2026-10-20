@@ -162,10 +162,15 @@ preregistered round, not by extending this one.
 
 - 2026-10-21, during the run. `verify_runs.py` flagged every `E_code` run as having "seen
   the review" when the case description itself contained the word "reviewer" (three
-  cases, 72 runs: 4 models × 3 instructions × 2 runs). `run_pilot.sh` therefore deleted and
-  reran those 72 runs on attempts 2, 3, and 4 before the check was corrected to test for
-  the review text; the runs kept are those of attempt 5. The discarded runs are not
-  recoverable; their cost is in the harness totals but not in the per-run tables.
+  cases, 72 runs: 4 models × 3 instructions × 2 runs). `run_pilot.sh` therefore deleted
+  those 72 runs after attempts 1, 2, 3, and 4 and reran them each time (288 discarded
+  executions) before the check was corrected to test for the review text; the runs kept
+  are those of attempt 5. The discarded runs were deleted unread and are not
+  recoverable; their cost is in the harness totals but not in the per-run tables. The
+  cause was the check, not the outputs, so the reruns do not select on content. The 72
+  kept runs are listed in `pilot-reruns.json` and carry `attempt: 5` and the flag
+  `rerun_verifier_false_positive` in the scored records (decision of 2026-10-21; the main
+  study's rerun rule in `STUDY_PLAN.md` allows deletion only for harness failures).
 - 2026-10-21. To shorten the wall time, a second driver (`drive.py --models
   claude-fable-5-1,claude-opus-5-5`) ran alongside `run_pilot.sh`; runs are claimed
   atomically by directory, so no run was executed twice for that reason.

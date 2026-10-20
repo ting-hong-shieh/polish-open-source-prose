@@ -34,7 +34,8 @@ def build_workdir(work: Path, evidence: str, instruction: str, case_id: str) -> 
 
 def main() -> None:
     model, evidence, instruction, run, cid = sys.argv[1:6]
-    assert model in pc.MODELS and evidence in pc.EVIDENCE_LEVELS and instruction in pc.INSTRUCTIONS, sys.argv[1:4]
+    assert model in pc.MODELS and evidence in pc.EVIDENCE_LEVELS, sys.argv[1:4]
+    assert instruction in pc.INSTRUCTIONS + pc.PROBE_INSTRUCTIONS, instruction
     case = pc.read_cases()[cid]
     d = pc.PILOT / "runs/claude" / model / pc.arm(evidence, instruction) / f"run{run}" / cid
     if (d / "meta.json").exists():
@@ -52,14 +53,15 @@ def main() -> None:
             "--no-session-persistence", "--strict-mcp-config", "--allowedTools", "Read", "--tools", "Read,Skill"]
     if instruction != "skill":
         base.append("--disable-slash-commands")
-    attempts = [("high", base + ["--effort", "high"]), ("default", base)]
+    # PILOT_EFFORT sets the level (high in the pilot; medium and low in the effort probe).
+    attempts = [(pc.EFFORT, base + ["--effort", pc.EFFORT]), ("default", base)]
     t0 = time.time()
     for effort_used, args in attempts:
         (d / "command.json").write_text(json.dumps(args, indent=1))
         p = subprocess.run(args, input=prompt, capture_output=True, text=True, cwd=work, timeout=1200)
         if p.returncode == 0 or "effort" not in p.stderr.lower():
             break
-        (d / "stderr-effort-high.txt").write_text(p.stderr)  # the model refused the effort level
+        (d / f"stderr-effort-{pc.EFFORT}.txt").write_text(p.stderr)  # the model refused the effort level
     (d / "stream.jsonl").write_text(p.stdout)
     (d / "stderr.txt").write_text(p.stderr)
     result, cost, skills, reads, version, usage = None, None, None, [], None, None
@@ -81,7 +83,7 @@ def main() -> None:
     revised, note = pc.split_output(result or "")
     meta = {"case": cid, "model": model, "evidence": evidence, "instruction": instruction, "run": run,
             "rc": p.returncode, "seconds": round(time.time() - t0, 1), "cost_usd": cost, "usage": usage,
-            "effort_requested": "high", "effort_used": effort_used, "polish_skills_listed": skills, "reads": reads,
+            "effort_requested": pc.EFFORT, "effort_used": effort_used, "polish_skills_listed": skills, "reads": reads,
             "read_diff": any((r or "").endswith("diff.patch") for r in reads),
             "read_review": any((r or "").endswith("review.md") for r in reads),
             "read_ci": any((r or "").endswith("ci.md") for r in reads),

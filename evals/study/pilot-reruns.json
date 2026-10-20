@@ -1,0 +1,511 @@
+{
+ "description": "Pilot runs kept from attempt 5 of evals/study/run_pilot.sh. Attempts 1-4 of these runs finished normally but were deleted because verify_runs.py flagged them: its E_code check looked for the word 'reviewer' in the prompt, and these three cases' descriptions contain that word. The check was fixed to look for the review text (commit 5991f58); the outputs of attempts 1-4 were discarded unread. See PILOT_PLAN.md Deviations.",
+ "attempt": 5,
+ "reason": "verifier false positive (word 'reviewer' in the description)",
+ "runs": [
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-fable-5-1",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-haiku-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-opus-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "compact",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "none",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "1",
+   "case": "a2-datafusion-24167"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-71403"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-airflow-72157"
+  },
+  {
+   "model": "claude-sonnet-5-5",
+   "evidence": "E_code",
+   "instruction": "skill",
+   "run": "2",
+   "case": "a2-datafusion-24167"
+  }
+ ]
+}
