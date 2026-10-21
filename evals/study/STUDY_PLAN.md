@@ -190,8 +190,10 @@ cross-vendor judge is Gemini, through the Gemini API: Gemini 3.1 Pro or Gemini 3
 chosen before freezing by its agreement with Astra (Sol for reference) on a fixed sample
 of 100 pilot outputs (`judge_compare_sample.py`, seed 20261021; strata evidence level ×
 editing model, 8 or 9 outputs per stratum, 5 or 6 per case, all 19 judged pilot cases),
-judged with the same prompt, labels, and per-case batches. The decision rule is fixed by
-the author before the comparison runs and recorded here. The Gemini judge runs at thinking
+judged with the same prompt, labels, and per-case batches. For cost the author prefers
+Gemini 3.8 Flash (2026-10-21); 3.1 Pro is run only if Flash's agreement with Astra turns
+out unacceptable. The Gemini judge goes through the Gemini Batch API (half the standard
+price, results within 24 hours) with the same request body as a direct call. The Gemini judge runs at thinking
 level high with the API's default sampling and always receives the diff inline (same
 truncation rule); the model id and the model version the API reports are recorded per call. GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs
 its scale differed from the other two (addressed 0.5 for 37% of outputs against 24–25%,
@@ -341,6 +343,8 @@ All of this is stated in the paper.
   - the effort comparison becomes a secondary analysis at default and high effort
     (§6); size now 7,200 outputs;
   - keep set target corrected from "~30" to 40 in §3, matching the earlier entry.
+  - Gemini judge: the author prefers 3.8 Flash for cost and asked for the Batch API;
+    `judge_pilot.py --gemini-batch` sends the requests as batch jobs (2026-10-21).
 
 ## Deviations
 

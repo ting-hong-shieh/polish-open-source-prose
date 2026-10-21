@@ -404,6 +404,12 @@ def gemini_text(raw: bytes, usage: dict) -> str:
     return text
 
 
+def gemini_body(judge: str, prompt: str) -> dict:
+    """The GenerateContentRequest body, the same for a direct call and a batch request."""
+    return {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"thinkingConfig": {"thinkingLevel": JUDGES[judge][1]}}}
+
+
 def call_gemini(judge: str, p: dict) -> tuple[str, dict]:
     """One generateContent call with the inline prompt. Never raises: every failure comes back as
     an empty text and a usage row with "error" set; "fatal" marks errors that a retry cannot fix
@@ -422,8 +428,7 @@ def call_gemini(judge: str, p: dict) -> tuple[str, dict]:
     t0 = time.time()
     try:
         key = gemini_key()
-        body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                "generationConfig": {"thinkingConfig": {"thinkingLevel": level}}}
+        body = gemini_body(judge, prompt)
         status, raw = gemini_request(f"models/{urllib.parse.quote(model)}:generateContent", key, body, GEMINI_TIMEOUT)
         usage["http_status"] = status
         if status == 200:
@@ -680,6 +685,161 @@ def judge_batch(judge: str, p: dict, ctx: dict, store: Store, opts, call=None, s
     return left
 
 
+# ---- Gemini Batch API (half price; paid tier only; target turnaround 24 h, jobs expire after 48 h) ----
+BATCH_DONE = {"BATCH_STATE_SUCCEEDED", "BATCH_STATE_FAILED", "BATCH_STATE_CANCELLED", "BATCH_STATE_EXPIRED",
+              "JOB_STATE_SUCCEEDED", "JOB_STATE_FAILED", "JOB_STATE_CANCELLED", "JOB_STATE_EXPIRED"}
+BATCH_INLINE_MAX = 15_000_000  # bytes of JSON per batch job; the API limit for inline requests is 20 MB
+BATCH_ROUNDS = 3
+BATCH_POLL = 60.0
+
+
+def batch_state_path(out: Path, judge: str) -> Path:
+    return out.with_name(f"{out.stem}.{judge}.gemini-batches.json")
+
+
+def find_inlined(obj) -> list | None:
+    """The list of inlined responses in a finished batch, wherever the API puts it
+    (response.inlinedResponses.inlinedResponses, dest.inlinedResponses, ...)."""
+    if isinstance(obj, dict):
+        v = obj.get("inlinedResponses")
+        if isinstance(v, list):
+            return v
+        if isinstance(v, dict) and isinstance(v.get("inlinedResponses"), list):
+            return v["inlinedResponses"]
+        for x in obj.values():
+            found = find_inlined(x)
+            if found is not None:
+                return found
+    return None
+
+
+def pending_jobs(judge: str, prompts: list[dict], contexts: dict, store: Store, opts, rnd: int) -> list[dict]:
+    """Prompts with outputs still unjudged: whole batches, smaller batches of the missing outputs,
+    and from the second round on, single outputs when at most SINGLE_MAX are missing."""
+    jobs = []
+    for p in prompts:
+        missing = [it for it in p["items"] if not store.is_done(judge, it)]
+        if not missing:
+            continue
+        ctx = contexts[p["case"]]
+        if len(missing) == len(p["items"]):
+            jobs.append(dict(p, kind=p.get("kind", "batch")))
+        elif rnd > 1 and len(missing) <= SINGLE_MAX:
+            jobs += [dict(make_batch(ctx, [it], opts.file_threshold, opts.truncate_over), kind="single") for it in missing]
+        else:
+            jobs.append(dict(make_batch(ctx, missing, opts.file_threshold, opts.truncate_over), kind="sub-batch"))
+    return jobs
+
+
+def gemini_batch_round(judge: str, jobs: list[dict], store: Store, state_path: Path, rnd: int, poll: float,
+                       request=None, sleep=STOP.wait) -> None:
+    """Submit (or resume) one round as one or more batch jobs, wait for them, and store what comes
+    back through the same parse, validation, and acceptance as a direct call. The state file holds
+    the job names, so a restarted run polls the same jobs instead of paying for new ones."""
+    request = request or gemini_request
+    key = gemini_key()
+    model = JUDGES[judge][0]
+    by_key = {q["key"]: q for q in jobs}
+    state = json.loads(state_path.read_text()) if state_path.exists() else {"rounds": {}}
+    rs = state["rounds"].get(str(rnd))
+    if not rs or sorted(rs["keys"]) != sorted(by_key):
+        chunks, cur, size = [], [], 0
+        for q in jobs:
+            n = len(json.dumps(gemini_body(judge, q["prompt"]))) + 200
+            if cur and size + n > BATCH_INLINE_MAX:
+                chunks.append(cur)
+                cur, size = [], 0
+            cur.append(q)
+            size += n
+        if cur:
+            chunks.append(cur)
+        rs = {"keys": sorted(by_key), "model": model, "jobs": []}
+        for i, chunk in enumerate(chunks):
+            body = {"batch": {"display_name": f"polish-judge-{judge}-r{rnd}-{i}", "input_config": {"requests": {"requests": [
+                {"request": gemini_body(judge, q["prompt"]), "metadata": {"key": q["key"]}} for q in chunk]}}}}
+            status, raw = request(f"models/{urllib.parse.quote(model)}:batchGenerateContent", key, body, 600)
+            if status != 200:
+                raise SystemExit(f"batch create failed: {gemini_error(status, raw)}".replace(key, "[key]"))
+            name = json.loads(raw)["name"]
+            rs["jobs"].append({"name": name, "keys": [q["key"] for q in chunk], "created": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                               "state": None, "processed": False})
+            state["rounds"][str(rnd)] = rs
+            write_atomic(state_path, json.dumps(state, indent=1) + "\n")
+            print(f"{judge} round {rnd}: submitted {name} with {len(chunk)} requests", flush=True)
+    for job in rs["jobs"]:
+        if job["processed"]:
+            continue
+        last = None
+        while True:
+            status, raw = request(job["name"], key, None, 120)
+            if status == 200:
+                op = json.loads(raw)
+                st = (op.get("metadata") or {}).get("state") or op.get("state")
+                if st != last:
+                    print(f"{judge} {job['name']}: {st} {(op.get('metadata') or {}).get('batchStats')}", flush=True)
+                    last = st
+                if st in BATCH_DONE:
+                    break
+            else:
+                print(f"{judge} {job['name']}: poll {gemini_error(status, raw)}".replace(key, "[key]"), flush=True)
+            if sleep(poll):
+                return
+        job["state"] = st
+        responses = (find_inlined(op) or []) if st.endswith("SUCCEEDED") else []
+        for i, item in enumerate(responses):
+            qkey = ((item.get("metadata") or {}).get("key") if isinstance(item, dict) else None) or \
+                (job["keys"][i] if i < len(job["keys"]) else None)
+            q = by_key.get(qkey)
+            if q is None:
+                continue
+            usage = {"judge": judge, "model": model, "effort": JUDGES[judge][1], "key": f"{judge}:{q['key']}",
+                     "case": q.get("case"), "kind": q.get("kind", "batch"), "n_items": len(q["items"]),
+                     "prompt_chars": len(q["prompt"]), "diff_as_file": False, "diff_truncated": bool(q.get("diff_truncated")),
+                     "returncode": None, "seconds": 0.0, "turns": 0, "input_tokens": 0, "cached_input_tokens": 0,
+                     "output_tokens": 0, "reasoning_output_tokens": 0, "error": None, "rate_limited": False,
+                     "started": job["created"], "api": "batchGenerateContent", "batch_job": job["name"], "round": rnd,
+                     "thinking_level": JUDGES[judge][1], "sampling": "model defaults (not sent)", "http_status": None,
+                     "finish_reason": None, "model_version": None, "gemini_usage": None, "fatal": False}
+            if isinstance(item, dict) and isinstance(item.get("response"), dict):
+                text = gemini_text(json.dumps(item["response"]).encode(), usage)
+            else:
+                text, usage["error"] = "", f"batch item error: {json.dumps((item or {}).get('error'))[:250]}"
+            rows = parse(text) if text.strip() else []
+            kept, complete = accept(rows, q["items"]) if rows else ({}, False)
+            outcome = ("complete" if complete else "partial") if kept else ("invalid" if rows else
+                                                                             ("unparsable" if text.strip() else "failed"))
+            usage.update(attempt=rnd, outcome=outcome, rows_returned=len(rows), rows_kept=len(kept))
+            store.log(usage)
+            store.save({result_key(judge, it): [{**{k: it[k] for k in ID_FIELDS}, "label": it["label"],
+                                                 "output_sha": it["output_sha"], "judge": judge, "judge_model": model,
+                                                 "batch": q["key"], "kind": q.get("kind", "batch"), "diff_as_file": False,
+                                                 "diff_truncated": bool(q.get("diff_truncated")), "api": "batchGenerateContent",
+                                                 **{k: kept[it["label"]].get(k) for k in LABELS}}]
+                        for it in q["items"] if it["label"] in kept})
+            print(f"{judge} {q['key']} [{q.get('kind', 'batch')}, batch round {rnd}]: {outcome} {len(kept)}/{len(q['items'])}",
+                  flush=True)
+        if not st.endswith("SUCCEEDED"):
+            print(f"{judge} {job['name']} ended {st}: {json.dumps(op.get('error'))[:300]}", flush=True)
+        job["processed"] = True
+        write_atomic(state_path, json.dumps(state, indent=1) + "\n")
+
+
+def run_gemini_batches(judge: str, prompts: list[dict], contexts: dict, store: Store, opts) -> int:
+    """Rounds of batch jobs until every output has a judgment or BATCH_ROUNDS are spent; returns
+    the number of outputs left."""
+    state_path = batch_state_path(opts.out, judge)
+    for rnd in range(1, BATCH_ROUNDS + 1):
+        jobs = pending_jobs(judge, prompts, contexts, store, opts, rnd)
+        if not jobs or STOP.is_set():
+            break
+        print(f"{judge}: batch round {rnd}, {len(jobs)} requests, "
+              f"{sum(len(q['items']) for q in jobs)} outputs", flush=True)
+        gemini_batch_round(judge, jobs, store, state_path, rnd, opts.batch_poll)
+    store.done = store.read()
+    return sum(1 for p in prompts for it in p["items"] if not store.is_done(judge, it))
+
+
+
 def select_records(records: list[dict], exclude_cases: list[str], exclude_diff_chars: int | None) -> tuple[list[dict], dict]:
     present = sorted({r["case"] for r in records})
     unknown = sorted(set(exclude_cases) - set(present))
@@ -729,6 +889,10 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=OUT, help="judgments file (default: pilot-judgments.json)")
     ap.add_argument("--usage", type=Path, default=None,
                     help="usage log (default: $PILOT_ROOT/judge-usage.jsonl, or judge-usage.jsonl beside --out)")
+    ap.add_argument("--gemini-batch", action="store_true",
+                    help="send the Gemini judges' requests through the Batch API (half price, up to 24 h); "
+                         "job names are kept beside --out so a rerun resumes them")
+    ap.add_argument("--batch-poll", type=float, default=BATCH_POLL, help="seconds between batch status checks")
     ap.add_argument("--list-gemini-models", action="store_true",
                     help="list the Gemini models the key can use, check the configured ids, and exit")
     o = ap.parse_args()
@@ -809,7 +973,19 @@ def main() -> None:
     def on_term(signum, frame):
         raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, on_term)
-    pools = {j: concurrent.futures.ThreadPoolExecutor(max_workers=o.workers, thread_name_prefix=j) for j in judges}
+    if o.gemini_batch and gemini:
+        try:
+            for j in gemini:
+                left = run_gemini_batches(j, prompts, contexts, store, o)
+                print(f"{j}: {left} outputs left after the batch rounds", flush=True)
+        except KeyboardInterrupt:
+            print("interrupted; submitted jobs are recorded and a rerun resumes them", flush=True)
+            os._exit(130)
+        jobs = [(j, p) for j, p in jobs if j not in gemini]
+        judges_direct = [j for j in judges if j not in gemini]
+    else:
+        judges_direct = judges
+    pools = {j: concurrent.futures.ThreadPoolExecutor(max_workers=o.workers, thread_name_prefix=j) for j in judges_direct}
     futures = {pools[j].submit(judge_batch, j, p, contexts[p["case"]], store, o): (j, p) for j, p in jobs}
     try:
         for fut in concurrent.futures.as_completed(futures):
