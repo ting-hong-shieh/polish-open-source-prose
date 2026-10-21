@@ -177,7 +177,13 @@ preregistered round, not by extending this one.
   the skill condition, the author's user skills in the skill list (none was invoked; the
   forced v0.2.0 skill was the only one used). The exposure was the same in every arm.
   Details and the evidence are under `evals/round3/PLAN.md` Deviations; the main study
-  uses a dedicated configuration directory.
+  uses a dedicated configuration directory. The CLAUDE.md includes a rule never to
+  remove an AI-use disclosure a project requires; 9 of the 21 pilot inputs carry such a
+  section, and every pilot editor was a Claude model, so the pilot's disclosure-line
+  retention (every disclosure line kept verbatim in 161 of 192 outputs without an
+  instruction, 172 of 192 with the compact one, 180 of 192 with the skill) has no
+  comparison without the rule and is not to be read as the editors' unconfigured
+  behavior.
 - 2026-10-21. To shorten the wall time, a second driver (`drive.py --models
   claude-fable-5-1,claude-opus-5-5`) ran alongside `run_pilot.sh`; runs are claimed
   atomically by directory, so no run was executed twice for that reason.

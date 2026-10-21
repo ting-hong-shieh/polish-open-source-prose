@@ -77,7 +77,7 @@ JUDGMENTS = CMP / "judgments.json"
 USAGE = CMP / "judge-usage.jsonl"
 REPORT = CMP / "agreement.json"
 SEED, N, SWAPS, BOOT = 20261021, 100, 20_000, 2000
-CANDIDATES = list(jp.GEMINI_MODELS)
+CANDIDATES = [j for j in jp.GEMINI_MODELS]  # gemini-pro, gemini-flash, gemini-argon
 REFERENCE = ["astra", "sol"]
 ITEM_FIELDS = ("case", "label", "model", "evidence", "instruction", "run", "output_sha")
 METHOD = ("strata evidence x model (12); stratum quotas 8 or 9 and case quotas 5 or 6, the larger quotas drawn; "
@@ -644,12 +644,13 @@ class CallTests(GeminiTestBase):
     def test_list_models_pages_and_check(self):
         page1 = {"models": [{"name": f"models/{jp.GEMINI_MODELS['gemini-pro']}", "supportedGenerationMethods": ["generateContent"]}],
                  "nextPageToken": "t2"}
-        page2 = {"models": [{"name": f"models/{jp.GEMINI_MODELS['gemini-flash']}", "supportedGenerationMethods": ["generateContent"]}]}
+        page2 = {"models": [{"name": f"models/{jp.GEMINI_MODELS[j]}", "supportedGenerationMethods": ["generateContent"]}
+                            for j in jp.GEMINI_MODELS if j != "gemini-pro"]}
         self.fake.script += [(200, page1, 0), (200, page2, 0)]
         with contextlib.redirect_stdout(self.out):
             self.assertEqual(jp.list_gemini_models(), 0)
         self.assertIn("pageToken=t2", self.fake.requests[1]["path"])
-        self.assertEqual(self.out.getvalue().count(" found"), 2)
+        self.assertEqual(self.out.getvalue().count(" found"), len(jp.GEMINI_MODELS))
         self.fake.script.append((200, {"models": [{"name": "models/gemini-other"}]}, 0))
         with contextlib.redirect_stdout(self.out):
             self.assertEqual(jp.list_gemini_models(), 1)

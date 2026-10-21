@@ -194,6 +194,15 @@ Found 2026-10-21, affecting rounds 2 and 3 alike (and the round-4 pilot):
   `/context` output that lists the memory file, are kept outside Git
   (`Processed/polish-open-source-prose/pilot-config-snapshot/`). The main study runs
   with a dedicated configuration directory (`evals/study/STUDY_PLAN.md` §4).
+- **Consequence for the disclosure-line result.** The CLAUDE.md rule "never remove a
+  disclosure a project requires" was in context for every Claude condition and for no
+  Codex condition (the round-2 Codex runner also used a per-run `CODEX_HOME`, a cleared
+  environment, and an empty home). Over the seven Airflow `Generated-by:` cases the line
+  was altered or deleted in 2, 2, 1, 0, 0 of 42 Claude outputs (no instruction, one
+  sentence, compact, v0.1.0, v0.2.0) and in 8, 7, 0, 1, 0 of 28 Codex outputs. The
+  paper's pooled statement that v0.2.0 never deleted the line is therefore qualified:
+  the Claude rates may reflect the standing rule in every condition, and the contrast
+  rests on the Codex outputs (`docs/report/REVISION_NOTES.md` §5b).
 
 Found at judging (2026-10-20):
 

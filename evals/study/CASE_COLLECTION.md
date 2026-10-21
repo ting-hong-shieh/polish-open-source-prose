@@ -43,16 +43,52 @@ means a random sample of that population, not of all pull requests.
    4a. **Internal review imports (2026-10-21).** One rule for all 37: a repository is
       excluded if more than 25% of its pull requests created in the window were
       imported from an internal review system, so that their review did not happen on
-      GitHub (pytorch/executorch: Phabricator exports marked "Differential Revision";
-      golang/go: a Gerrit mirror). Every repository is checked with
-      `evals/study/check_internal_review.py` (body markers counted over the window) and
-      the result is recorded in `repo-selection/internal-review-check.json`.
+      GitHub. A pull request counts as imported if its body contains one of these
+      markers, fixed before any count was read: `Differential Revision:` (Phabricator),
+      `Pull Request resolved:` and `fbshipit-source-id` (Meta's export), `Reviewed-on:`
+      (Gerrit, with or without `Change-Id:`), `PiperOrigin-RevId`, `Copybara`, and
+      `COPYBARA_INTEGRATE_REVIEW` (Google's Copybara). `Change-Id:` alone is recorded
+      but not used, because projects that review on GitHub carry it too. The search API
+      gives the number of pull requests in the window and the number with each marker in
+      the body; marker counts are added when at most one is nonzero or no two overlap.
+      When two overlap, or the added share reaches 5%, every body in the window is read
+      through GraphQL and the markers are matched exactly, and that count decides (the
+      search index ignores punctuation: `Reviewed-on:` matched 29 executorch bodies by
+      search and none exactly). Script `evals/study/check_internal_review.py`; output
+      `repo-selection/internal-review-check.json` (run 2026-10-20T23:52Z–2026-10-21T00:14Z).
+      Result: pytorch/executorch is excluded (3,047 of 7,768, 39.2%, all `Differential
+      Revision:`); every other repository is at or below 0.8%, so 36 remain. The check
+      reads bodies only: a mirror that announces itself only through a bot comment, as
+      golang/go's Gerrit bot does, would not be caught.
    5. Pull requests opened by the author of this study (ting-hong-shieh) are excluded,
       and so are repositories the author owns.
    6. After the author confirms the list, all pull requests and comments of every
       repository on it are pulled as raw data (one process, one token), in a recorded
       order with the time each repository took; the twelve pulled first are extended
       back to 2025-10-01. Sample sizes are decided afterwards (edit 80–120, keep 40).
+
+      **Full pull (started 2026-10-21T00:24Z).** One process and one token, plan
+      `pr-comments-2026/plans/full-2025-10-01_2026-09-30.json`: 36 jobs, about 111,500
+      pull requests by search count. First the twelve repositories pulled earlier are
+      extended back to 2025-10-01 (14,980 pull requests created 2025-10-01 to
+      2025-12-31), in the order of the first pull; then the 24 new repositories for the
+      whole window (96,563), in the order of `v3/selected.json`. The extension ran first
+      because it is the smaller job, tests the changed collector on repositories with
+      known counts, and completes the twelve repositories the classifier pass already
+      uses. The start, end, and counts of each repository are in `collect.log`,
+      `runs/full-2025-10-01_2026-09-30.jsonl`, and each `counts.json`.
+
+      **How the extension merges.** Each extension is written to its own sub-run,
+      `<owner>__<repo>/2025-10-01_2025-12-31/`, in the same layout; the 2026 files are not
+      touched (their SHA-256 is in `MANIFEST-2026-01-01_2026-09-30.sha256`; the previous
+      `WINDOW.json` and each `counts.json` are kept as `*.2026-01-01_2026-09-30.json`).
+      `collect_pr_comments.py --stage merge` then appends each sub-run to the top-level
+      files. The 2026 file stays a byte-identical prefix (its size and SHA-256 are
+      recorded in `MERGE-2025-10-01_2025-12-31.json` and checked before the new file
+      replaces it); rows of a pull request already present are skipped; `counts.json`
+      gets the full window with both parts under "segments"; the sub-run is kept. Counts
+      reported before the merge (the twelve-repository classifier pass, diff sizes) cover
+      2026-01-01 to 2026-09-30 only.
 
    **Rule versions.** v1 used single-topic queries and put applications in framework
    domains (flutter, angular and expo in web back ends; next.js in languages). v2

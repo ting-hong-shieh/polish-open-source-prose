@@ -66,8 +66,13 @@ window were imported from an internal review system (for example Phabricator exp
 marked "Differential Revision", as in pytorch/executorch, or a Gerrit mirror, as in
 golang/go), because their review does not happen on GitHub. Every repository is checked
 and the result recorded. The eight domains are descriptive labels only and play no part
-in sampling. Sampling is stratified by repository with a cap per repository
-(`CASE_COLLECTION.md` step 5).
+in sampling. Sampling is stratified by repository: allocation is proportional to each
+repository's eligible candidates, capped at 10% of a set (at most 8 of 80 edit cases and
+4 of 40 keep cases per repository), with what the cap removes redistributed among the
+others, and at most one case per pull request (`CASE_COLLECTION.md` step 5). Of the 37
+repositories, pytorch/executorch is excluded by the internal-review rule (39.2% of its
+pull requests carry "Differential Revision"; every other repository is at or below 0.8%),
+leaving 36.
 
 **Diff size rule.** Pull requests whose diff at the comment's timestamp exceeds 1,500
 lines (added plus removed, from the patch) are excluded from both sets before sampling,
@@ -190,29 +195,55 @@ and correction on one axis.
 
 ### Judges
 
-GPT-6 Astra (high) and GPT-6.1 Sol (high) through Codex CLI are the main judges. A third,
-cross-vendor judge is Gemini, through the Gemini API: Gemini 3.1 Pro or Gemini 3.8 Flash,
-chosen before freezing by its agreement with Astra (Sol for reference) on a fixed sample
-of 100 pilot outputs (`judge_compare_sample.py`, seed 20261021; strata evidence level ×
-editing model, 8 or 9 outputs per stratum, 5 or 6 per case, all 19 judged pilot cases),
-judged with the same prompt, labels, and per-case batches. For cost the author prefers
-Gemini 3.8 Flash (2026-10-21); 3.1 Pro is run only if Flash's agreement with Astra turns
-out unacceptable. The Gemini judge goes through the Gemini Batch API (half the standard
-price, results within 24 hours) with the same request body as a direct call. The Gemini judge runs at thinking
-level high with the API's default sampling and always receives the diff inline (same
-truncation rule); the model id and the model version the API reports are recorded per call. GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs
-its scale differed from the other two (addressed 0.5 for 37% of outputs against 24–25%,
-damaged 14% against 22%), and its κ with them on complete clean fix was 0.43–0.46. Astra
-and Sol agreed closely (κ 0.865 on complete clean fix; all five labels equal on 1,142 of
-1,368 outputs), so they count as two judges from one vendor, and the Gemini judge is the
-cross-vendor check. None is a tested model. Outputs for one case are shuffled under
-random labels and judged in batches; batches shrink to 5 for diffs over 1,000 lines.
+GPT-6 Astra (high) and GPT-6.1 Sol (high) through Codex CLI are the main judges. The third,
+cross-vendor judge is a Gemini model through the Gemini Batch API (half the standard price,
+results within 24 hours, the same request body as a direct call), at thinking level high
+with the API's default sampling, always with the diff inline (same truncation rule); the
+model id and the model version the API reports are recorded per call.
+
+**Choosing the Gemini judge (author's rule, 2026-10-21).** Gemini 3.8 Flash and Gemini 4
+Argon, both at thinking level high, judge the same fixed sample of 100 pilot outputs
+(`judge_compare_sample.py`, seed 20261021; strata evidence level × editing model, 8 or 9
+outputs per stratum, 5 or 6 per case, all 19 judged pilot cases) with the pilot's judge
+prompt and per-case batches, and both are compared with Astra in one table (raw agreement
+and Cohen's κ per label, weighted κ for addressed, κ on complete clean fix). If Argon's κ
+with Astra is at least 0.70 on both `invented` and `asked`, Argon is the third judge.
+Otherwise Flash (high) is, and its disagreements with the OpenAI judges are treated as a
+vendor difference, settled by the author's human check (below). Flash on the sample
+(2026-10-21; κ with Astra, with Astra–Sol on the same sample in brackets): addressed
+0.859 [0.969], code-consistent 0.493 [0.938], invented 0.466 [0.977], damaged 0.758
+[0.813], asked 0.286 [0.925], complete clean fix 0.503 [0.905]. Argon: to be added.
+
+GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs its scale
+differed from the other two (addressed 0.5 for 37% of outputs against 24–25%, damaged 14%
+against 22%), and its κ with them on complete clean fix was 0.43–0.46. Astra and Sol
+agreed closely (κ 0.865 on complete clean fix; all five labels equal on 1,142 of 1,368
+outputs), so they count as two judges from one vendor, and the Gemini judge is the
+cross-vendor check. None is a tested model.
+
+**Judge prompt.** The pilot's prompt (`PILOT_DESIGN.md` §4) with one sentence added to the
+addressed rule (2026-10-21): "A reviewer's question about the code or tests is not a point
+about the text unless it asks the description to say something." (`judge_pilot.py
+--prompt study`.) Every comparison with the pilot judgments, including the choice of the
+Gemini judge, uses the pilot prompt. Outputs for one case are shuffled under random labels
+and judged in batches; batches shrink to 5 for diffs over 1,000 lines.
+
+**Combining the three judges (2026-10-21).** Per output: each yes/no label (code-consistent,
+invented, damaged) by majority of the three judges; addressed as the mean of the three
+values; complete clean fix computed from the majority labels, with addressed counted as 1
+when at least two judges give 1; asked by plurality, a three-way split recorded as
+"split". The mean clean-fix score uses the mean addressed and the majority invented and
+damaged. Every result is also reported for each judge separately.
 
 ### Human check
 
-The author blind-rates a stratified sample of about 100 edit outputs and 40 keep outputs
-against the same labels, in a package that hides model and condition. Agreement with
-each judge (κ) is reported. This is the only evidence on judge validity, as opposed to
+The author blind-rates a sample of about 100 edit outputs and 40 keep outputs against the
+same labels, in a package that hides model, condition, and the judges' labels. The sample
+is stratified by evidence level, instruction, and configuration; in the edit sample, at
+least half of the outputs are ones where Astra and the Gemini judge disagree on at least
+one of the five labels, drawn within the same strata (seed fixed at freezing). Agreement
+with each judge and with the combined labels (κ) is reported, separately for the
+disagreement half and the rest. This is the only evidence on judge validity, as opposed to
 judge consistency.
 
 ## 6. Analysis
@@ -350,6 +381,16 @@ All of this is stated in the paper.
   - keep set target corrected from "~30" to 40 in §3, matching the earlier entry.
   - Gemini judge: the author prefers 3.8 Flash for cost and asked for the Batch API;
     `judge_pilot.py --gemini-batch` sends the requests as batch jobs (2026-10-21).
+- 2026-10-21, author's decisions after the Flash comparison:
+  - Gemini 4 Argon (high) judges the same 100 outputs; Argon is the third judge if its κ
+    with Astra is at least 0.70 on invented and asked, otherwise Flash (high), with its
+    differences settled by the human check;
+  - per-repository cap 10% (edit ≤ 8, keep ≤ 4) and one case per pull request;
+  - judge prompt: one sentence added on reviewer questions about code or tests (study
+    version; the pilot version stays for comparisons with the pilot);
+  - three-judge combination rule (§5) and per-judge reporting;
+  - human check: at least half of the edit sample from Astra–Gemini disagreements;
+  - frame result: pytorch/executorch excluded by the internal-review rule; 36 repositories.
 
 ## Deviations
 

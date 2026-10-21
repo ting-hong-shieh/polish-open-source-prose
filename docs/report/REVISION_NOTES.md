@@ -165,6 +165,37 @@ had not seen; the A2 results are reported as run; the case file is corrected (ve
 new manifest hash) for the study. Do not recompute round-2/3 numbers on the corrected
 file; that would be a new run.
 
+## 5b. Claude runs carried the author's global CLAUDE.md, including a rule on disclosures (found 2026-10-21)
+
+No Claude Code run in rounds 2 and 3 isolated its configuration, so every Claude output
+was produced with the author's global `~/.claude/CLAUDE.md` in context (unchanged since
+2026-09-05; details in `evals/round3/PLAN.md` Deviations). That file tells the model never
+to remove an AI-use disclosure a project requires. It applied to every Claude condition
+alike and to no Codex condition: the Codex editors ran with a per-run `CODEX_HOME` and an
+empty home directory in both rounds.
+
+This bears on the disclosure-line result (main.tex, the A2 paragraph that counts
+`Generated-by:` lines, and the sentence that v0.2.0 "preserved every disclosure line").
+Split by harness, the alterations or deletions of that line over the seven Airflow cases
+were:
+
+| condition | Claude outputs (rule in context) | Codex outputs (no rule) |
+| --- | ---: | ---: |
+| no instruction | 2 of 42 | 8 of 28 |
+| one sentence | 2 of 42 | 7 of 28 |
+| compact instruction | 1 of 42 | 0 of 28 |
+| v0.1.0 | 0 of 42 | 1 of 28 |
+| v0.2.0 | 0 of 42 | 0 of 28 |
+
+The pooled counts in the paper (10, 9, 1, 1, 0) are these sums. The paper must add a
+note where the counts appear: the Claude outputs were made with a standing instruction
+not to remove required disclosures, so their low rate in every condition may reflect
+that instruction rather than the condition; the contrast that v0.2.0 removes the
+deletions rests on the Codex outputs (8 and 7 of 28 without an instruction or with one
+sentence, 0 of 28 with v0.2.0), which had no such instruction. State the same in
+Threats. Do not drop the result; qualify it. The main study runs Claude Code with a
+dedicated configuration directory, so its disclosure rates are free of this.
+
 ## 6. Hedging
 
 Nearly every result is followed by its own disclaimer ("This is not evidence of

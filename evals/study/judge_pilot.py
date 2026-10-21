@@ -97,8 +97,11 @@ CODEX_JUDGES = {"astra": ("gpt-6-astra", "high"), "sol": ("gpt-6.1-sol", "high")
 # Gemini model ids: TO BE VERIFIED with --list-gemini-models once the key exists. The defaults are
 # the ids in Google's Gemini API docs on 2026-10-21 (3.1 Pro is listed as a preview id there).
 GEMINI_MODELS = {"gemini-pro": os.environ.get("GEMINI_PRO_MODEL", "gemini-3.1-pro-preview"),
-                 "gemini-flash": os.environ.get("GEMINI_FLASH_MODEL", "gemini-3.8-flash")}
-GEMINI_ENV = {"gemini-pro": "GEMINI_PRO_MODEL", "gemini-flash": "GEMINI_FLASH_MODEL"}
+                 "gemini-flash": os.environ.get("GEMINI_FLASH_MODEL", "gemini-3.8-flash"),
+                 # Gemini 4 Argon: the models list (2026-10-21) shows generateContent and
+                 # batchGenerateContent for models/gemini-4-argon, so it goes through the same calls.
+                 "gemini-argon": os.environ.get("GEMINI_ARGON_MODEL", "gemini-4-argon")}
+GEMINI_ENV = {"gemini-pro": "GEMINI_PRO_MODEL", "gemini-flash": "GEMINI_FLASH_MODEL", "gemini-argon": "GEMINI_ARGON_MODEL"}
 GEMINI_THINKING = "high"  # generationConfig.thinkingConfig.thinkingLevel; no temperature or other sampling setting is sent
 GEMINI_API = os.environ.get("GEMINI_API_BASE", "https://generativelanguage.googleapis.com/v1beta").rstrip("/")
 GEMINI_KEY_FILE = Path.home() / ".config/polish-open-source-prose/gemini.env"  # unless GEMINI_ENV_FILE is set
@@ -156,6 +159,17 @@ Return only a JSON array, one object per output, in the same order:
 {{"label": "...", "addressed": 0|0.5|1, "code_consistent": true|false, "invented": true|false, "damaged": true|false, "asked": "none"|"answerable"|"unanswerable", "note": "at most 15 words"}}
 
 {outputs}"""
+# Prompt versions. "pilot" is the prompt the pilot judges used (PILOT_DESIGN §4), kept for every
+# comparison with the pilot judgments. "study" adds one sentence to the addressed rule (author's
+# decision, 2026-10-21, after a2-arrow-51133: one judge counted a reviewer's question about tests
+# as a point the description had to answer).
+STUDY_SENTENCE = ("A reviewer's question about the code or tests is not a point about the text unless it asks "
+                  "the description to say something.")
+PROMPTS = {"pilot": PROMPT,
+           "study": PROMPT.replace("0.5 if some are, 0 if none. A question in the note",
+                                   f"0.5 if some are, 0 if none. {STUDY_SENTENCE} A question in the note")}
+assert PROMPTS["study"] != PROMPTS["pilot"] and PROMPTS["study"].count(STUDY_SENTENCE) == 1
+PROMPT_VERSION = "pilot"
 DIFF_INLINE = "<diff>\n{diff}\n</diff>"
 DIFF_FILE = "<diff>\nThe diff is in the file diff.patch in the current directory. Read it before grading.\n</diff>"
 ID_FIELDS = ("model", "evidence", "instruction", "run", "case")
@@ -193,14 +207,15 @@ def make_batch(ctx: dict, items: list[dict], file_threshold: int | None = None, 
     labels = [it["label"] for it in items]
     assert len(set(labels)) == len(labels), f"duplicate labels in a batch of {ctx['case']}"
     outs = "\n\n".join(render_output(r) for r in items)
-    inline = PROMPT.format(**ctx["static"], diff_block=DIFF_INLINE.format(diff=ctx["diff"]), outputs=outs)
+    prompt = PROMPTS[PROMPT_VERSION]
+    inline = prompt.format(**ctx["static"], diff_block=DIFF_INLINE.format(diff=ctx["diff"]), outputs=outs)
     truncated = len(inline) > truncate_over
     if truncated:
-        inline = PROMPT.format(**ctx["static"], diff_block=DIFF_INLINE.format(diff=truncate(ctx["diff"], 300, 120, 120_000)),
+        inline = prompt.format(**ctx["static"], diff_block=DIFF_INLINE.format(diff=truncate(ctx["diff"], 300, 120, 120_000)),
                                outputs=outs)
     forced = file_threshold is not None and len(inline) > file_threshold
     return {"key": batch_id(ctx["case"], labels), "case": ctx["case"], "items": items, "prompt": inline,
-            "prompt_file_mode": PROMPT.format(**ctx["static"], diff_block=DIFF_FILE, outputs=outs),
+            "prompt_file_mode": prompt.format(**ctx["static"], diff_block=DIFF_FILE, outputs=outs),
             "large": ctx["large"], "diff": ctx["diff"], "diff_as_file": forced, "diff_truncated": truncated and not forced}
 
 
@@ -255,7 +270,7 @@ def call_codex(judge: str, p: dict) -> tuple[str, dict]:
     text and a usage row with "error" set (and whatever usage the event stream had)."""
     model, effort = JUDGES[judge]
     prompt = p["prompt_file_mode"] if p["diff_as_file"] else p["prompt"]
-    usage = {"judge": judge, "model": model, "effort": effort, "key": f"{judge}:{p['key']}", "case": p.get("case"),
+    usage = {"judge": judge, "model": model, "effort": effort, "key": f"{judge}:{p['key']}", "prompt_version": PROMPT_VERSION, "case": p.get("case"),
              "kind": p.get("kind", "batch"), "n_items": len(p.get("items", [])), "prompt_chars": len(prompt),
              "diff_as_file": p["diff_as_file"], "diff_truncated": bool(p.get("diff_truncated")) and not p["diff_as_file"],
              "returncode": None, "seconds": 0.0, "turns": 0, "input_tokens": 0, "cached_input_tokens": 0,
@@ -416,7 +431,7 @@ def call_gemini(judge: str, p: dict) -> tuple[str, dict]:
     (no key, HTTP 4xx other than 408 and 429)."""
     model, level = JUDGES[judge]
     prompt = p["prompt"]
-    usage = {"judge": judge, "model": model, "effort": level, "key": f"{judge}:{p['key']}", "case": p.get("case"),
+    usage = {"judge": judge, "model": model, "effort": level, "key": f"{judge}:{p['key']}", "prompt_version": PROMPT_VERSION, "case": p.get("case"),
              "kind": p.get("kind", "batch"), "n_items": len(p.get("items", [])), "prompt_chars": len(prompt),
              "diff_as_file": False, "diff_truncated": bool(p.get("diff_truncated")), "returncode": None,
              "seconds": 0.0, "turns": 0, "input_tokens": 0, "cached_input_tokens": 0, "output_tokens": 0,
@@ -667,7 +682,8 @@ def judge_batch(judge: str, p: dict, ctx: dict, store: Store, opts, call=None, s
         kept, used = judge_call(judge, q, store, call, sleep)
         store.save({result_key(judge, it): [{**{k: it[k] for k in ID_FIELDS}, "label": it["label"],
                                              "output_sha": it["output_sha"], "judge": judge,
-                                             "judge_model": JUDGES[judge][0], "batch": used["key"],
+                                             "judge_model": JUDGES[judge][0], "prompt_version": PROMPT_VERSION,
+                                             "batch": used["key"],
                                              "kind": used.get("kind", "batch"), "diff_as_file": used["diff_as_file"],
                                              "diff_truncated": used["diff_truncated"],
                                              **{k: kept[it["label"]].get(k) for k in LABELS}}]
@@ -722,8 +738,14 @@ def pending_jobs(judge: str, prompts: list[dict], contexts: dict, store: Store, 
         if not missing:
             continue
         ctx = contexts[p["case"]]
-        if len(missing) == len(p["items"]):
+        if len(missing) == len(p["items"]) and (rnd == 1 or len(missing) == 1):
             jobs.append(dict(p, kind=p.get("kind", "batch")))
+        elif len(missing) == len(p["items"]):
+            # The whole batch failed in an earlier round (for example the answer hit the output-token
+            # limit): send it again as two halves, so a repeat of the same failure is less likely.
+            half = (len(missing) + 1) // 2
+            jobs += [dict(make_batch(ctx, part, opts.file_threshold, opts.truncate_over), kind="sub-batch")
+                     for part in (missing[:half], missing[half:])]
         elif rnd > 1 and len(missing) <= SINGLE_MAX:
             jobs += [dict(make_batch(ctx, [it], opts.file_threshold, opts.truncate_over), kind="single") for it in missing]
         else:
@@ -798,6 +820,7 @@ def gemini_batch_round(judge: str, jobs: list[dict], store: Store, state_path: P
                      "returncode": None, "seconds": 0.0, "turns": 0, "input_tokens": 0, "cached_input_tokens": 0,
                      "output_tokens": 0, "reasoning_output_tokens": 0, "error": None, "rate_limited": False,
                      "started": job["created"], "api": "batchGenerateContent", "batch_job": job["name"], "round": rnd,
+                     "prompt_version": PROMPT_VERSION,
                      "thinking_level": JUDGES[judge][1], "sampling": "model defaults (not sent)", "http_status": None,
                      "finish_reason": None, "model_version": None, "gemini_usage": None, "fatal": False}
             if isinstance(item, dict) and isinstance(item.get("response"), dict):
@@ -814,6 +837,7 @@ def gemini_batch_round(judge: str, jobs: list[dict], store: Store, state_path: P
                                                  "output_sha": it["output_sha"], "judge": judge, "judge_model": model,
                                                  "batch": q["key"], "kind": q.get("kind", "batch"), "diff_as_file": False,
                                                  "diff_truncated": bool(q.get("diff_truncated")), "api": "batchGenerateContent",
+                                                 "prompt_version": PROMPT_VERSION,
                                                  **{k: kept[it["label"]].get(k) for k in LABELS}}]
                         for it in q["items"] if it["label"] in kept})
             print(f"{judge} {q['key']} [{q.get('kind', 'batch')}, batch round {rnd}]: {outcome} {len(kept)}/{len(q['items'])}",
@@ -889,6 +913,9 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=OUT, help="judgments file (default: pilot-judgments.json)")
     ap.add_argument("--usage", type=Path, default=None,
                     help="usage log (default: $PILOT_ROOT/judge-usage.jsonl, or judge-usage.jsonl beside --out)")
+    ap.add_argument("--prompt", choices=sorted(PROMPTS), default="pilot",
+                    help="judge prompt version: pilot (as the pilot judges) or study (adds the sentence on reviewer "
+                         "questions about code or tests)")
     ap.add_argument("--gemini-batch", action="store_true",
                     help="send the Gemini judges' requests through the Batch API (half price, up to 24 h); "
                          "job names are kept beside --out so a rerun resumes them")
@@ -896,6 +923,8 @@ def main() -> None:
     ap.add_argument("--list-gemini-models", action="store_true",
                     help="list the Gemini models the key can use, check the configured ids, and exit")
     o = ap.parse_args()
+    global PROMPT_VERSION
+    PROMPT_VERSION = o.prompt
     if o.list_gemini_models:
         sys.exit(list_gemini_models())
     judges = [j for j in o.judges.split(",") if j]
@@ -933,6 +962,12 @@ def main() -> None:
     print(f"prompt chars in all: {sum(sizes):,} (about {sum(sizes) / 2.4 / 1000:,.0f}k input tokens per judge at the "
           f"2.4 chars per token measured for the GPT judges)")
     store = Store(o.out, usage_path)
+    for j in judges:  # one prompt version per judge and file
+        other = sorted({r[0].get("prompt_version", "pilot") for k, r in store.done.items()
+                        if k.startswith(f"{j}:") and r and r[0].get("prompt_version", "pilot") != PROMPT_VERSION})
+        if other:
+            raise SystemExit(f"{o.out} has {j} judgments made with prompt {', '.join(other)}, not {PROMPT_VERSION}; use another --out")
+    print(f"judge prompt: {PROMPT_VERSION}")
     for j in gemini:  # a judge name must not mix judgments from two model ids in one file
         other = sorted({r[0].get("judge_model") for k, r in store.done.items()
                         if k.startswith(f"{j}:") and r and r[0].get("judge_model") != JUDGES[j][0]}, key=str)
