@@ -478,6 +478,9 @@ def spot_check(n: int, seed: int, src: Path, out: Path, sheet: Path, fmt: str = 
                    "as no.", ""]
     for i, r in enumerate(picks, 1):
         c = items[r["id"]]
+        key.append({"n": i, "id": r["id"], "url": c["url"], "repo": c["repo"], "kind": c["kind"],
+                    "label": r["answer"]["criticizes_text"], "label_kind": r["answer"].get("kind"),
+                    "quoted_sentence": r["answer"].get("quoted_sentence")})
         if fmt == "flags":
             pr_url = c["url"].split("#")[0] if c["kind"] != "review_summary" else c["url"]
             quoted = c["body"].strip().replace("\n", "\n> ")
@@ -491,9 +494,6 @@ def spot_check(n: int, seed: int, src: Path, out: Path, sheet: Path, fmt: str = 
                f"- PR title: {c['title']}", f"- PR author: {c['pr_author']}",
                f"- Comment by: {c['author']} ({c['association']}), {c['created_at']}", f"- Link: {c['url']}", "",
                f + "text", c["body"], f, "", "**Your answer:** ", ""]
-        key.append({"n": i, "id": r["id"], "url": c["url"], "repo": c["repo"], "kind": c["kind"],
-                    "label": r["answer"]["criticizes_text"], "label_kind": r["answer"].get("kind"),
-                    "quoted_sentence": r["answer"].get("quoted_sentence")})
     Path(str(sheet) + ".md").write_text("\n".join(md))
     Path(str(sheet) + ".key.json").write_text(json.dumps(
         {"seed": seed, "n_per_label": n, "input": str(src), "results": str(out), "positives_in_pool": sum(
