@@ -106,7 +106,10 @@ GEMINI_THINKING = "high"  # generationConfig.thinkingConfig.thinkingLevel; no te
 GEMINI_API = os.environ.get("GEMINI_API_BASE", "https://generativelanguage.googleapis.com/v1beta").rstrip("/")
 GEMINI_KEY_FILE = Path.home() / ".config/polish-open-source-prose/gemini.env"  # unless GEMINI_ENV_FILE is set
 JUDGES = {**CODEX_JUDGES, **{j: (m, GEMINI_THINKING) for j, m in GEMINI_MODELS.items()}}
-DEFAULT_JUDGES = "astra,sol"
+DEFAULT_JUDGES = "astra,sol,gemini-argon"  # STUDY_PLAN §5 (2026-10-21): Argon (high) is the third judge
+# The Gemini models cannot be pinned, so a judge's reported modelVersion must stay the same for the
+# whole run: a batch item that reports a different version stops that judge (STUDY_PLAN §5).
+VERSION_STOP: dict[str, str] = {}
 CHUNK, CHUNK_LARGE = 20, 5
 RECORDS = pc.PROC / "pilot-records.json"
 OUT = pc.PROC / "pilot-judgments.json"
@@ -658,7 +661,7 @@ def judge_call(judge: str, q: dict, store: Store, call=None, sleep=STOP.wait) ->
               f"attempt {attempt}: {outcome} {len(kept)}/{len(q['items'])} in {usage['seconds']}s"
               + (f" ({usage['error']})" if usage.get("error") and not kept else ""), flush=True)
         if kept:
-            return kept, q
+            return kept, dict(q, model_version=usage.get("model_version"))
         if usage.get("fatal"):
             HALTED.add(judge)
             print(f"{judge}: stopped for this run, retrying cannot fix this ({usage.get('error')})", flush=True)
@@ -683,7 +686,7 @@ def judge_batch(judge: str, p: dict, ctx: dict, store: Store, opts, call=None, s
         store.save({result_key(judge, it): [{**{k: it[k] for k in ID_FIELDS}, "label": it["label"],
                                              "output_sha": it["output_sha"], "judge": judge,
                                              "judge_model": JUDGES[judge][0], "prompt_version": PROMPT_VERSION,
-                                             "batch": used["key"],
+                                             "model_version": used.get("model_version"), "batch": used["key"],
                                              "kind": used.get("kind", "batch"), "diff_as_file": used["diff_as_file"],
                                              "diff_truncated": used["diff_truncated"],
                                              **{k: kept[it["label"]].get(k) for k in LABELS}}]
@@ -833,8 +836,16 @@ def gemini_batch_round(judge: str, jobs: list[dict], store: Store, state_path: P
                                                                              ("unparsable" if text.strip() else "failed"))
             usage.update(attempt=rnd, outcome=outcome, rows_returned=len(rows), rows_kept=len(kept))
             store.log(usage)
+            seen = model_versions(store, judge)
+            if kept and usage.get("model_version") and seen and usage["model_version"] not in seen:
+                VERSION_STOP[judge] = f"{usage['model_version']} after {sorted(seen)}"
+                HALTED.add(judge)
+                print(f"{judge} {q['key']}: modelVersion changed to {usage['model_version']} (recorded so far: "
+                      f"{sorted(seen)}); this judge stops, the rows are not saved", flush=True)
+                continue
             store.save({result_key(judge, it): [{**{k: it[k] for k in ID_FIELDS}, "label": it["label"],
                                                  "output_sha": it["output_sha"], "judge": judge, "judge_model": model,
+                                                 "model_version": usage.get("model_version"),
                                                  "batch": q["key"], "kind": q.get("kind", "batch"), "diff_as_file": False,
                                                  "diff_truncated": bool(q.get("diff_truncated")), "api": "batchGenerateContent",
                                                  "prompt_version": PROMPT_VERSION, "thinking_level": JUDGES[judge][1],
@@ -848,13 +859,19 @@ def gemini_batch_round(judge: str, jobs: list[dict], store: Store, state_path: P
         write_atomic(state_path, json.dumps(state, indent=1) + "\n")
 
 
+def model_versions(store: Store, judge: str) -> set[str]:
+    """The modelVersion strings recorded in this judge's saved judgments."""
+    return {r[0]["model_version"] for k, r in store.done.items()
+            if k.startswith(f"{judge}:") and r and r[0].get("model_version")}
+
+
 def run_gemini_batches(judge: str, prompts: list[dict], contexts: dict, store: Store, opts) -> int:
     """Rounds of batch jobs until every output has a judgment or BATCH_ROUNDS are spent; returns
-    the number of outputs left."""
+    the number of outputs left. Stops the judge when the API's reported modelVersion changes."""
     state_path = batch_state_path(opts.out, judge)
     for rnd in range(1, BATCH_ROUNDS + 1):
         jobs = pending_jobs(judge, prompts, contexts, store, opts, rnd)
-        if not jobs or STOP.is_set():
+        if not jobs or STOP.is_set() or judge in HALTED:
             break
         print(f"{judge}: batch round {rnd}, {len(jobs)} requests, "
               f"{sum(len(q['items']) for q in jobs)} outputs", flush=True)
@@ -966,6 +983,10 @@ def main() -> None:
     print(f"prompt chars in all: {sum(sizes):,} (about {sum(sizes) / 2.4 / 1000:,.0f}k input tokens per judge at the "
           f"2.4 chars per token measured for the GPT judges)")
     store = Store(o.out, usage_path)
+    for j in gemini:  # one model version per Gemini judge and file: a changed version is a stop, not a merge
+        seen = model_versions(store, j)
+        if len(seen) > 1:
+            raise SystemExit(f"{o.out} holds {j} judgments from more than one modelVersion ({sorted(seen)}); the author decides")
     for j in gemini:  # one thinking level per Gemini judge and file
         other = sorted({r[0].get("thinking_level", GEMINI_THINKING) for k, r in store.done.items()
                         if k.startswith(f"{j}:") and r and r[0].get("thinking_level", GEMINI_THINKING) != JUDGES[j][1]})
@@ -1025,6 +1046,8 @@ def main() -> None:
         except KeyboardInterrupt:
             print("interrupted; submitted jobs are recorded and a rerun resumes them", flush=True)
             os._exit(130)
+        for j, why in VERSION_STOP.items():
+            print(f"STOPPED {j}: modelVersion changed mid-run ({why}); report to the author before resuming", flush=True)
         jobs = [(j, p) for j, p in jobs if j not in gemini]
         judges_direct = [j for j in judges if j not in gemini]
     else:

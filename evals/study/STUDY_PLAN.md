@@ -209,12 +209,22 @@ with the pilot's judge prompt and per-case batches, and both are compared with A
 one table. The first rule (Argon if its κ with Astra is at least 0.70 on invented and
 asked) was written for a Pro-versus-Flash choice and is withdrawn: Argon scored above
 Flash on every label at the same cost, so the bar would have chosen the weaker judge.
-The corrected rule: Argon (high) if the API offers a pinnable model id for it (one with a
-date or version number), the pinned id written here; otherwise Flash (high). Checked
-2026-10-21: the models list has only `gemini-4-argon` (version field "3.0") and
-`gemini-3.8-flash`, and every call's reported `modelVersion` is the same bare id, so
-neither can be pinned. **The third judge is therefore Gemini 3.8 Flash at thinking level
-high**, through the Batch API.
+A second rule, "Argon if the API offers a pinnable model id (one with a date or version
+number), otherwise Flash", was also withdrawn the same day: checked against the models
+list, neither `gemini-4-argon` (version field "3.0") nor `gemini-3.8-flash` has a dated
+or numbered variant, and every call's reported `modelVersion` is the bare id, so the
+criterion does not separate the two and cannot be a reason to prefer Flash.
+
+**The third judge is Gemini 4 Argon at thinking level high**, through the Batch API,
+because its κ with Astra is higher on every label and its cost on the sample is the same
+(table below). Conditions, since the model cannot be pinned: the main study's judging
+runs once, within one week after the last editor output is produced; every judgment
+records the `modelVersion` the API reports; when the run is complete the recorded
+versions are checked for being identical throughout, and if the version changes
+mid-run the judging stops and the author decides (`judge_pilot.py` saves each judgment's
+`modelVersion`, halts the judge on the first item whose version differs from those
+already saved, and refuses to run on a file that holds two versions). Gemini 3.8 Flash
+(high) is the fallback if Argon becomes unavailable or changes version.
 
 κ with Astra on the 100 outputs (Astra–Sol on the same sample in the last column):
 
@@ -418,11 +428,14 @@ All of this is stated in the paper.
   - three-judge combination rule (§5) and per-judge reporting;
   - human check: at least half of the edit sample from Astra–Gemini disagreements;
   - frame result: pytorch/executorch excluded by the internal-review rule; 36 repositories.
-- 2026-10-21, Gemini choice: the 0.70 rule (written for Pro versus Flash) would have
-  picked Flash although Argon scored higher on every label at the same cost; the author
-  replaced it with "Argon if a pinnable model id exists, else Flash". No dated or
-  numbered id exists for either model, so Flash (high) is the third judge; the κ table
-  is in §5.
+- 2026-10-21, Gemini choice, three steps: (1) the 0.70 rule on invented and asked,
+  written for Pro versus Flash, would have picked Flash although Argon scored higher on
+  every label at the same cost, so it was withdrawn; (2) "Argon if a pinnable model id
+  exists, else Flash" was tried next, but neither model has a dated or numbered id, so
+  that criterion separates nothing and cannot justify Flash; (3) the third judge is
+  Argon (high) on the κ table in §5, with the conditions that judging runs once within a
+  week of the last editor output, that every judgment records `modelVersion`, and that a
+  mid-run version change stops the run; Flash (high) is the fallback.
 
 ## Deviations
 
