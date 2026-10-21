@@ -212,7 +212,16 @@ Otherwise Flash (high) is, and its disagreements with the OpenAI judges are trea
 vendor difference, settled by the author's human check (below). Flash on the sample
 (2026-10-21; κ with Astra, with Astra–Sol on the same sample in brackets): addressed
 0.859 [0.969], code-consistent 0.493 [0.938], invented 0.466 [0.977], damaged 0.758
-[0.813], asked 0.286 [0.925], complete clean fix 0.503 [0.905]. Argon: to be added.
+[0.813], asked 0.286 [0.925], complete clean fix 0.503 [0.905]. Argon (high, batch,
+2026-10-21): addressed 0.890, code-consistent 0.703, invented 0.510, damaged 0.834,
+asked 0.661, complete clean fix 0.611. Argon misses the 0.70 bar on invented and asked,
+so **the third judge is Gemini 3.8 Flash at thinking level high**, and its disagreements
+with the OpenAI judges count as a vendor difference settled by the human check. Both
+Gemini models label far fewer outputs as invented (Flash 12%, Argon 15%, against 31–32%
+for Astra and Sol) and far fewer notes as unanswerable questions (7% and 20% against
+35–37%). Cost on the 100 outputs through the Batch API: Flash USD 0.84, Argon USD 0.76
+(Argon thinks less at high: 114k thinking tokens against Flash's 413k). Argon at medium
+or low produced no thinking tokens at all on these prompts (probe on two cases).
 
 GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs its scale
 differed from the other two (addressed 0.5 for 37% of outputs against 24–25%, damaged 14%
@@ -391,6 +400,8 @@ All of this is stated in the paper.
   - three-judge combination rule (§5) and per-judge reporting;
   - human check: at least half of the edit sample from Astra–Gemini disagreements;
   - frame result: pytorch/executorch excluded by the internal-review rule; 36 repositories.
+- 2026-10-21, Gemini choice applied: Argon's κ with Astra on invented (0.51) and asked
+  (0.66) fell short of 0.70, so Flash (high) is the third judge, per the rule above.
 
 ## Deviations
 
