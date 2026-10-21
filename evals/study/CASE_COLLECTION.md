@@ -184,7 +184,10 @@ means a random sample of that population, not of all pull requests.
        Fenced code is ignored, and trailers inside a quote are not matched: a reviewer quoting
        the pull request's own disclosure, or writing about AI-generated pull requests, is a
        critique the study keeps. 3,696 comments dropped (apache/airflow 3,307); 371 keyword
-       survivors removed, 143 of them positives.
+       survivors removed, 143 of them positives. Two borderline templates are excluded by the
+       author's decision (2026-10-22): a member quoting a model's analysis ("Quoted
+       LLM-generated analysis", rust-lang/rust, 5) and a person's comment carrying the GitHub
+       MCP footer (apache/spark, 29).
      - **Templated comments.** A comment is dropped when the same account posted the same
        text at least five times in the pulled data (same after lower-casing, collapsing
        whitespace, and writing every @mention as "@" and every run of digits as "0").
@@ -226,7 +229,13 @@ means a random sample of that population, not of all pull requests.
      (seed 20261021, stratified by repository; `--sheet-format lines`: the classifier's quoted
      sentence, the first 400 characters, the link, the full comment folded). The classifier
      quotes a sentence only on a yes, so that layout shows the label; `--sheet-format
-     lines-keyword` gives the same items with the keyword-matched sentence instead. Per-repository table:
+     lines-keyword` gives the same items with the keyword-matched sentence instead. The
+     author labels `SPOT_CHECK_SHEET_BLIND.md` (the keyword-sentence layout; decision
+     2026-10-22). Rule for this and later sheets: once a sheet is drawn, the drawing side
+     does not read or screen its items one by one; it checks only the format (counts per
+     label, layout, no label in the sheet) and runs the AI-review rules mechanically, and
+     any rule change is made by rule, not by replacing items. The 2026-10-21 regeneration
+     was prompted by reading items, which this rule now excludes. Per-repository table:
      `$POLISH_EVAL_DATA/Exports/polish-open-source-prose/study-runs/classifier-report-36-2026-10-21.md`.
      Counts are reported per repository at each stage (all comments, after the
      pre-filter, after keywords, positives);
