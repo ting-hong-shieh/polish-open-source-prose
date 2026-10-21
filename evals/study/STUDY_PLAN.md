@@ -117,13 +117,18 @@ exploratory.
 
 **Execution environment (2026-10-21).** Every run uses a dedicated Claude Code
 configuration directory (`CLAUDE_CONFIG_DIR`) that holds no CLAUDE.md, no user skills, and
-no plugins (the build's three built-in plugins are disabled), with auto-memory and hooks
-off, signed in to the author's subscription account. Runs start from a minimal process
+no plugins (the build's three built-in plugins are disabled, and the account's plugin and
+skill sync is turned off with `syncClaudeAiPlugins` and `syncClaudeAiSkills` set to false;
+without that, signing in pulled two plugins and sixteen account skills into the directory),
+with auto-memory and hooks off, signed in to the author's subscription account. Runs start from a minimal process
 environment (home, path, locale, and the configuration directory only) with
 `--permission-mode default`. The build's own bundled skills are left as shipped; they are
 listed only in the `skill` condition, where slash commands are enabled. Before the main
 runs, one dry run's stream-json and `/context` output confirm that no user memory file,
-user skill, plugin, or auto-memory path is in context; both are saved with the runs. The
+user skill, plugin, or auto-memory path is in context; both are saved with the runs
+(`check_clean_config.py`; a skill counts as the build's own when `/context` marks it
+built-in or an empty, signed-out configuration directory lists it). First pass:
+2026-10-21, `study-runs/config-check/clean-20261021T081815/`. The
 pilot and rounds 2–3 ran with the author's own configuration (their global CLAUDE.md,
 settings, user skills, and synced plugins); this is recorded as a deviation there.
 
