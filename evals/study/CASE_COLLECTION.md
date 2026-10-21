@@ -90,6 +90,15 @@ means a random sample of that population, not of all pull requests.
       reported before the merge (the twelve-repository classifier pass, diff sizes) cover
       2026-01-01 to 2026-09-30 only.
 
+      **Full pull result (2026-10-21, 00:24Z to 07:27Z, no job failed).** The twelve
+      extensions (2025-10-01 to 2025-12-31): 14,985 pull requests, 73,062 issue comments,
+      45,668 review comments. The 24 new repositories (full window): 96,569 pull requests,
+      379,118 issue comments, 201,821 review comments. Pulled pull-request counts match
+      the v3 search counts except cilium (+1), aiohttp (+1), and expo (+4), opened
+      between the query and the pull. The process was interrupted twice (session end,
+      WSL reboot) and resumed from its cursors; 44 rate-limit sleeps and 10 request
+      retries, all recovered. Full table: `$POLISH_EVAL_DATA/Exports/polish-open-source-prose/study-runs/pull-report-2026-10-21.md`.
+
    **Rule versions.** v1 used single-topic queries and put applications in framework
    domains (flutter, angular and expo in web back ends; next.js in languages). v2
    dropped archived repositories and added `-topic:` exclusions, but its star-sorted
@@ -132,7 +141,11 @@ means a random sample of that population, not of all pull requests.
    Script: `evals/study/collect_pr_comments.py`. Pull requests come from the GraphQL
    `pullRequests` connection (newest first, stopped below the window) with review
    summaries and per-request comment and thread counts; comments are then fetched per
-   pull request in batched GraphQL queries sized by those counts. A first version used
+   pull request in batched GraphQL queries sized by those counts. Review summaries
+   (the body a reviewer writes with approve/request-changes) are taken from the first
+   20 reviews of a pull request; 1,485 of 111,554 pull requests in the full pull (1.3%)
+   have more than 20 and lose the later summaries. Review thread comments and issue
+   comments are paginated with cursors and complete. A first version used
    the repository-wide REST comment listings and was dropped: their `since` parameter
    filters by update time, so pages fill with old comments that bots re-edited and the
    cursor stalls (apache/airflow stopped at 2026-03-12). The edit history is stored as
