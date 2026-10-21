@@ -837,7 +837,7 @@ def gemini_batch_round(judge: str, jobs: list[dict], store: Store, state_path: P
                                                  "output_sha": it["output_sha"], "judge": judge, "judge_model": model,
                                                  "batch": q["key"], "kind": q.get("kind", "batch"), "diff_as_file": False,
                                                  "diff_truncated": bool(q.get("diff_truncated")), "api": "batchGenerateContent",
-                                                 "prompt_version": PROMPT_VERSION,
+                                                 "prompt_version": PROMPT_VERSION, "thinking_level": JUDGES[judge][1],
                                                  **{k: kept[it["label"]].get(k) for k in LABELS}}]
                         for it in q["items"] if it["label"] in kept})
             print(f"{judge} {q['key']} [{q.get('kind', 'batch')}, batch round {rnd}]: {outcome} {len(kept)}/{len(q['items'])}",
@@ -916,6 +916,8 @@ def main() -> None:
     ap.add_argument("--prompt", choices=sorted(PROMPTS), default="pilot",
                     help="judge prompt version: pilot (as the pilot judges) or study (adds the sentence on reviewer "
                          "questions about code or tests)")
+    ap.add_argument("--gemini-thinking", choices=["low", "medium", "high"], default=GEMINI_THINKING,
+                    help="thinking level for the Gemini judges (default high); recorded per call and per judgment")
     ap.add_argument("--gemini-batch", action="store_true",
                     help="send the Gemini judges' requests through the Batch API (half price, up to 24 h); "
                          "job names are kept beside --out so a rerun resumes them")
@@ -931,6 +933,8 @@ def main() -> None:
     if set(judges) - set(JUDGES):
         raise SystemExit(f"unknown judge(s): {', '.join(sorted(set(judges) - set(JUDGES)))}")
     gemini = [j for j in judges if j in GEMINI_MODELS]
+    for j in gemini:
+        JUDGES[j] = (JUDGES[j][0], o.gemini_thinking)
     if gemini and o.file_threshold is not None:
         raise SystemExit("--file-threshold applies to the Codex judges only; the Gemini judges always get the diff inline")
     default_out = o.out.resolve() == OUT.resolve()
@@ -962,6 +966,11 @@ def main() -> None:
     print(f"prompt chars in all: {sum(sizes):,} (about {sum(sizes) / 2.4 / 1000:,.0f}k input tokens per judge at the "
           f"2.4 chars per token measured for the GPT judges)")
     store = Store(o.out, usage_path)
+    for j in gemini:  # one thinking level per Gemini judge and file
+        other = sorted({r[0].get("thinking_level", GEMINI_THINKING) for k, r in store.done.items()
+                        if k.startswith(f"{j}:") and r and r[0].get("thinking_level", GEMINI_THINKING) != JUDGES[j][1]})
+        if other:
+            raise SystemExit(f"{o.out} has {j} judgments at thinking level {', '.join(other)}, not {JUDGES[j][1]}; use another --out")
     for j in judges:  # one prompt version per judge and file
         other = sorted({r[0].get("prompt_version", "pilot") for k, r in store.done.items()
                         if k.startswith(f"{j}:") and r and r[0].get("prompt_version", "pilot") != PROMPT_VERSION})
@@ -994,7 +1003,7 @@ def main() -> None:
             gemini_key()
         except NoGeminiKey as exc:
             raise SystemExit(str(exc))
-        print("gemini models: " + ", ".join(f"{j} {JUDGES[j][0]}" for j in gemini) + f"; thinkingLevel {GEMINI_THINKING}")
+        print("gemini models: " + ", ".join(f"{j} {JUDGES[j][0]}" for j in gemini) + f"; thinkingLevel {o.gemini_thinking}")
     write_atomic(excluded_path, json.dumps(excl, indent=1) + "\n")
     lock_files = []
     for j in judges:
