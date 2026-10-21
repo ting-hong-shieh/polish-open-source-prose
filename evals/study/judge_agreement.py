@@ -14,7 +14,11 @@ weighted kappa and Krippendorff's alpha (ordinal) for `addressed`, Fleiss' kappa
 judges (addressed as three categories), all overall and per evidence level; how often all
 judges agree on complete clean fix; each judge's label rates, to see who is more lenient.
 
-Usage: POLISH_EVAL_DATA=/mnt/d/Data .venv/bin/python evals/study/judge_agreement.py [--out PATH]
+The judges are those with at least one judgment in the file, in judge_pilot.py's order (astra,
+sol, luna, gemini-pro, gemini-flash), unless --judges names them. The Gemini comparison on the
+100-output sample has its own report (judge_compare_sample.py report).
+
+Usage: POLISH_EVAL_DATA=/mnt/d/Data .venv/bin/python evals/study/judge_agreement.py [--judges a,b] [--out PATH]
 """
 from __future__ import annotations
 
@@ -31,7 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import judge_pilot as jp  # noqa: E402
 import pilot_common as pc  # noqa: E402
 
-JUDGES = ["astra", "sol", "luna"]
+JUDGES = list(jp.JUDGES)  # candidates; main() keeps those with judgments unless --judges names them
 CATS = {"addressed": [0.0, 0.5, 1.0], "code_consistent": [False, True], "invented": [False, True],
         "damaged": [False, True], "asked": ["none", "answerable", "unanswerable"], "complete": [False, True]}
 LABELS = list(CATS)
@@ -165,17 +169,21 @@ def main() -> None:
     ap.add_argument("--judgments", type=Path, default=jp.OUT)
     ap.add_argument("--usage", type=Path, default=jp.USAGE)
     ap.add_argument("--out", type=Path, default=pc.PROC / "pilot-judge-agreement.json")
+    ap.add_argument("--judges", default="", help="comma-separated (default: every judge with a judgment in the file)")
     o = ap.parse_args()
     excl = json.loads(jp.EXCLUDED.read_text()) if jp.EXCLUDED.exists() else {"cases": []}
     records = [r for r in json.loads(o.records.read_text())["records"] if r["case"] not in excl["cases"]]
     judgments = json.loads(o.judgments.read_text())
+    judges = [j for j in o.judges.split(",") if j] or [j for j in JUDGES if any(k.startswith(f"{j}:") for k in judgments)]
+    if set(judges) - set(jp.JUDGES):
+        raise SystemExit(f"unknown judge(s): {', '.join(sorted(set(judges) - set(jp.JUDGES)))}")
     usage = [json.loads(line) for line in o.usage.read_text().splitlines() if line.strip()] if o.usage.exists() else []
 
-    items, per_judge_rows, stale = [], {j: [] for j in JUDGES}, Counter()
+    items, per_judge_rows, stale = [], {j: [] for j in judges}, Counter()
     for r in records:
         it = dict(r, label=jp.label_for(r), output_sha=jp.output_hash(r))
         got = {}
-        for j in JUDGES:
+        for j in judges:
             rows = judgments.get(jp.result_key(j, it))
             if rows and rows[0].get("output_sha") == it["output_sha"]:
                 got[j] = rows[0]
@@ -186,9 +194,11 @@ def main() -> None:
         items.append(it)
 
     summary = {"records": len(records), "excluded_cases": excl["cases"], "judges": {}}
-    for j in JUDGES:
+    for j in judges:
         rows = per_judge_rows[j]
-        summary["judges"][j] = {"model": jp.JUDGES[j][0], "effort": jp.JUDGES[j][1], "outputs_judged": len(rows),
+        models = sorted({r["judge_model"] for r in rows if r.get("judge_model")})
+        summary["judges"][j] = {"model": models[0] if len(models) == 1 else models or jp.JUDGES[j][0],
+                                "effort": jp.JUDGES[j][1], "outputs_judged": len(rows),
                                 "outputs_left": len(records) - len(rows), "stale_judgments": stale[j],
                                 "judgment_kinds": dict(Counter(r.get("kind") for r in rows)),
                                 "judged_with_diff_as_file": sum(1 for r in rows if r.get("diff_as_file")),
@@ -197,7 +207,7 @@ def main() -> None:
                                 "rates": rates(rows),
                                 "rates_by_evidence": {ev: rates([r for r in rows if r["evidence"] == ev])
                                                       for ev in pc.EVIDENCE_LEVELS}}
-    present = [j for j in JUDGES if per_judge_rows[j]]
+    present = [j for j in judges if per_judge_rows[j]]
     full = [{j: it["judged"][j] for j in present} | {"_ev": it["evidence"], "_case": it["case"]}
             for it in items if all(j in it["judged"] for j in present)]
     summary["agreement_judges"] = present
@@ -229,31 +239,33 @@ def main() -> None:
 
 
 def report(s: dict, present: list[str]) -> None:
+    w = max([6, *map(len, s["judges"])])  # judge column width
     print(f"{s['records']} outputs (excluded cases: {', '.join(s['excluded_cases']) or 'none'})\n")
-    print(f"{'judge':<6} {'judged':>6} {'left':>4} {'attempts':>8} {'batch':>5} {'sub':>4} {'single':>6} {'retry':>5} "
+    print(f"{'judge':<{w}} {'judged':>6} {'left':>4} {'attempts':>8} {'batch':>5} {'sub':>4} {'single':>6} {'retry':>5} "
           f"{'file':>4} {'trunc':>5} {'input':>11} {'cached':>11} {'output':>9} {'reason':>9} {'seconds':>8}")
     for j, d in s["judges"].items():
         u = d["usage"]
-        print(f"{j:<6} {d['outputs_judged']:>6} {d['outputs_left']:>4} {u['attempts']:>8} {u['calls']['batch']:>5} "
+        print(f"{j:<{w}} {d['outputs_judged']:>6} {d['outputs_left']:>4} {u['attempts']:>8} {u['calls']['batch']:>5} "
               f"{u['calls']['sub-batch']:>4} {u['calls']['single']:>6} {u['retries']:>5} {u['file_route_attempts']:>4} "
               f"{u['truncated_attempts']:>5} {u['tokens']['input_tokens']:>11,} {u['tokens']['cached_input_tokens']:>11,} "
               f"{u['tokens']['output_tokens']:>9,} {u['tokens']['reasoning_output_tokens']:>9,} {u['seconds']:>8,.0f}")
-        print(f"       outcomes {u['outcomes']}")
+        print(f"{'':<{w}} outcomes {u['outcomes']}")
     print("\nlabel rates per judge (all evidence levels)")
     for j, d in s["judges"].items():
         r = d["rates"]
         if r:
-            print(f"  {j:<6} addressed mean {r['addressed_mean']} {r['addressed']}; code_consistent {r['code_consistent']}; "
+            print(f"  {j:<{w}} addressed mean {r['addressed_mean']} {r['addressed']}; code_consistent {r['code_consistent']}; "
                   f"invented {r['invented']}; damaged {r['damaged']}; asked {r['asked']}; complete {r['complete']}")
     if "agreement" not in s:
         return
     a = s["agreement"]
     pairs = list(a["addressed"]["pairwise"])
     print(f"\nagreement on {a['n']} outputs judged by {', '.join(present)}")
-    print(f"{'label':<16}" + "".join(f"{p + ' raw/k':>22}" for p in pairs) + f"{'Fleiss':>8}{'all agree':>10}")
+    pw = max([22, *(len(p) + 8 for p in pairs)])
+    print(f"{'label':<16}" + "".join(f"{p + ' raw/k':>{pw}}" for p in pairs) + f"{'Fleiss':>8}{'all agree':>10}")
     for lab in LABELS:
         d = a[lab]
-        print(f"{lab:<16}" + "".join(f"{d['pairwise'][p]['raw']:>12} / {d['pairwise'][p]['kappa']!s:>6}  " for p in pairs)
+        print(f"{lab:<16}" + "".join(f"{d['pairwise'][p]['raw']:>{pw - 10}} / {d['pairwise'][p]['kappa']!s:>6}  " for p in pairs)
               + f"{d['fleiss_kappa']!s:>8}{d['all_agree']:>10}")
     print("addressed weighted kappa (linear / quadratic): "
           + "; ".join(f"{p} {a['addressed']['pairwise'][p]['kappa_linear']} / {a['addressed']['pairwise'][p]['kappa_quadratic']}"
@@ -266,7 +278,7 @@ def report(s: dict, present: list[str]) -> None:
                                      for ev in pc.EVIDENCE_LEVELS))
     print("\npairwise: outputs where the first / second judge gave the higher value; all five labels equal; identical judge note")
     for pair, d in s["pairwise_direction"].items():
-        print(f"  {pair:<11}" + "; ".join(f"{lab} {list(v.values())[0]}/{list(v.values())[1]}" for lab, v in d.items()
+        print(f"  {pair:<{2 * w - 1}}" + "; ".join(f"{lab} {list(v.values())[0]}/{list(v.values())[1]}" for lab, v in d.items()
                                           if isinstance(v, dict)) + f"; all five equal {d['all_five_labels_equal']}"
               + f"; identical note {d['identical_judge_note']}")
     low = sorted(s["by_case"].items(), key=lambda kv: kv[1]["complete_all_agree"])[:4]
@@ -274,7 +286,7 @@ def report(s: dict, present: list[str]) -> None:
           + "; ".join(f"{c} {d['complete_all_agree']} (rates {d['complete_rate']})" for c, d in low))
     print("\ncomplete clean fix rate per judge by evidence level")
     for j, d in s["judges"].items():
-        print(f"  {j:<6}" + "".join(f"{ev:>8} {d['rates_by_evidence'][ev].get('complete')!s:<6}" for ev in pc.EVIDENCE_LEVELS))
+        print(f"  {j:<{w}}" + "".join(f"{ev:>8} {d['rates_by_evidence'][ev].get('complete')!s:<6}" for ev in pc.EVIDENCE_LEVELS))
 
 
 if __name__ == "__main__":

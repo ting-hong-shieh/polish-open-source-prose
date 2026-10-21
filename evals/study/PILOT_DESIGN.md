@@ -281,6 +281,8 @@ about 250k characters (roughly 75k tokens; covers 150425), apply the truncation 
 above that (71403), and do not use the file route. To be fixed in STUDY_PLAN before
 freezing, with `code_consistent` on large diffs reported as a known unstable label.
 
+**After the pilot (2026-10-21):** Luna is dropped; the Gemini candidates are compared with Astra on 100 pilot outputs (`judge_compare_sample.py` and `judge_pilot.py --sample`; Gemini API, thinking level high, diff inline, no file route).
+
 ## 5. Analysis for the pilot
 
 `evals/study/analyze_pilot.py`, committed before the first run: the PILOT_PLAN primary

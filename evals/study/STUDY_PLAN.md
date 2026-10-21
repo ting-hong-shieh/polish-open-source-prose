@@ -187,9 +187,13 @@ and correction on one axis.
 
 GPT-6 Astra (high) and GPT-6.1 Sol (high) through Codex CLI are the main judges. A third,
 cross-vendor judge is Gemini, through the Gemini API: Gemini 3.1 Pro or Gemini 3.8 Flash,
-whichever agrees better with Astra on a seeded, stratified sample of 100 pilot outputs
-(κ on complete clean fix, then on the five labels), decided and recorded here before
-freezing. GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs
+chosen before freezing by its agreement with Astra (Sol for reference) on a fixed sample
+of 100 pilot outputs (`judge_compare_sample.py`, seed 20261021; strata evidence level ×
+editing model, 8 or 9 outputs per stratum, 5 or 6 per case, all 19 judged pilot cases),
+judged with the same prompt, labels, and per-case batches. The decision rule is fixed by
+the author before the comparison runs and recorded here. The Gemini judge runs at thinking
+level high with the API's default sampling and always receives the diff inline (same
+truncation rule); the model id and the model version the API reports are recorded per call. GPT-6 Luna was tried in the pilot and is not used: on the 1,368 pilot outputs
 its scale differed from the other two (addressed 0.5 for 37% of outputs against 24–25%,
 damaged 14% against 22%), and its κ with them on complete clean fix was 0.43–0.46. Astra
 and Sol agreed closely (κ 0.865 on complete clean fix; all five labels equal on 1,142 of
