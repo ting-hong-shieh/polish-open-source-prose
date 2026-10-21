@@ -201,6 +201,14 @@ means a random sample of that population, not of all pull requests.
      request's author 230,369, under 20 characters 141,454, templated 24,485, AI-review
      markers 2,805 (apache/spark 1,977, expo 608, doris 103), no login 1,106; 326,812 items
      remain and 15,775 match the keyword pass (`classifier-full-36/stage-counts.json`).
+     Full-frame LLM pass (2026-10-21): Haiku 5.5, same prompt; 9,264 answers reused from the
+     twelve-repository pass, 6,511 new calls (USD 7.23; frame total USD 14.03), no failures.
+     5,215 positives (33.1% of survivors) in 4,268 pull requests. Of the twelve-repository
+     answers, 940 (393 positives) fall away under the extended pre-filter. Diff sizes: 10.4%
+     of pull requests with a positive and 5.4% of landed pull requests exceed 1,500 lines.
+     The author's spot check uses 50 positives and 50 negatives (seed 20261021, stratified by
+     repository, blind; `--sheet-format flags`). Per-repository table:
+     `$POLISH_EVAL_DATA/Exports/polish-open-source-prose/study-runs/classifier-report-36-2026-10-21.md`.
      Counts are reported per repository at each stage (all comments, after the
      pre-filter, after keywords, positives);
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
