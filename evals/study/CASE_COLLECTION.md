@@ -179,6 +179,28 @@ means a random sample of that population, not of all pull requests.
      the 3,523 classifier positives 350 (all apache/spark) and 42 (kubernetes 26, airflow
      16), leaving 3,131 positives. Counts per repository are in
      `classifier-full-12/prefilter-r3/stage-counts.json`.
+     Full-frame survey (2026-10-21, 36 repositories, after the merge; `classifier-full-36/`
+     `marker-survey.json`, `author-survey.json`): 15,304 distinct HTML-comment markers. Added
+     to `AI_REVIEW`: apache/doris local pipeline reviews (`doris-repo-review`, "model:
+     gpt-6-astra") and agent re-check responses (`autopilot-response`); kestra's auto review
+     posted by a member (`kestra-auto-review`); expo's docs/style reviewer (`wm-review`,
+     `docs-review`) and its AI code reviewer when a person re-posts it
+     (`expo-ai-code-reviewer`); prefect's dependency review (`claude-dep-review`); mirrord's
+     auto-approve verdicts (`jev-auto-approve`); StarRocks' agent validation and e2e reports
+     (`ship-pr-validation-report`, `ship-pr-e2e-report`). Seen and not added: a GitHub MCP
+     attribution footer on a person's own comment, agent handoff notes by the pull request's
+     author, a CI-generated OpenAPI report, Graphite stack lists, Linear-synced replies. The
+     same survey and the keyword survivors showed 40 automation logins without the `[bot]`
+     suffix (CI, coverage, merge queue, CLA, preview, size, security and AI reviewer apps,
+     and accounts that only post `@codex review`/`@cursor review`); they are added to the bot
+     list with the date. AI-written reviews under a person's account and without a marker
+     (one stdlib "Issue Reference Review" check, a few "Automated Code Review" posts, agent
+     approvals on kestra) cannot be dropped by rule and go to the classifier, whose prompt
+     counts bot output as no.
+     Full-frame pre-filter (2026-10-21, 1,273,626 comment items): bots 546,595, the pull
+     request's author 230,369, under 20 characters 141,454, templated 24,485, AI-review
+     markers 2,805 (apache/spark 1,977, expo 608, doris 103), no login 1,106; 326,812 items
+     remain and 15,775 match the keyword pass (`classifier-full-36/stage-counts.json`).
      Counts are reported per repository at each stage (all comments, after the
      pre-filter, after keywords, positives);
    - a cheap keyword pass (description, title, "does not match", "AI-generated",
